@@ -98,6 +98,16 @@ func main() {
 		},
 	}
 
+	var cmdListSSHKey = &cobra.Command{
+		Use:   "ssh-key",
+		Short: "List ssh key",
+		Long:  "List ssh key",
+		Run: func(cmd *cobra.Command, args []string) {
+			keyID, _ := cmd.Flags().GetString("key-id")
+			listSSHkey(c, keyID)
+		},
+	}
+
 	var cmdListServers = &cobra.Command{
 		Use:   "servers",
 		Short: "List servers",
@@ -281,7 +291,7 @@ func main() {
 	var rootCmd = &cobra.Command{Use: "cherry-cloud-cli"}
 	rootCmd.AddCommand(cmdList, cmdAdd, cmdRemove, cmdUpdate, cmdPower)
 
-	cmdList.AddCommand(cmdListTeams, cmdListPlans, cmdListProjects, cmdListImages, cmdListSSHKeys, cmdListServers, cmdListServer, cmdListIPAddresses, cmdListIPAddress)
+	cmdList.AddCommand(cmdListTeams, cmdListPlans, cmdListProjects, cmdListImages, cmdListSSHKeys, cmdListSSHKey, cmdListServers, cmdListServer, cmdListIPAddresses, cmdListIPAddress)
 
 	cmdListPlans.Flags().IntP("team-id", "t", 0, "Provide team-id")
 	cmdListPlans.MarkFlagRequired("team-id")
@@ -297,6 +307,9 @@ func main() {
 
 	cmdListServer.Flags().IntP("server-id", "s", 0, "Provide server-id")
 	cmdListServer.MarkFlagRequired("server-id")
+
+	cmdListSSHKey.Flags().StringP("key-id", "k", "", "Provide key-id")
+	cmdListSSHKey.MarkFlagRequired("key-id")
 
 	cmdListIPAddresses.Flags().IntP("project-id", "p", 0, "Provide project-id")
 	cmdListIPAddresses.MarkFlagRequired("project-id")
@@ -511,7 +524,7 @@ func createSSHKey(c *cherrygo.Client, label, key, keyPath string) {
 		Key:   key,
 	}
 
-	sshkey, _, err := c.SSHKeys.Create(&sshCreateRequest)
+	sshkey, _, err := c.SSHKey.Create(&sshCreateRequest)
 	if err != nil {
 		log.Fatal("Error", err)
 	}
@@ -544,6 +557,24 @@ func listSSHkeys(c *cherrygo.Client) {
 	tw.Flush()
 }
 
+func listSSHkey(c *cherrygo.Client, keyID string) {
+
+	sshkey, _, err := c.SSHKey.List(keyID)
+	if err != nil {
+		log.Fatal("Error", err)
+	}
+
+	tw := tabwriter.NewWriter(os.Stdout, 13, 8, 2, '\t', 0)
+	fmt.Fprintf(tw, "\n------\t-----\t-----------\t-------\t-------\n")
+	fmt.Fprintf(tw, "Key ID\tLabel\tFingerprint\tCreated\tUpdated\n")
+	fmt.Fprintf(tw, "------\t-----\t-----------\t-------\t-------\n")
+
+	fmt.Fprintf(tw, "%v\t%v\t%v\t%v\t%v\n",
+		sshkey.ID, sshkey.Label, sshkey.Fingerprint, sshkey.Created, sshkey.Updated)
+	fmt.Fprintf(tw, "------\t-----\t-----------\t-------\t-------\n")
+	tw.Flush()
+}
+
 func updateSSHKey(c *cherrygo.Client, keyID, keyLabel string) {
 
 	sshUpateRequest := cherrygo.UpdateSSHKey{
@@ -555,7 +586,7 @@ func updateSSHKey(c *cherrygo.Client, keyID, keyLabel string) {
 	fmt.Fprintf(tw, "Key ID\tLabel\tFingerprint\tCreated\tUpdated\n")
 	fmt.Fprintf(tw, "-------\t-----\t-----------\t-------\t-------\n")
 
-	key, _, err := c.SSHKeys.Update(keyID, &sshUpateRequest)
+	key, _, err := c.SSHKey.Update(keyID, &sshUpateRequest)
 	if err != nil {
 		log.Fatal("Error while updating SSH key", err)
 	}
@@ -593,7 +624,7 @@ func deleteSSHKey(c *cherrygo.Client, keyID string) {
 
 	sshDeleteRequest := cherrygo.DeleteSSHKey{ID: keyID}
 
-	c.SSHKeys.Delete(&sshDeleteRequest)
+	c.SSHKey.Delete(&sshDeleteRequest)
 }
 
 func deleteServer(c *cherrygo.Client, serverID string) {
