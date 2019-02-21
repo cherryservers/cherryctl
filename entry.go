@@ -113,7 +113,7 @@ func main() {
 		Short: "List servers",
 		Long:  "List servers for specified project",
 		Run: func(cmd *cobra.Command, args []string) {
-			projectID, _ := cmd.Flags().GetInt("project-id")
+			projectID, _ := cmd.Flags().GetString("project-id")
 			listServers(c, projectID)
 		},
 	}
@@ -123,7 +123,7 @@ func main() {
 		Short: "List specific server",
 		Long:  "List specific server",
 		Run: func(cmd *cobra.Command, args []string) {
-			serverID, _ := cmd.Flags().GetInt("server-id")
+			serverID, _ := cmd.Flags().GetString("server-id")
 			listServer(c, serverID)
 		},
 	}
@@ -169,12 +169,12 @@ func main() {
 		Long:  "Orders new server",
 		Run: func(cmd *cobra.Command, args []string) {
 
-			projectID, _ := cmd.Flags().GetInt("project-id")
+			projectID, _ := cmd.Flags().GetString("project-id")
 			hostname, _ := cmd.Flags().GetString("hostname")
 			ipAddresses, _ := cmd.Flags().GetStringSlice("ip-addresses")
 			sshKeys, _ := cmd.Flags().GetIntSlice("ssh-keys")
 			image, _ := cmd.Flags().GetString("image")
-			planID, _ := cmd.Flags().GetInt("plan-id")
+			planID, _ := cmd.Flags().GetString("plan-id")
 			region, _ := cmd.Flags().GetString("region")
 			addServer(c, projectID, hostname, ipAddresses, sshKeys, image, planID, region)
 		},
@@ -302,10 +302,10 @@ func main() {
 	cmdListProjects.Flags().IntP("team-id", "t", 0, "Provide team-id")
 	cmdListProjects.MarkFlagRequired("team-id")
 
-	cmdListServers.Flags().IntP("project-id", "p", 0, "Provide project-id")
+	cmdListServers.Flags().StringP("project-id", "p", "", "Provide project-id")
 	cmdListServers.MarkFlagRequired("project-id")
 
-	cmdListServer.Flags().IntP("server-id", "s", 0, "Provide server-id")
+	cmdListServer.Flags().StringP("server-id", "s", "", "Provide server-id")
 	cmdListServer.MarkFlagRequired("server-id")
 
 	cmdListSSHKey.Flags().StringP("key-id", "k", "", "Provide key-id")
@@ -323,7 +323,7 @@ func main() {
 	cmdAdd.AddCommand(cmdAddIPAddress, cmdAddSSHKey, cmdAddServer)
 
 	// Add new ip address section
-	cmdAddIPAddress.Flags().IntP("project-id", "p", 0, "Provide project-id")
+	cmdAddIPAddress.Flags().StringP("project-id", "p", "", "Provide project-id")
 	cmdAddIPAddress.Flags().StringP("a-record", "a", "a-record.example.com", "Provide a-record")
 	cmdAddIPAddress.Flags().StringP("ptr-record", "r", "ptr-record.examples.com", "Provide ptr-record")
 	cmdAddIPAddress.Flags().StringP("region", "g", "EU-East-1", "Provide region")
@@ -335,11 +335,11 @@ func main() {
 	cmdAddSSHKey.Flags().StringP("key-path", "f", "", "Provide path to ssh key")
 
 	// Add new server section
-	cmdAddServer.Flags().IntP("project-id", "p", 0, "Provide project-id")
+	cmdAddServer.Flags().StringP("project-id", "p", "", "Provide project-id")
 	cmdAddServer.Flags().StringP("hostname", "s", "server-name.examples.com", "Provide hostname")
 	cmdAddServer.Flags().StringP("region", "g", "EU-East-1", "Provide region")
 	cmdAddServer.Flags().StringP("image", "i", "", "Provide image")
-	cmdAddServer.Flags().IntP("plan-id", "l", 0, "Provide plan-id")
+	cmdAddServer.Flags().StringP("plan-id", "l", "", "Provide plan-id")
 	var aa []int
 	var zz []string
 	cmdAddServer.Flags().IntSliceP("ssh-keys", "k", aa, "Provide ssh-keys")
@@ -374,7 +374,7 @@ func main() {
 
 	// Update IP address section
 	cmdUpdateIPAddress.Flags().StringP("ip-id", "i", "", "Provide ip id for update")
-	cmdUpdateIPAddress.Flags().IntP("project-id", "p", 0, "Provide project-id")
+	cmdUpdateIPAddress.Flags().StringP("project-id", "p", "", "Provide project-id")
 	cmdUpdateIPAddress.Flags().StringP("a-record", "a", "a-record.example.com", "Provide a-record")
 	cmdUpdateIPAddress.Flags().StringP("ptr-record", "r", "ptr-record.examples.com", "Provide ptr-record")
 	cmdUpdateIPAddress.Flags().StringP("routed-to", "t", "", "Provide ipaddress_id to route to")
@@ -421,7 +421,7 @@ func addIPAddress(c *cherrygo.Client, projectID, aRecord, ptrRecord, routedTo, r
 	tw.Flush()
 }
 
-func addServer(c *cherrygo.Client, projectID int, hostname string, ipaddresses []string, sshKeys []int, image string, planID int, region string) {
+func addServer(c *cherrygo.Client, projectID string, hostname string, ipaddresses []string, sshKeys []int, image string, planID string, region string) {
 
 	addServerRequest := cherrygo.CreateServer{
 		ProjectID:   projectID,
@@ -447,7 +447,7 @@ func addServer(c *cherrygo.Client, projectID int, hostname string, ipaddresses [
 	tw.Flush()
 }
 
-func listServers(c *cherrygo.Client, projectID int) {
+func listServers(c *cherrygo.Client, projectID string) {
 
 	// Needs project id to be passed
 	servers, _, err := c.Servers.List(projectID)
@@ -480,7 +480,7 @@ func listServers(c *cherrygo.Client, projectID int) {
 
 }
 
-func listServer(c *cherrygo.Client, serverID int) {
+func listServer(c *cherrygo.Client, serverID string) {
 
 	server, _, err := c.Server.List(serverID)
 	if err != nil {
