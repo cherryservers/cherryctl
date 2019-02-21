@@ -133,7 +133,7 @@ func main() {
 		Short: "List ip addresses",
 		Long:  "List ip addresses",
 		Run: func(cmd *cobra.Command, args []string) {
-			projectID, _ := cmd.Flags().GetInt("project-id")
+			projectID, _ := cmd.Flags().GetString("project-id")
 			listIPAddresses(c, projectID)
 		},
 	}
@@ -143,7 +143,7 @@ func main() {
 		Short: "List specific ip address",
 		Long:  "List specific ip address",
 		Run: func(cmd *cobra.Command, args []string) {
-			projectID, _ := cmd.Flags().GetInt("project-id")
+			projectID, _ := cmd.Flags().GetString("project-id")
 			ipID, _ := cmd.Flags().GetString("ip-id")
 			listIPAddress(c, projectID, ipID)
 		},
@@ -154,7 +154,7 @@ func main() {
 		Short: "Orders new floating IP address",
 		Long:  "Orders new floating IP address",
 		Run: func(cmd *cobra.Command, args []string) {
-			projectID, _ := cmd.Flags().GetInt("project-id")
+			projectID, _ := cmd.Flags().GetString("project-id")
 			aRecord, _ := cmd.Flags().GetString("a-record")
 			ptrRecord, _ := cmd.Flags().GetString("ptr-record")
 			routedTo, _ := cmd.Flags().GetString("routed-to")
@@ -221,7 +221,7 @@ func main() {
 		Long:  "Removes specified ip address",
 		Run: func(cmd *cobra.Command, args []string) {
 
-			projectID, _ := cmd.Flags().GetInt("project-id")
+			projectID, _ := cmd.Flags().GetString("project-id")
 			ipID, _ := cmd.Flags().GetString("ip-id")
 			deleteIPAddress(c, projectID, ipID)
 		},
@@ -246,7 +246,7 @@ func main() {
 		Run: func(cmd *cobra.Command, args []string) {
 
 			ipID, _ := cmd.Flags().GetString("ip-id")
-			projectID, _ := cmd.Flags().GetInt("project-id")
+			projectID, _ := cmd.Flags().GetString("project-id")
 			aRecord, _ := cmd.Flags().GetString("a-record")
 			ptrRecord, _ := cmd.Flags().GetString("ptr-record")
 			routedTo, _ := cmd.Flags().GetString("routed-to")
@@ -311,10 +311,10 @@ func main() {
 	cmdListSSHKey.Flags().StringP("key-id", "k", "", "Provide key-id")
 	cmdListSSHKey.MarkFlagRequired("key-id")
 
-	cmdListIPAddresses.Flags().IntP("project-id", "p", 0, "Provide project-id")
+	cmdListIPAddresses.Flags().StringP("project-id", "p", "", "Provide project-id")
 	cmdListIPAddresses.MarkFlagRequired("project-id")
 
-	cmdListIPAddress.Flags().IntP("project-id", "p", 0, "Provide project-id")
+	cmdListIPAddress.Flags().StringP("project-id", "p", "", "Provide project-id")
 	cmdListIPAddress.Flags().StringP("ip-id", "i", "", "Provide ip-id")
 	cmdListIPAddress.MarkFlagRequired("project-id")
 	cmdListIPAddress.MarkFlagRequired("ip-id")
@@ -398,7 +398,7 @@ func main() {
 
 }
 
-func addIPAddress(c *cherrygo.Client, projectID int, aRecord, ptrRecord, routedTo, region string) {
+func addIPAddress(c *cherrygo.Client, projectID, aRecord, ptrRecord, routedTo, region string) {
 
 	addIPRequest := cherrygo.CreateIPAddress{
 		ARecord:   aRecord,
@@ -597,7 +597,7 @@ func updateSSHKey(c *cherrygo.Client, keyID, keyLabel string) {
 	tw.Flush()
 }
 
-func updateIPAddress(c *cherrygo.Client, ptrRecord, aRecord, routedTo, assignedTo, ipID string, projectID int) {
+func updateIPAddress(c *cherrygo.Client, ptrRecord, aRecord, routedTo, assignedTo, ipID, projectID string) {
 
 	updateIPRequest := cherrygo.UpdateIPAddress{
 		PtrRecord:  ptrRecord,
@@ -634,7 +634,7 @@ func deleteServer(c *cherrygo.Client, serverID string) {
 	c.Server.Delete(&serverDeleteRequest)
 }
 
-func deleteIPAddress(c *cherrygo.Client, projectID int, ipID string) {
+func deleteIPAddress(c *cherrygo.Client, projectID, ipID string) {
 
 	log.Println("DELETE IP ADDRESS")
 	ipDeleteRequest := cherrygo.RemoveIPAddress{ID: ipID}
@@ -799,7 +799,7 @@ func rebootServer(c *cherrygo.Client, serverID string) {
 	tw.Flush()
 }
 
-func listIPAddresses(c *cherrygo.Client, projectID int) {
+func listIPAddresses(c *cherrygo.Client, projectID string) {
 
 	ips, _, err := c.IPAddresses.List(projectID)
 	if err != nil {
@@ -817,7 +817,7 @@ func listIPAddresses(c *cherrygo.Client, projectID int) {
 	tw.Flush()
 }
 
-func listIPAddress(c *cherrygo.Client, projectID int, ipID string) {
+func listIPAddress(c *cherrygo.Client, projectID, ipID string) {
 
 	ipp, _, err := c.IPAddress.List(projectID, ipID)
 	if err != nil {
