@@ -172,7 +172,7 @@ func main() {
 			projectID, _ := cmd.Flags().GetString("project-id")
 			hostname, _ := cmd.Flags().GetString("hostname")
 			ipAddresses, _ := cmd.Flags().GetStringSlice("ip-addresses")
-			sshKeys, _ := cmd.Flags().GetIntSlice("ssh-keys")
+			sshKeys, _ := cmd.Flags().GetStringSlice("ssh-keys")
 			image, _ := cmd.Flags().GetString("image")
 			planID, _ := cmd.Flags().GetString("plan-id")
 			region, _ := cmd.Flags().GetString("region")
@@ -340,9 +340,9 @@ func main() {
 	cmdAddServer.Flags().StringP("region", "g", "EU-East-1", "Provide region")
 	cmdAddServer.Flags().StringP("image", "i", "", "Provide image")
 	cmdAddServer.Flags().StringP("plan-id", "l", "", "Provide plan-id")
-	var aa []int
+	var aa []string
 	var zz []string
-	cmdAddServer.Flags().IntSliceP("ssh-keys", "k", aa, "Provide ssh-keys")
+	cmdAddServer.Flags().StringSliceP("ssh-keys", "k", aa, "Provide ssh-keys")
 	cmdAddServer.Flags().StringSliceP("ip-addresses", "d", zz, "Provide image")
 
 	// Required flags for creating a new server
@@ -421,7 +421,7 @@ func addIPAddress(c *cherrygo.Client, projectID, aRecord, ptrRecord, routedTo, r
 	tw.Flush()
 }
 
-func addServer(c *cherrygo.Client, projectID string, hostname string, ipaddresses []string, sshKeys []int, image string, planID string, region string) {
+func addServer(c *cherrygo.Client, projectID string, hostname string, ipaddresses []string, sshKeys []string, image string, planID string, region string) {
 
 	addServerRequest := cherrygo.CreateServer{
 		ProjectID:   projectID,
