@@ -493,12 +493,17 @@ func listServer(c *cherrygo.Client, serverID string) {
 	}
 
 	tw := tabwriter.NewWriter(os.Stdout, 13, 8, 2, '\t', 0)
-	fmt.Fprintf(tw, "\n---------\t----\t--------\t-----\t---\t----------\t-----\n")
-	fmt.Fprintf(tw, "Server ID\tName\tHostname\tImage\tPrice\tIP address\tPower\n")
-	fmt.Fprintf(tw, "---------\t----\t--------\t-----\t---\t----------\t-----\n")
-	for _, i := range server.IPAddresses {
-		fmt.Fprintf(tw, "%v\t%v\t%v\t%v\t%v\t%v\t%v\n",
-			server.ID, server.Name, server.Hostname, server.Image, server.Pricing.Price, i.Address, srvPower.Power)
+	fmt.Fprintf(tw, "\n---------\t----\t--------\t-----\t---\t----------\t-----\t-----\n")
+	fmt.Fprintf(tw, "Server ID\tName\tHostname\tImage\tPrice\tIP address\tPower\tState\n")
+	fmt.Fprintf(tw, "---------\t----\t--------\t-----\t---\t----------\t-----\t-----\n")
+	if len(server.IPAddresses) > 0 {
+		for _, i := range server.IPAddresses {
+			fmt.Fprintf(tw, "%v\t%v\t%v\t%v\t%v\t%v\t%v\t%v\n",
+				server.ID, server.Name, server.Hostname, server.Image, server.Pricing.Price, i.Address, srvPower.Power, server.State)
+		}
+	} else {
+		fmt.Fprintf(tw, "%v\t%v\t%v\t%v\t%v\t%v\t%v\t%v\n",
+			server.ID, server.Name, server.Hostname, server.Image, server.Pricing.Price, nil, srvPower.Power, server.State)
 	}
 
 	fmt.Fprintf(tw, "---------\t----\t--------\t-----\t---\t----------\t-----\n")
