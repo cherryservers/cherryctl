@@ -456,26 +456,26 @@ func listServers(c *cherrygo.Client, projectID string) {
 	}
 
 	tw := tabwriter.NewWriter(os.Stdout, 13, 8, 2, '\t', 0)
-	fmt.Fprintf(tw, "\n---------\t----\t--------\t-----\t---\t----------\t--------\t------\t-----\n")
-	fmt.Fprintf(tw, "Server ID\tName\tHostname\tImage\tCPU\tIP address\tSSH keys\tRegion\tState\n")
-	fmt.Fprintf(tw, "---------\t----\t--------\t-----\t---\t----------\t--------\t------\t-----\n")
+	fmt.Fprintf(tw, "\n---------\t----\t--------\t-----\t---\t----\t----------\t--------\t------\t-----\n")
+	fmt.Fprintf(tw, "Server ID\tName\tHostname\tImage\tCPU2\tUnit\tIP address\tSSH keys\tRegion\tState\n")
+	fmt.Fprintf(tw, "---------\t----\t--------\t-----\t---\t----\t----------\t--------\t------\t-----\n")
 
 	for _, srv := range servers {
 
 		for _, i := range srv.IPAddresses {
 			if len(srv.SSHKeys) == 0 {
-				fmt.Fprintf(tw, "%v\t%v\t%v\t%v\t%v\t%v\t%v\t%v\t%v\n",
-					srv.ID, srv.Name, srv.Hostname, srv.Image, srv.Plans.Specs.Cpus.Frequency, i.Address, nil, srv.Region.Name, srv.State)
+				fmt.Fprintf(tw, "%v\t%v\t%v\t%v\t%v\t%v\t%v\t%v\t%v\t%v\n",
+					srv.ID, srv.Name, srv.Hostname, srv.Image, srv.Plans.Specs.Cpus.Frequency, srv.Plans.Specs.Cpus.Unit, i.Address, nil, srv.Region.Name, srv.State)
 			} else {
 				for _, k := range srv.SSHKeys {
-					fmt.Fprintf(tw, "%v\t%v\t%v\t%v\t%v\t%v\t%v\t%v\t%v\n",
-						srv.ID, srv.Name, srv.Hostname, srv.Image, srv.Plans.Specs.Cpus.Frequency, i.Address, k.Href, srv.Region.Name, srv.State)
+					fmt.Fprintf(tw, "%v\t%v\t%v\t%v\t%v\t%v\t%v\t%v\t%v\t%v\n",
+						srv.ID, srv.Name, srv.Hostname, srv.Image, srv.Plans.Specs.Cpus.Frequency, srv.Plans.Specs.Cpus.Unit, i.Address, k.Href, srv.Region.Name, srv.State)
 				}
 			}
 
 		}
 	}
-	fmt.Fprintf(tw, "---------\t----\t--------\t-----\t---\t----------\t--------\t------\t-----\n")
+	fmt.Fprintf(tw, "---------\t----\t--------\t-----\t---\t----\t----------\t--------\t------\t-----\n")
 	tw.Flush()
 
 }
