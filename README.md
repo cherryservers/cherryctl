@@ -118,8 +118,39 @@ Project ID	Project name		Href
 Add objects
 -----------
 
-### Add servers
+### Add SSH keys
 
+Flags:
+```
+Flags:
+  -h, --help               help for ssh-key
+  -l, --key-label string   Provide ssh key label (default "ssh-key-label")
+  -f, --key-path string    Provide path to ssh key
+  -k, --raw-key string     Provide ssh raw key
+```
+
+Add key
+```
+$ cherryctl.darwin add ssh-key \
+    -l linas \
+    -f $KEY_PATH/linas.key
+```
+
+### Add servers
+Flags:
+```
+Flags:
+  -h, --help                   help for server
+  -s, --hostname string        Provide hostname (default "server-name.examples.com")
+  -i, --image string           Provide image
+  -d, --ip-addresses strings   Provide image
+  -l, --plan-id string         Provide plan-id
+  -p, --project-id string      Provide project-id
+  -g, --region string          Provide region (default "EU-East-1")
+  -k, --ssh-keys strings       Provide ssh-keys
+```
+
+Add server
 ```
 $ cherryctl.darwin add server \
     -s server02.aleja.lt \
@@ -130,10 +161,26 @@ $ cherryctl.darwin add server \
     -g EU-East-1
 ```
 
-# Add floating IP addresses
+### Add floating IP addresses
 
 Update objects
 --------------
+
+### Update SSH keys
+Flags:
+```
+Flags:
+  -h, --help               help for ssh-key
+  -k, --key-id string      Provide ssh key id for update
+  -l, --key-label string   Provide new label for key
+```
+
+Update SSH key label
+```
+$ cherryctl.darwin ssh-key \
+    -k 95 \
+    -l marius
+```
 
 ### Update Floating IP addresses
 Flags:
