@@ -33,7 +33,7 @@ func addIPAddress(c *cherrygo.Client, projectID, aRecord, ptrRecord, routedTo, r
 }
 
 func updateIPAddress(c *cherrygo.Client, ptrRecord, aRecord, routedTo,
-	routedToHostname, routedToServerIP, routedToServerID, assignedTo, ipID, projectID string) {
+	routedToHostname, routedToServerIP, routedToServerID, assignedTo, floatingID, floatingIP, projectID string) {
 
 	if routedToHostname != "" || routedToServerIP != "" || routedToServerID != "" {
 		res, err := getIDForServerIP(c, projectID, routedToHostname, routedToServerIP, routedToServerID)
@@ -50,7 +50,15 @@ func updateIPAddress(c *cherrygo.Client, ptrRecord, aRecord, routedTo,
 		AssignedTo: assignedTo,
 	}
 
-	ip, _, err := c.IPAddress.Update(projectID, ipID, &updateIPRequest)
+	if floatingIP != "" || floatingID != "" {
+		flID, err := getIDForFloatingIP(c, projectID, floatingIP, floatingID)
+		if err != nil {
+			log.Fatalf("Error: %v", err)
+		}
+		floatingID = flID
+	}
+
+	ip, _, err := c.IPAddress.Update(projectID, floatingID, &updateIPRequest)
 	if err != nil {
 		log.Fatalf("Error while updating floating IP address: %v", err)
 	}
@@ -76,7 +84,7 @@ func listIPAddresses(c *cherrygo.Client, projectID string) {
 
 	ips, _, err := c.IPAddresses.List(projectID)
 	if err != nil {
-		log.Fatal("Error", err)
+		log.Fatalf("Error while listing IP addresses: %v", err)
 	}
 
 	tw := tabwriter.NewWriter(os.Stdout, 13, 8, 2, '\t', 0)
@@ -106,6 +114,39 @@ func listIPAddress(c *cherrygo.Client, projectID, ipID string) {
 
 	fmt.Fprintf(tw, "-----\t-------\t----\t---\t---------\t----\n")
 	tw.Flush()
+}
+
+func getIDForFloatingIP(c *cherrygo.Client, projectID, floatingIP, floatingID string) (string, error) {
+
+	var flID string
+
+	ips, _, err := c.IPAddresses.List(projectID)
+	if err != nil {
+		err = fmt.Errorf("something went wrong while listing IP addresses - %v", err)
+	}
+
+	for _, ip := range ips {
+		switch {
+		case floatingIP != "":
+			if ip.Address == floatingIP {
+				flID = ip.ID
+			}
+		case floatingID != "":
+			if ip.ID == floatingID {
+				flID = ip.ID
+			}
+		}
+	}
+
+	if floatingIP == "" && flID == "" {
+		err = fmt.Errorf("it seems there is no such floating ID - %v", floatingID)
+	}
+
+	if floatingID == "" && flID == "" {
+		err = fmt.Errorf("it seems there is no such floating IP - %v", floatingIP)
+	}
+
+	return flID, err
 }
 
 func getIDForServerIP(c *cherrygo.Client, projectID, routedToHostname, routedToServerIP, routedToServerID string) (string, error) {

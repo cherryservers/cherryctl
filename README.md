@@ -117,6 +117,10 @@ Project ID	Project name		Href
 
 Add objects
 -----------
+
+### Add servers
+
+```
 $ cherryctl.darwin add server \
     -s server02.aleja.lt \
     -i 'Ubuntu 16.04 64bit' \
@@ -124,10 +128,31 @@ $ cherryctl.darwin add server \
     -p 79813 \
     -k 95 \
     -g EU-East-1
+```
+
+# Add floating IP addresses
 
 Update objects
 --------------
-Route floating IP address to server`s hostname
+
+### Update Floating IP addresses
+Flags:
+
+```
+Flags:
+  -a, --a-record string              Provide a-record (default "a-record.example.com")
+  -i, --floating-id string           Provide floating ip id for update
+  -f, --floating-ip string           Provide floating ip for update
+  -h, --help                         help for ip-address
+  -p, --project-id string            Provide project-id
+  -r, --ptr-record string            Provide ptr-record (default "ptr-record.examples.com")
+  -t, --routed-to string             Provide ipaddress_id to route to
+  -n, --routed-to-hostname string    Provide hostname of the server to route to
+  -d, --routed-to-server-id string   Provide id of the server to route to
+  -s, --routed-to-server-ip string   Provide primary ip of the server to route to
+```
+
+Route floating IP address (by floating IP ID) to server`s hostname
 ```
 $ cherryctl.darwin update ip-address \
     -p 79813 \
@@ -137,7 +162,7 @@ $ cherryctl.darwin update ip-address \
     -n server02.aleja.lt
 ```
 
-Route floating IP address to server`s ID
+Route floating IP address (by floating IP ID) to server`s ID
 ```
 $ cherryctl.darwin update ip-address \
     -p 79813 \
@@ -147,7 +172,7 @@ $ cherryctl.darwin update ip-address \
     -d 175821
 ```
 
-Route floating IP address to server`s IP
+Route floating IP address (by floating IP ID) to server`s IP
 ```
 $ cherryctl.darwin update ip-address \
     -p 79813 \
@@ -156,6 +181,17 @@ $ cherryctl.darwin update ip-address \
     -r bla3.testas.lt. \
     -s 188.214.132.41
 ```
+
+Route floating IP address to server`s IP
+```
+$ cherryctl.darwin update ip-address \
+    -p 79813
+    -f 5.199.171.104 \
+    -a bla3.testas.lt. \
+    -r bla3.testas.lt. \
+    -s 188.214.132.41
+```
+
 
 Remove objects
 --------------

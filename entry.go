@@ -244,7 +244,8 @@ func main() {
 		Long:  "Updates specified ip address",
 		Run: func(cmd *cobra.Command, args []string) {
 
-			ipID, _ := cmd.Flags().GetString("ip-id")
+			floatingID, _ := cmd.Flags().GetString("floating-id")
+			floatingIP, _ := cmd.Flags().GetString("floating-ip")
 			projectID, _ := cmd.Flags().GetString("project-id")
 			aRecord, _ := cmd.Flags().GetString("a-record")
 			ptrRecord, _ := cmd.Flags().GetString("ptr-record")
@@ -253,7 +254,9 @@ func main() {
 			routedToHostname, _ := cmd.Flags().GetString("routed-to-hostname")
 			routedToServerIP, _ := cmd.Flags().GetString("routed-to-server-ip")
 			routedToServerID, _ := cmd.Flags().GetString("routed-to-server-id")
-			updateIPAddress(c, ptrRecord, aRecord, routedTo, routedToHostname, routedToServerIP, routedToServerID, assignedTo, ipID, projectID)
+			updateIPAddress(c, ptrRecord, aRecord,
+				routedTo, routedToHostname, routedToServerIP, routedToServerID,
+				assignedTo, floatingID, floatingIP, projectID)
 		},
 	}
 
@@ -375,7 +378,8 @@ func main() {
 	cmdUpdateSSHKey.Flags().StringP("key-label", "l", "", "Provide new label for key")
 
 	// Update IP address section
-	cmdUpdateIPAddress.Flags().StringP("ip-id", "i", "", "Provide ip id for update")
+	cmdUpdateIPAddress.Flags().StringP("floating-id", "i", "", "Provide floating ip id for update")
+	cmdUpdateIPAddress.Flags().StringP("floating-ip", "f", "", "Provide floating ip for update")
 	cmdUpdateIPAddress.Flags().StringP("project-id", "p", "", "Provide project-id")
 	cmdUpdateIPAddress.Flags().StringP("a-record", "a", "a-record.example.com", "Provide a-record")
 	cmdUpdateIPAddress.Flags().StringP("ptr-record", "r", "ptr-record.examples.com", "Provide ptr-record")
