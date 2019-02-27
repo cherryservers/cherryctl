@@ -109,7 +109,29 @@ API Endpoint: https://api.cherryservers.com/v1/teams/28519/projects
 ----------	------------		----
 Project ID	Project name		Href
 ----------	------------		----
-79811		My Project		/projects/79811
+79811		My Project		    /projects/79811
 79813		For NL ACL testing	/projects/79813
 ----------	------------		----
 ```
+
+
+Add objects
+-----------
+
+
+Update objects
+--------------
+```
+go run entry.go update ip-address \ 
+    -p 79813 \ 
+    -i ac5cdaa7-2fda-6b1b-6711-8154b3ce2d8c  \
+    -a bla3.testas.lt. \ 
+    -r bla3.testas.lt. \ 
+    -t 1e62399c-bf43-f130-bcc6-07620e2747c2
+
+```
+
+
+
+Remove objects
+--------------
