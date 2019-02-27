@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strconv"
 	"text/tabwriter"
 )
 
@@ -31,7 +32,16 @@ func addIPAddress(c *cherrygo.Client, projectID, aRecord, ptrRecord, routedTo, r
 	tw.Flush()
 }
 
-func updateIPAddress(c *cherrygo.Client, ptrRecord, aRecord, routedTo, assignedTo, ipID, projectID string) {
+func updateIPAddress(c *cherrygo.Client, ptrRecord, aRecord, routedTo,
+	routedToHostname, routedToServerIP, routedToServerID, assignedTo, ipID, projectID string) {
+
+	if routedToHostname != "" || routedToServerIP != "" || routedToServerID != "" {
+		res, err := getIDForServerIP(c, projectID, routedToHostname, routedToServerIP, routedToServerID)
+		if err != nil {
+			log.Fatalf("Error: %v", err)
+		}
+		routedTo = res
+	}
 
 	updateIPRequest := cherrygo.UpdateIPAddress{
 		PtrRecord:  ptrRecord,
@@ -96,4 +106,89 @@ func listIPAddress(c *cherrygo.Client, projectID, ipID string) {
 
 	fmt.Fprintf(tw, "-----\t-------\t----\t---\t---------\t----\n")
 	tw.Flush()
+}
+
+func getIDForServerIP(c *cherrygo.Client, projectID, routedToHostname, routedToServerIP, routedToServerID string) (string, error) {
+
+	servers, _, err := c.Servers.List(projectID)
+	if err != nil {
+		log.Fatalf("Error while listing server: %v", err)
+	}
+
+	var routeTo string
+	var item string
+	var sliceOfkeys []string
+
+	myDict := make(map[string]string)
+	uniqDict := make(map[string]string)
+	nonUniqDict := make(map[string]string)
+
+	switch {
+	case routedToHostname != "":
+		item = routedToHostname
+		for _, srv := range servers {
+
+			serverID := strconv.Itoa(srv.ID)
+			if srv.Hostname == routedToHostname {
+				myDict[serverID] = srv.Hostname
+				if len(srv.IPAddresses) > 0 {
+					for _, i := range srv.IPAddresses {
+						if i.Type == "primary-ip" {
+							routeTo = i.ID
+						}
+					}
+				}
+			}
+		}
+	case routedToServerIP != "":
+		item = routedToServerIP
+		for _, srv := range servers {
+			serverID := strconv.Itoa(srv.ID)
+			if len(srv.IPAddresses) > 0 {
+				for _, i := range srv.IPAddresses {
+					if i.Type == "primary-ip" {
+						if i.Address == routedToServerIP {
+							myDict[serverID] = i.Address
+							routeTo = i.ID
+						}
+					}
+				}
+			}
+		}
+	case routedToServerID != "":
+		item = routedToServerID
+		for _, srv := range servers {
+			serverID := strconv.Itoa(srv.ID)
+			if serverID == routedToServerID {
+				myDict[serverID] = serverID
+				if len(srv.IPAddresses) > 0 {
+					for _, i := range srv.IPAddresses {
+						if i.Type == "primary-ip" {
+							routeTo = i.ID
+						}
+					}
+				}
+			}
+		}
+	}
+
+	for k, v := range myDict {
+		if v == item {
+			uniqDict[k] = v
+			sliceOfkeys = append(sliceOfkeys, k)
+		}
+	}
+
+	if len(uniqDict) == 0 {
+		err = fmt.Errorf("it seems item %v can't be found. Please check it and try again", item)
+	}
+
+	if len(sliceOfkeys) > 1 {
+		for _, v := range sliceOfkeys {
+			nonUniqDict[v] = item
+		}
+		err = fmt.Errorf("there are several nodes with same hostname: %v. Please use routed_to_server_id instead", nonUniqDict)
+	}
+
+	return routeTo, err
 }

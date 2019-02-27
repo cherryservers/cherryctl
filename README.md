@@ -117,21 +117,45 @@ Project ID	Project name		Href
 
 Add objects
 -----------
-
+$ cherryctl.darwin add server \
+    -s server02.aleja.lt \
+    -i 'Ubuntu 16.04 64bit' \
+    -l 161 \
+    -p 79813 \
+    -k 95 \
+    -g EU-East-1
 
 Update objects
 --------------
+Route floating IP address to server`s hostname
 ```
-go run entry.go update ip-address \ 
-    -p 79813 \ 
-    -i ac5cdaa7-2fda-6b1b-6711-8154b3ce2d8c  \
-    -a bla3.testas.lt. \ 
-    -r bla3.testas.lt. \ 
-    -t 1e62399c-bf43-f130-bcc6-07620e2747c2
-
+$ cherryctl.darwin update ip-address \
+    -p 79813 \
+    -i 6a17b7ef-5617-2e85-e34e-986bb80fe3a9  \
+    -a bla3.testas.lt. \
+    -r bla3.testas.lt. \
+    -n server02.aleja.lt
 ```
 
+Route floating IP address to server`s ID
+```
+$ cherryctl.darwin update ip-address \
+    -p 79813 \
+    -i 6a17b7ef-5617-2e85-e34e-986bb80fe3a9  \
+    -a bla3.testas.lt. \
+    -r bla3.testas.lt. \
+    -d 175821
+```
 
+Route floating IP address to server`s IP
+```
+$ cherryctl.darwin update ip-address \
+    -p 79813 \
+    -i 6a17b7ef-5617-2e85-e34e-986bb80fe3a9  \
+    -a bla3.testas.lt. \
+    -r bla3.testas.lt. \
+    -s 188.214.132.41
+```
 
 Remove objects
 --------------
