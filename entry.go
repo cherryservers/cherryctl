@@ -250,7 +250,10 @@ func main() {
 			ptrRecord, _ := cmd.Flags().GetString("ptr-record")
 			routedTo, _ := cmd.Flags().GetString("routed-to")
 			assignedTo, _ := cmd.Flags().GetString("assigned-to")
-			updateIPAddress(c, ptrRecord, aRecord, routedTo, assignedTo, ipID, projectID)
+			routedToHostname, _ := cmd.Flags().GetString("routed-to-hostname")
+			routedToServerIP, _ := cmd.Flags().GetString("routed-to-server-ip")
+			routedToServerID, _ := cmd.Flags().GetString("routed-to-server-id")
+			updateIPAddress(c, ptrRecord, aRecord, routedTo, routedToHostname, routedToServerIP, routedToServerID, assignedTo, ipID, projectID)
 		},
 	}
 
@@ -377,6 +380,9 @@ func main() {
 	cmdUpdateIPAddress.Flags().StringP("a-record", "a", "a-record.example.com", "Provide a-record")
 	cmdUpdateIPAddress.Flags().StringP("ptr-record", "r", "ptr-record.examples.com", "Provide ptr-record")
 	cmdUpdateIPAddress.Flags().StringP("routed-to", "t", "", "Provide ipaddress_id to route to")
+	cmdUpdateIPAddress.Flags().StringP("routed-to-hostname", "n", "", "Provide hostname of the server to route to")
+	cmdUpdateIPAddress.Flags().StringP("routed-to-server-ip", "s", "", "Provide primary ip of the server to route to")
+	cmdUpdateIPAddress.Flags().StringP("routed-to-server-id", "d", "", "Provide id of the server to route to")
 
 	// Required flags for updating IP address
 	cmdUpdateIPAddress.MarkFlagRequired("ip-id")
