@@ -254,6 +254,12 @@ func main() {
 			routedToHostname, _ := cmd.Flags().GetString("routed-to-hostname")
 			routedToServerIP, _ := cmd.Flags().GetString("routed-to-server-ip")
 			routedToServerID, _ := cmd.Flags().GetString("routed-to-server-id")
+
+			err := validateArgs(cmd, "cmdUpdateIPAddress")
+			if err != nil {
+				log.Fatalf("Error: %v", err)
+			}
+
 			updateIPAddress(c, ptrRecord, aRecord,
 				routedTo, routedToHostname, routedToServerIP, routedToServerID,
 				assignedTo, floatingID, floatingIP, projectID)
@@ -512,4 +518,43 @@ func printDebugInfo(c *cherrygo.Client) {
 	log.Println(c.BaseURL)
 	log.Println(c.UserAgent)
 
+}
+
+func validateArgs(cmd *cobra.Command, command string) error {
+
+	switch {
+	case command == "cmdUpdateIPAddress":
+
+		routedTo, _ := cmd.Flags().GetString("routed-to")
+		routedToHostname, _ := cmd.Flags().GetString("routed-to-hostname")
+		routedToServerIP, _ := cmd.Flags().GetString("routed-to-server-ip")
+		routedToServerID, _ := cmd.Flags().GetString("routed-to-server-id")
+
+		switch {
+		case len(routedTo) > 0:
+			if len(routedToHostname) > 0 {
+				return fmt.Errorf("--routed-to and --routed-to-hostname are mutually exclusive")
+			}
+			if len(routedToServerID) > 0 {
+				return fmt.Errorf("--routed-to and --routed-to-server-id are mutually exclusive")
+			}
+			if len(routedToServerIP) > 0 {
+				return fmt.Errorf("--routed-to and --routed-to-server-ip are mutually exclusive")
+			}
+		case len(routedToHostname) > 0:
+			if len(routedToServerID) > 0 {
+				return fmt.Errorf("--routed-to-hostname and --routed-to-server-id are mutually exclusive")
+			}
+			if len(routedToServerIP) > 0 {
+				return fmt.Errorf("--routed-to-hostname and --routed-to-server-ip are mutually exclusive")
+			}
+		case len(routedToServerIP) > 0:
+			if len(routedToServerID) > 0 {
+				return fmt.Errorf("--routed-to-server-ip and --routed-to-server-id are mutually exclusive")
+			}
+		}
+
+	}
+
+	return nil
 }
