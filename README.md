@@ -121,26 +121,26 @@ $ cherryctl.darwin list plans -t 28519
 API Endpoint: https://api.cherryservers.com/v1/teams/28519/plans
 
 -------		-------------	----------	-------------	---		-------		---
-Plan ID		Plan name	Plan price	CPU		RAM		Regions		Qty
+Plan ID		Plan name	    Plan price	CPU		        RAM		Regions		Qty
 -------		-------------	----------	-------------	---		-------		---
-59		Smart8		0.1089		E3-1240		8		EU-East-1	34
-93		SSD Smart8	0.1089		X5650		8		EU-East-1	4
-94		SSD Smart16	0.121		X5650		16		EU-East-1	26
-92		Smart16		0.121		E3-1240		16		EU-East-1	36
-90		Quad Smart	0.1331		56xx		16		EU-East-1	30
-165		Hexa Smart	0.1573		E5645		24		EU-East-1	11
-86		E3-1240v3	0.242		E3-1240v3	16		EU-East-1	43
-113		E3-1240v5	0.2662		E3-1240v5	32		EU-East-1	47
-109		E5-1660v3	0.3993		E5-1660v3	64		EU-East-1	1
-126		2x E5-2620v4	0.6897		2x E5-2620v4	128		EU-East-1	11
-96		2x E5-2620v2	0.7139		2x E5-2620v2	128		EU-East-1	1
-144		2x E5-2630Lv4	0.7381		2x E5-2630Lv4	128		EU-East-1	8
-107		2x E5-2630v3	0.7986		2x E5-2630v3	128		EU-East-1	5
-98		2x E5-2650v2	0.8712		2x E5-2650v2	128		EU-East-1	1
-122		2x E5-2650v4	0.9317		2x E5-2650v4	128		EU-East-1	2
-147		2x E5-2697v2	1.0285		2x E5-2697v2	384		EU-East-1	13
-117		2x E5-2670v3	1.0527		2x E5-2670v3	128		EU-East-1	4
-108		2x E5-2680v4	1.1132		2x E5-2680v4	128		EU-East-1	1
+59		    Smart8		    0.1089		  E3-1240		    8		  EU-East-1	34
+93		    SSD Smart8	  0.1089		  X5650		      8		  EU-East-1	4
+94		    SSD Smart16	  0.121		    X5650		      16		EU-East-1	26
+92		    Smart16		    0.121		    E3-1240		    16		EU-East-1	36
+90		    Quad Smart	  0.1331		  56xx		      16		EU-East-1	30
+165		    Hexa Smart	  0.1573		  E5645		      24		EU-East-1	11
+86		    E3-1240v3	    0.242		    E3-1240v3	    16		EU-East-1	43
+113		    E3-1240v5	    0.2662		  E3-1240v5	    32		EU-East-1	47
+109		    E5-1660v3	    0.3993		  E5-1660v3	    64		EU-East-1	1
+126		    2x E5-2620v4	0.6897		  2x E5-2620v4	128		EU-East-1	11
+96		    2x E5-2620v2	0.7139		  2x E5-2620v2	128		EU-East-1	1
+144		    2x E5-2630Lv4	0.7381		  2x E5-2630Lv4	128		EU-East-1	8
+107		    2x E5-2630v3	0.7986		  2x E5-2630v3	128		EU-East-1	5
+98		    2x E5-2650v2	0.8712		  2x E5-2650v2	128		EU-East-1	1
+122		    2x E5-2650v4	0.9317		  2x E5-2650v4	128		EU-East-1	2
+147		    2x E5-2697v2	1.0285		  2x E5-2697v2	384		EU-East-1	13
+117		    2x E5-2670v3	1.0527		  2x E5-2670v3	128		EU-East-1	4
+108		    2x E5-2680v4	1.1132		  2x E5-2680v4	128		EU-East-1	1
 -------		-------------	----------	-------------	---		-------		---
 ```
 
