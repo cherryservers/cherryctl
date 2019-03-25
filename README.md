@@ -1,4 +1,4 @@
-Cherry Cloud CLI
+cherryctl
 ================
 
 Introduction
