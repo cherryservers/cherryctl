@@ -68,6 +68,16 @@ func main() {
 		},
 	}
 
+	var cmdListProject = &cobra.Command{
+		Use:   "project",
+		Short: "List project",
+		Long:  "List project",
+		Run: func(cmd *cobra.Command, args []string) {
+			projectID, _ := cmd.Flags().GetString("project-id")
+			listProject(c, projectID)
+		},
+	}
+
 	var cmdListImages = &cobra.Command{
 		Use:   "images",
 		Short: "List images",
@@ -191,6 +201,19 @@ func main() {
 		},
 	}
 
+	var cmdAddProject = &cobra.Command{
+		Use:   "project",
+		Short: "Adds new project",
+		Long:  "Adds new project",
+		Run: func(cmd *cobra.Command, args []string) {
+
+			projectName, _ := cmd.Flags().GetString("project-name")
+			teamID, _ := cmd.Flags().GetInt("team-id")
+
+			createProject(c, teamID, projectName)
+		},
+	}
+
 	var cmdRemoveSSHKey = &cobra.Command{
 		Use:   "ssh-key",
 		Short: "Removes specified ssh key",
@@ -222,6 +245,17 @@ func main() {
 			projectID, _ := cmd.Flags().GetString("project-id")
 			ipID, _ := cmd.Flags().GetString("ip-id")
 			deleteIPAddress(c, projectID, ipID)
+		},
+	}
+
+	var cmdRemoveProject = &cobra.Command{
+		Use:   "project",
+		Short: "Removes specified project",
+		Long:  "Removes specified project",
+		Run: func(cmd *cobra.Command, args []string) {
+
+			projectID, _ := cmd.Flags().GetString("project-id")
+			deleteProject(c, projectID)
 		},
 	}
 
@@ -265,6 +299,18 @@ func main() {
 		},
 	}
 
+	var cmdUpdateProject = &cobra.Command{
+		Use:   "project",
+		Short: "Updates specified project",
+		Long:  "Updates specified project",
+		Run: func(cmd *cobra.Command, args []string) {
+
+			projectID, _ := cmd.Flags().GetString("project-id")
+			projectName, _ := cmd.Flags().GetString("project-name")
+			updateProject(c, projectID, projectName)
+		},
+	}
+
 	var cmdPowerOnServer = &cobra.Command{
 		Use:   "on",
 		Short: "Powers server ON",
@@ -301,7 +347,7 @@ func main() {
 	var rootCmd = &cobra.Command{Use: "cherry-cloud-cli"}
 	rootCmd.AddCommand(cmdList, cmdAdd, cmdRemove, cmdUpdate, cmdPower)
 
-	cmdList.AddCommand(cmdListTeams, cmdListPlans, cmdListProjects, cmdListImages, cmdListSSHKeys, cmdListSSHKey, cmdListServers, cmdListServer, cmdListIPAddresses, cmdListIPAddress)
+	cmdList.AddCommand(cmdListTeams, cmdListPlans, cmdListProjects, cmdListImages, cmdListSSHKeys, cmdListSSHKey, cmdListServers, cmdListServer, cmdListIPAddresses, cmdListIPAddress, cmdListProject)
 
 	cmdListPlans.Flags().IntP("team-id", "t", 0, "Provide team-id")
 	cmdListPlans.MarkFlagRequired("team-id")
@@ -311,6 +357,9 @@ func main() {
 
 	cmdListProjects.Flags().IntP("team-id", "t", 0, "Provide team-id")
 	cmdListProjects.MarkFlagRequired("team-id")
+
+	cmdListProject.Flags().StringP("project-id", "p", "", "Provide project-id")
+	cmdListProject.MarkFlagRequired("project-id")
 
 	cmdListServers.Flags().StringP("project-id", "p", "", "Provide project-id")
 	cmdListServers.MarkFlagRequired("project-id")
@@ -330,7 +379,7 @@ func main() {
 	cmdListIPAddress.MarkFlagRequired("ip-id")
 
 	// Add section
-	cmdAdd.AddCommand(cmdAddIPAddress, cmdAddSSHKey, cmdAddServer)
+	cmdAdd.AddCommand(cmdAddIPAddress, cmdAddSSHKey, cmdAddServer, cmdAddProject)
 
 	// Add new ip address section
 	cmdAddIPAddress.Flags().StringP("project-id", "p", "", "Provide project-id")
@@ -362,8 +411,15 @@ func main() {
 	cmdAddServer.MarkFlagRequired("plan-id")
 	cmdAddServer.MarkFlagRequired("hostname")
 
+	cmdAddProject.Flags().IntP("team-id", "t", 0, "Provide team-id")
+	cmdAddProject.Flags().StringP("project-name", "p", "", "Provide project-name")
+
+	// Required flags for creating new project
+	cmdAddProject.MarkFlagRequired("team-id")
+	cmdAddProject.MarkFlagRequired("project-name")
+
 	// Remove section
-	cmdRemove.AddCommand(cmdRemoveSSHKey, cmdRemoveIPAddress, cmdRemoveServer)
+	cmdRemove.AddCommand(cmdRemoveSSHKey, cmdRemoveIPAddress, cmdRemoveServer, cmdRemoveProject)
 
 	cmdRemoveSSHKey.Flags().StringP("key-id", "k", "", "Provide ssh key id for removal")
 	cmdRemoveSSHKey.MarkFlagRequired("key-id")
@@ -376,8 +432,11 @@ func main() {
 	cmdRemoveServer.Flags().StringP("server-id", "s", "", "Provide server id for removal")
 	cmdRemoveServer.MarkFlagRequired("server-id")
 
+	cmdRemoveProject.Flags().StringP("project-id", "p", "", "Provide project-id")
+	cmdRemoveProject.MarkFlagRequired("project-id")
+
 	// Update section
-	cmdUpdate.AddCommand(cmdUpdateSSHKey, cmdUpdateIPAddress)
+	cmdUpdate.AddCommand(cmdUpdateSSHKey, cmdUpdateIPAddress, cmdUpdateProject)
 
 	cmdUpdateSSHKey.Flags().StringP("key-id", "k", "", "Provide ssh key id for update")
 	cmdUpdateSSHKey.Flags().StringP("key-label", "l", "", "Provide new label for key")
@@ -396,6 +455,14 @@ func main() {
 	// Required flags for updating IP address
 	cmdUpdateIPAddress.MarkFlagRequired("ip-id")
 	cmdUpdateIPAddress.MarkFlagRequired("project-id")
+
+	// Update Project section
+	cmdUpdateProject.Flags().StringP("project-id", "i", "", "Provide project-id")
+	cmdUpdateProject.Flags().StringP("project-name", "p", "", "Provide project-name")
+
+	// Required flags for updating project
+	cmdUpdateProject.MarkFlagRequired("project-id")
+	cmdUpdateProject.MarkFlagRequired("project-name")
 
 	// Power section
 	cmdPower.AddCommand(cmdPowerOnServer, cmdPowerOffServer, cmdRebootServer)
@@ -486,27 +553,6 @@ func listTeams(c *cherrygo.Client) {
 			t.ID, t.Name, t.Credit.Promo.Remaining, t.Credit.Promo.Usage, t.Credit.Resources.Pricing.Price)
 	}
 	fmt.Fprintf(tw, "-------\t---------\t---------------\t------------\t-------\n")
-	tw.Flush()
-}
-
-func listProjects(c *cherrygo.Client, teamID int) {
-
-	// Needs teams id to be passed
-	projects, _, err := c.Projects.List(teamID)
-	if err != nil {
-		log.Fatal("Error", err)
-	}
-
-	tw := tabwriter.NewWriter(os.Stdout, 13, 8, 2, '\t', 0)
-	fmt.Fprintf(tw, "\n----------\t------------\t----\n")
-	fmt.Fprintf(tw, "Project ID\tProject name\tHref\n")
-	fmt.Fprintf(tw, "----------\t------------\t----\n")
-
-	for _, p := range projects {
-		fmt.Fprintf(tw, "%v\t%v\t%v\n",
-			p.ID, p.Name, p.Href)
-	}
-	fmt.Fprintf(tw, "----------\t------------\t----\n")
 	tw.Flush()
 }
 
