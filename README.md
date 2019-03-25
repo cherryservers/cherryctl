@@ -4,7 +4,7 @@ cherryctl
 Introduction
 ------------
 
-**cherryctl** is an command line tool to manage Cherry Servers services, order new servers, manage floating ips, ssh keys, etc. You may download it from here for specified operating system:
+**cherryctl** is an command line tool to manage Cherry Servers services, order new servers, manage floating ips, ssh keys, etc. You may download it from below for desired operating system:
 
 * Download [cherryctl](http://downloads.cherryservers.com/other/cherryctl/linux/cherryctl) for Linux.
 * Download [cherryctl](http://downloads.cherryservers.com/other/cherryctl/mac/cherryctl) for Mac.
@@ -34,7 +34,7 @@ Usage
 You may get help with __-h__ key passed to the program:
 
 ```
-$ cherryctl.darwin -h
+$ cherryctl -h
 
 Usage:
   cherryctl [command]
@@ -54,7 +54,7 @@ Use "cherryctl [command] --help" for more information about a command.
 ```
 
 ```
-$ cherryctl.darwin list -h
+$ cherryctl list -h
 
 Usage:
   cherryctl list [command]
@@ -85,7 +85,7 @@ List objects
 
 List teams:
 ```
-$ cherryctl.darwin list teams
+$ cherryctl list teams
 ```
 
 ```
@@ -102,7 +102,7 @@ Team ID		Team name		Promo remaining		Promo usage	    Pricing
 List projects:
 
 ```
-$ cherryctl.darwin list projects -t 28519
+$ cherryctl list projects -t 28519
 
 API Endpoint: https://api.cherryservers.com/v1/teams/28519/projects
 
@@ -116,7 +116,7 @@ Project ID	Project name		Href
 
 List plans:
 ```
-$ cherryctl.darwin list plans -t 28519
+$ cherryctl list plans -t 28519
 
 API Endpoint: https://api.cherryservers.com/v1/teams/28519/plans
 
@@ -147,6 +147,23 @@ Plan ID		Plan name	    Plan price	CPU		        RAM		Regions		Qty
 Add objects
 -----------
 
+### Add Project
+
+Flags:
+```
+Flags:
+  -h, --help                  help for project
+  -p, --project-name string   Provide project-name
+  -t, --team-id int           Provide team-id
+```
+
+Add project:
+```
+$ cherryctl add project \
+  -p "Superb Project" \
+  -t 28519
+```
+
 ### Add SSH keys
 
 Flags:
@@ -160,7 +177,7 @@ Flags:
 
 Add key
 ```
-$ cherryctl.darwin add ssh-key \
+$ cherryctl add ssh-key \
     -l linas \
     -f $KEY_PATH/linas.key
 ```
@@ -181,7 +198,7 @@ Flags:
 
 Add server
 ```
-$ cherryctl.darwin add server \
+$ cherryctl add server \
     -s server02.aleja.lt \
     -i 'Ubuntu 16.04 64bit' \
     -l 161 \
@@ -195,6 +212,22 @@ $ cherryctl.darwin add server \
 Update objects
 --------------
 
+### Update project
+Flags:
+```
+Flags:
+  -h, --help                  help for project
+  -i, --project-id string     Provide project-id
+  -p, --project-name string   Provide project-name
+```
+
+Update project name:
+```
+$ cherryctl update project \
+  -p "Superb Project Prod" \
+  -i 83445
+```
+
 ### Update SSH keys
 Flags:
 ```
@@ -206,7 +239,7 @@ Flags:
 
 Update SSH key label
 ```
-$ cherryctl.darwin ssh-key \
+$ cherryctl ssh-key \
     -k 95 \
     -l marius
 ```
@@ -230,7 +263,7 @@ Flags:
 
 Route floating IP address (by floating IP ID) to server`s hostname
 ```
-$ cherryctl.darwin update ip-address \
+$ cherryctl update ip-address \
     -p 79813 \
     -i 6a17b7ef-5617-2e85-e34e-986bb80fe3a9  \
     -a bla3.testas.lt. \
@@ -240,7 +273,7 @@ $ cherryctl.darwin update ip-address \
 
 Route floating IP address (by floating IP ID) to server`s ID
 ```
-$ cherryctl.darwin update ip-address \
+$ cherryctl update ip-address \
     -p 79813 \
     -i 6a17b7ef-5617-2e85-e34e-986bb80fe3a9  \
     -a bla3.testas.lt. \
@@ -250,7 +283,7 @@ $ cherryctl.darwin update ip-address \
 
 Route floating IP address (by floating IP ID) to server`s IP
 ```
-$ cherryctl.darwin update ip-address \
+$ cherryctl update ip-address \
     -p 79813 \
     -i 6a17b7ef-5617-2e85-e34e-986bb80fe3a9  \
     -a bla3.testas.lt. \
@@ -260,7 +293,7 @@ $ cherryctl.darwin update ip-address \
 
 Route floating IP address to server`s IP
 ```
-$ cherryctl.darwin update ip-address \
+$ cherryctl update ip-address \
     -p 79813
     -f 5.199.171.104 \
     -a bla3.testas.lt. \
@@ -271,3 +304,7 @@ $ cherryctl.darwin update ip-address \
 
 Remove objects
 --------------
+
+## License
+
+See the [LICENSE](LICENSE.md) file for license rights and limitations.
