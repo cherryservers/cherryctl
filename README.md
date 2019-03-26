@@ -28,6 +28,12 @@ In order to use this module you will need to export Cherry Servers API token. Yo
 $ export CHERRY_AUTH_TOKEN="2b00042f7481c7b056c4b410d28f33cf"
 ```
 
+On Windows to export variable via PS run this command:
+
+```
+$env:CHERRY_AUTH_TOKEN = "2b00042f7481c7b056c4b410d28f33cf"
+```
+
 Usage
 -----
 
