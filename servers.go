@@ -8,7 +8,7 @@ import (
 	"text/tabwriter"
 )
 
-func addServer(c *cherrygo.Client, projectID string, hostname string, ipaddresses []string, sshKeys []string, image string, planID string, region string) {
+func addServer(c *cherrygo.Client, projectID, hostname string, ipaddresses, sshKeys []string, image, planID, region, userData string) {
 
 	addServerRequest := cherrygo.CreateServer{
 		ProjectID:   projectID,
@@ -18,6 +18,7 @@ func addServer(c *cherrygo.Client, projectID string, hostname string, ipaddresse
 		SSHKeys:     sshKeys,
 		IPAddresses: ipaddresses,
 		PlanID:      planID,
+		UserData:    userData,
 	}
 
 	server, _, err := c.Server.Create(projectID, &addServerRequest)

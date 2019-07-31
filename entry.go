@@ -24,8 +24,8 @@ func main() {
 
 	var cmdAdd = &cobra.Command{
 		Use:   "add",
-		Short: "Ads various objects",
-		Long:  "Ads various objects",
+		Short: "Adds various objects",
+		Long:  "Adds various objects",
 	}
 
 	var cmdRemove = &cobra.Command{
@@ -182,7 +182,8 @@ func main() {
 			image, _ := cmd.Flags().GetString("image")
 			planID, _ := cmd.Flags().GetString("plan-id")
 			region, _ := cmd.Flags().GetString("region")
-			addServer(c, projectID, hostname, ipAddresses, sshKeys, image, planID, region)
+			userData, _ := cmd.Flags().GetString("user-data")
+			addServer(c, projectID, hostname, ipAddresses, sshKeys, image, planID, region, userData)
 		},
 	}
 
@@ -397,9 +398,10 @@ func main() {
 	cmdAddServer.Flags().StringP("region", "g", "EU-East-1", "Provide region")
 	cmdAddServer.Flags().StringP("image", "i", "", "Provide image")
 	cmdAddServer.Flags().StringP("plan-id", "l", "", "Provide plan-id")
+	cmdAddServer.Flags().StringP("user-data", "u", "", "Provide blob of user-data in base64")
 	var keySlice, ipSlice []string
 	cmdAddServer.Flags().StringSliceP("ssh-keys", "k", keySlice, "Provide ssh-keys")
-	cmdAddServer.Flags().StringSliceP("ip-addresses", "d", ipSlice, "Provide image")
+	cmdAddServer.Flags().StringSliceP("ip-addresses", "d", ipSlice, "Provide ip-addresses")
 
 	// Required flags for creating a new server
 	cmdAddServer.MarkFlagRequired("project-id")
