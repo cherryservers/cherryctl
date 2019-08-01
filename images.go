@@ -21,9 +21,24 @@ func listImages(c *cherrygo.Client, planID int) {
 	fmt.Fprintf(tw, "--------\t----------\t-----------\n")
 
 	for _, i := range images {
-		fmt.Fprintf(tw, "%v\t%v\t%v\n",
-			i.ID, i.Name, i.Pricing.Price)
+		var imagePrice float32
+
+		if len(i.Pricing) > 0 {
+			for _, price := range i.Pricing {
+
+				if price.Unit == "Hourly" {
+					imagePrice = price.Price
+					fmt.Fprintf(tw, "%v\t%v\t%v\n",
+						i.ID, i.Name, imagePrice)
+				}
+
+			}
+		} else {
+			fmt.Fprintf(tw, "%v\t%v\t%v\n",
+				i.ID, i.Name, imagePrice)
+		}
 	}
+
 	fmt.Fprintf(tw, "--------\t----------\t-----------\n")
 	tw.Flush()
 }
