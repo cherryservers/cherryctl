@@ -183,7 +183,8 @@ func main() {
 			planID, _ := cmd.Flags().GetString("plan-id")
 			region, _ := cmd.Flags().GetString("region")
 			userData, _ := cmd.Flags().GetString("user-data")
-			addServer(c, projectID, hostname, ipAddresses, sshKeys, image, planID, region, userData)
+			tags, _ := cmd.Flags().GetStringToString("tags")
+			addServer(c, projectID, hostname, ipAddresses, sshKeys, image, planID, region, userData, tags)
 		},
 	}
 
@@ -310,6 +311,18 @@ func main() {
 		},
 	}
 
+	var cmdUpdateServer = &cobra.Command{
+		Use:   "server",
+		Short: "Updates specified server",
+		Long:  "Updates specified server",
+		Run: func(cmd *cobra.Command, args []string) {
+
+			serverID, _ := cmd.Flags().GetString("server-id")
+			tags, _ := cmd.Flags().GetStringToString("tags")
+			updateServer(c, tags, serverID)
+		},
+	}
+
 	var cmdPowerOnServer = &cobra.Command{
 		Use:   "on",
 		Short: "Powers server ON",
@@ -399,6 +412,8 @@ func main() {
 	cmdAddServer.Flags().StringP("image", "i", "", "Provide image")
 	cmdAddServer.Flags().StringP("plan-id", "l", "", "Provide plan-id")
 	cmdAddServer.Flags().StringP("user-data", "u", "", "Provide blob of user-data in base64")
+	var tags = make(map[string]string)
+	cmdAddServer.Flags().StringToStringVar(&tags, "tags", nil, "Provide key/value for tags: env=prod,name=node1")
 	var keySlice, ipSlice []string
 	cmdAddServer.Flags().StringSliceP("ssh-keys", "k", keySlice, "Provide ssh-keys")
 	cmdAddServer.Flags().StringSliceP("ip-addresses", "d", ipSlice, "Provide ip-addresses")
@@ -435,7 +450,7 @@ func main() {
 	cmdRemoveProject.MarkFlagRequired("project-id")
 
 	// Update section
-	cmdUpdate.AddCommand(cmdUpdateSSHKey, cmdUpdateIPAddress, cmdUpdateProject)
+	cmdUpdate.AddCommand(cmdUpdateSSHKey, cmdUpdateIPAddress, cmdUpdateProject, cmdUpdateServer)
 
 	cmdUpdateSSHKey.Flags().StringP("key-id", "k", "", "Provide ssh key id for update")
 	cmdUpdateSSHKey.Flags().StringP("key-label", "l", "", "Provide new label for key")
@@ -462,6 +477,14 @@ func main() {
 	// Required flags for updating project
 	cmdUpdateProject.MarkFlagRequired("project-id")
 	cmdUpdateProject.MarkFlagRequired("project-name")
+
+	// Update Server section
+	cmdUpdateServer.Flags().StringP("server-id", "s", "", "Provide server-id")
+	cmdUpdateServer.Flags().StringToStringVar(&tags, "tags", nil, "Provide key/value for tags: env=prod,name=node1")
+
+	// Required flags for updating server
+	cmdUpdateServer.MarkFlagRequired("server-id")
+	cmdUpdateServer.MarkFlagRequired("tags")
 
 	// Power section
 	cmdPower.AddCommand(cmdPowerOnServer, cmdPowerOffServer, cmdRebootServer)

@@ -2,13 +2,14 @@ package main
 
 import (
 	"cherrygo"
+	"encoding/json"
 	"fmt"
 	"log"
 	"os"
 	"text/tabwriter"
 )
 
-func addServer(c *cherrygo.Client, projectID, hostname string, ipaddresses, sshKeys []string, image, planID, region, userData string) {
+func addServer(c *cherrygo.Client, projectID, hostname string, ipaddresses, sshKeys []string, image, planID, region, userData string, tags map[string]string) {
 
 	addServerRequest := cherrygo.CreateServer{
 		ProjectID:   projectID,
@@ -19,6 +20,7 @@ func addServer(c *cherrygo.Client, projectID, hostname string, ipaddresses, sshK
 		IPAddresses: ipaddresses,
 		PlanID:      planID,
 		UserData:    userData,
+		Tags:        tags,
 	}
 
 	server, _, err := c.Server.Create(projectID, &addServerRequest)
@@ -80,23 +82,28 @@ func listServer(c *cherrygo.Client, serverID string) {
 		log.Fatalf("Error while getting power sstate: %v", err)
 	}
 
+	tags, err := json.Marshal(server.Tags)
+	if err != nil {
+		log.Fatalf("Error while getting tags")
+	}
+	tagsString := string(tags)
+
 	tw := tabwriter.NewWriter(os.Stdout, 13, 8, 2, '\t', 0)
-	fmt.Fprintf(tw, "\n---------\t----\t--------\t-----\t---\t----------\t-----\t-----\n")
-	fmt.Fprintf(tw, "Server ID\tName\tHostname\tImage\tPrice\tIP address\tPower\tState\n")
+	fmt.Fprintf(tw, "\n---------\t----\t--------\t-----\t---\t----------\t-----\t-----\t----\n")
+	fmt.Fprintf(tw, "Server ID\tName\tHostname\tImage\tPrice\tIP address\tPower\tState\tTags\n")
 	fmt.Fprintf(tw, "---------\t----\t--------\t-----\t---\t----------\t-----\t-----\n")
 	if len(server.IPAddresses) > 0 {
 		for _, i := range server.IPAddresses {
-			fmt.Fprintf(tw, "%v\t%v\t%v\t%v\t%v\t%v\t%v\t%v\n",
-				server.ID, server.Name, server.Hostname, server.Image, server.Pricing.Price, i.Address, srvPower.Power, server.State)
+			fmt.Fprintf(tw, "%v\t%v\t%v\t%v\t%v\t%v\t%v\t%v\t%v\n",
+				server.ID, server.Name, server.Hostname, server.Image, server.Pricing.Price, i.Address, srvPower.Power, server.State, tagsString)
 		}
 	} else {
 		fmt.Fprintf(tw, "%v\t%v\t%v\t%v\t%v\t%v\t%v\t%v\n",
 			server.ID, server.Name, server.Hostname, server.Image, server.Pricing.Price, nil, srvPower.Power, server.State)
 	}
 
-	fmt.Fprintf(tw, "---------\t----\t--------\t-----\t---\t----------\t-----\n")
+	fmt.Fprintf(tw, "---------\t----\t--------\t-----\t---\t----------\t-----\t----\n")
 	tw.Flush()
-
 }
 
 func deleteServer(c *cherrygo.Client, serverID string) {
@@ -162,4 +169,16 @@ func rebootServer(c *cherrygo.Client, serverID string) {
 
 	fmt.Fprintf(tw, "---------\t----\t--------\t-----\t-----\t-----\n")
 	tw.Flush()
+}
+
+func updateServer(c *cherrygo.Client, tags map[string]string, serverID string) {
+
+	updateServerRequest := cherrygo.UpdateServer{
+		Tags: tags,
+	}
+	_, _, err := c.Server.Update(serverID, &updateServerRequest)
+	if err != nil {
+		log.Fatal("Error while updating server: ", err)
+	}
+
 }
