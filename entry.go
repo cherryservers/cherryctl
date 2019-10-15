@@ -10,6 +10,22 @@ import (
 
 func main() {
 
+	v1, err := readConfig(".cherry")
+	// if err != nil {
+	// 	log.Printf("Error reading config file, %s", err)
+	// }
+
+	// Init variables from configuration file
+	var teamIDCfg int
+	var projectIDCfg string
+
+	if v1.IsSet("default_profile") {
+
+		configDefaultProfile := v1.GetString("default_profile")
+
+		teamIDCfg, projectIDCfg = getProfileConfig(configDefaultProfile)
+	}
+
 	// Let's create new client
 	c, err := cherrygo.NewClient()
 	if err != nil {
@@ -46,13 +62,24 @@ func main() {
 		Long:  "Manages power on servers",
 	}
 
+	var cmdProfile = &cobra.Command{
+		Use:   "profile",
+		Short: "Manages profile settings from YAML config file .cherryservers.yaml",
+		Long:  "Manages profile settings from YAML config file .cherryservers.yaml",
+	}
+
 	var cmdListPlans = &cobra.Command{
 		Use:   "plans",
 		Short: "List plans",
 		Long:  "List plans for specified project",
 		Run: func(cmd *cobra.Command, args []string) {
-			projectID, _ := cmd.Flags().GetInt("team-id")
-			listPlans(c, projectID)
+
+			if v1.IsSet("default_profile") {
+				listPlans(c, teamIDCfg)
+			} else {
+				projectID, _ := cmd.Flags().GetInt("team-id")
+				listPlans(c, projectID)
+			}
 		},
 	}
 
@@ -61,8 +88,15 @@ func main() {
 		Short: "List projects",
 		Long:  "List projects for specified team",
 		Run: func(cmd *cobra.Command, args []string) {
-			teamID, _ := cmd.Flags().GetInt("team-id")
-			listProjects(c, teamID)
+
+			if v1.IsSet("default_profile") {
+
+				listProjects(c, teamIDCfg)
+			} else {
+				teamID, _ := cmd.Flags().GetInt("team-id")
+				fmt.Printf("Read from flags: %v", projectIDCfg)
+				listProjects(c, teamID)
+			}
 		},
 	}
 
@@ -119,8 +153,14 @@ func main() {
 		Short: "List servers",
 		Long:  "List servers for specified project",
 		Run: func(cmd *cobra.Command, args []string) {
-			projectID, _ := cmd.Flags().GetString("project-id")
-			listServers(c, projectID)
+
+			if v1.IsSet("default_profile") {
+				listServers(c, projectIDCfg)
+			} else {
+				projectID, _ := cmd.Flags().GetString("project-id")
+				listServers(c, projectID)
+			}
+
 		},
 	}
 
@@ -139,8 +179,14 @@ func main() {
 		Short: "List ip addresses",
 		Long:  "List ip addresses",
 		Run: func(cmd *cobra.Command, args []string) {
-			projectID, _ := cmd.Flags().GetString("project-id")
-			listIPAddresses(c, projectID)
+
+			if v1.IsSet("default_profile") {
+				listIPAddresses(c, projectIDCfg)
+			} else {
+				projectID, _ := cmd.Flags().GetString("project-id")
+				listIPAddresses(c, projectID)
+			}
+
 		},
 	}
 
@@ -149,9 +195,17 @@ func main() {
 		Short: "List specific ip address",
 		Long:  "List specific ip address",
 		Run: func(cmd *cobra.Command, args []string) {
-			projectID, _ := cmd.Flags().GetString("project-id")
+
 			ipID, _ := cmd.Flags().GetString("ip-id")
-			listIPAddress(c, projectID, ipID)
+
+			if v1.IsSet("default_profile") {
+
+				listIPAddress(c, projectIDCfg, ipID)
+			} else {
+				projectID, _ := cmd.Flags().GetString("project-id")
+				listIPAddress(c, projectID, ipID)
+			}
+
 		},
 	}
 
@@ -160,12 +214,20 @@ func main() {
 		Short: "Orders new floating IP address",
 		Long:  "Orders new floating IP address",
 		Run: func(cmd *cobra.Command, args []string) {
-			projectID, _ := cmd.Flags().GetString("project-id")
+
 			aRecord, _ := cmd.Flags().GetString("a-record")
 			ptrRecord, _ := cmd.Flags().GetString("ptr-record")
 			routedTo, _ := cmd.Flags().GetString("routed-to")
 			region, _ := cmd.Flags().GetString("region")
-			addIPAddress(c, projectID, aRecord, ptrRecord, routedTo, region)
+
+			if v1.IsSet("default_profile") {
+
+				addIPAddress(c, projectIDCfg, aRecord, ptrRecord, routedTo, region)
+			} else {
+				projectID, _ := cmd.Flags().GetString("project-id")
+				addIPAddress(c, projectID, aRecord, ptrRecord, routedTo, region)
+			}
+
 		},
 	}
 
@@ -175,7 +237,6 @@ func main() {
 		Long:  "Orders new server",
 		Run: func(cmd *cobra.Command, args []string) {
 
-			projectID, _ := cmd.Flags().GetString("project-id")
 			hostname, _ := cmd.Flags().GetString("hostname")
 			ipAddresses, _ := cmd.Flags().GetStringSlice("ip-addresses")
 			sshKeys, _ := cmd.Flags().GetStringSlice("ssh-keys")
@@ -184,7 +245,14 @@ func main() {
 			region, _ := cmd.Flags().GetString("region")
 			userData, _ := cmd.Flags().GetString("user-data")
 			tags, _ := cmd.Flags().GetStringToString("tags")
-			addServer(c, projectID, hostname, ipAddresses, sshKeys, image, planID, region, userData, tags)
+
+			if v1.IsSet("default_profile") {
+				addServer(c, projectIDCfg, hostname, ipAddresses, sshKeys, image, planID, region, userData, tags)
+			} else {
+				projectID, _ := cmd.Flags().GetString("project-id")
+				addServer(c, projectID, hostname, ipAddresses, sshKeys, image, planID, region, userData, tags)
+			}
+
 		},
 	}
 
@@ -208,9 +276,13 @@ func main() {
 		Run: func(cmd *cobra.Command, args []string) {
 
 			projectName, _ := cmd.Flags().GetString("project-name")
-			teamID, _ := cmd.Flags().GetInt("team-id")
+			if v1.IsSet("default_profile") {
 
-			createProject(c, teamID, projectName)
+				createProject(c, teamIDCfg, projectName)
+			} else {
+				teamID, _ := cmd.Flags().GetInt("team-id")
+				createProject(c, teamID, projectName)
+			}
 		},
 	}
 
@@ -242,9 +314,14 @@ func main() {
 		Long:  "Removes specified ip address",
 		Run: func(cmd *cobra.Command, args []string) {
 
-			projectID, _ := cmd.Flags().GetString("project-id")
 			ipID, _ := cmd.Flags().GetString("ip-id")
-			deleteIPAddress(c, projectID, ipID)
+			if v1.IsSet("default_profile") {
+
+				deleteIPAddress(c, projectIDCfg, ipID)
+			} else {
+				projectID, _ := cmd.Flags().GetString("project-id")
+				deleteIPAddress(c, projectID, ipID)
+			}
 		},
 	}
 
@@ -279,7 +356,6 @@ func main() {
 
 			floatingID, _ := cmd.Flags().GetString("floating-id")
 			floatingIP, _ := cmd.Flags().GetString("floating-ip")
-			projectID, _ := cmd.Flags().GetString("project-id")
 			aRecord, _ := cmd.Flags().GetString("a-record")
 			ptrRecord, _ := cmd.Flags().GetString("ptr-record")
 			routedTo, _ := cmd.Flags().GetString("routed-to")
@@ -293,9 +369,18 @@ func main() {
 				log.Fatalf("Error: %v", err)
 			}
 
-			updateIPAddress(c, ptrRecord, aRecord,
-				routedTo, routedToHostname, routedToServerIP, routedToServerID,
-				assignedTo, floatingID, floatingIP, projectID)
+			if v1.IsSet("default_profile") {
+
+				updateIPAddress(c, ptrRecord, aRecord,
+					routedTo, routedToHostname, routedToServerIP, routedToServerID,
+					assignedTo, floatingID, floatingIP, projectIDCfg)
+			} else {
+				projectID, _ := cmd.Flags().GetString("project-id")
+				updateIPAddress(c, ptrRecord, aRecord,
+					routedTo, routedToHostname, routedToServerIP, routedToServerID,
+					assignedTo, floatingID, floatingIP, projectID)
+			}
+
 		},
 	}
 
@@ -356,25 +441,42 @@ func main() {
 		},
 	}
 
+	var cmdProfileSetDefault = &cobra.Command{
+		Use:   "set",
+		Short: "set default profile",
+		Long:  "set default profile",
+		Run: func(cmd *cobra.Command, args []string) {
+
+			defaultProfile, _ := cmd.Flags().GetString("default-profile")
+			setDefaultProfile(defaultProfile)
+		},
+	}
+
 	var rootCmd = &cobra.Command{Use: "cherry-cloud-cli"}
-	rootCmd.AddCommand(cmdList, cmdAdd, cmdRemove, cmdUpdate, cmdPower)
+	rootCmd.AddCommand(cmdList, cmdAdd, cmdRemove, cmdUpdate, cmdPower, cmdProfile)
 
 	cmdList.AddCommand(cmdListTeams, cmdListPlans, cmdListProjects, cmdListImages, cmdListSSHKeys, cmdListSSHKey, cmdListServers, cmdListServer, cmdListIPAddresses, cmdListIPAddress, cmdListProject)
 
 	cmdListPlans.Flags().IntP("team-id", "t", 0, "Provide team-id")
-	cmdListPlans.MarkFlagRequired("team-id")
+	if !v1.IsSet("default_profile") {
+		cmdListProjects.MarkFlagRequired("team-id")
+	}
 
 	cmdListImages.Flags().IntP("plan-id", "p", 0, "Provide plan-id")
 	cmdListImages.MarkFlagRequired("plan-id")
 
 	cmdListProjects.Flags().IntP("team-id", "t", 0, "Provide team-id")
-	cmdListProjects.MarkFlagRequired("team-id")
+	if !v1.IsSet("default_profile") {
+		cmdListProjects.MarkFlagRequired("team-id")
+	}
 
 	cmdListProject.Flags().StringP("project-id", "p", "", "Provide project-id")
 	cmdListProject.MarkFlagRequired("project-id")
 
 	cmdListServers.Flags().StringP("project-id", "p", "", "Provide project-id")
-	cmdListServers.MarkFlagRequired("project-id")
+	if !v1.IsSet("default_profile") {
+		cmdListServers.MarkFlagRequired("project-id")
+	}
 
 	cmdListServer.Flags().StringP("server-id", "s", "", "Provide server-id")
 	cmdListServer.MarkFlagRequired("server-id")
@@ -383,11 +485,16 @@ func main() {
 	cmdListSSHKey.MarkFlagRequired("key-id")
 
 	cmdListIPAddresses.Flags().StringP("project-id", "p", "", "Provide project-id")
-	cmdListIPAddresses.MarkFlagRequired("project-id")
+	if !v1.IsSet("default_profile") {
+		cmdListIPAddresses.MarkFlagRequired("project-id")
+	}
 
 	cmdListIPAddress.Flags().StringP("project-id", "p", "", "Provide project-id")
 	cmdListIPAddress.Flags().StringP("ip-id", "i", "", "Provide ip-id")
-	cmdListIPAddress.MarkFlagRequired("project-id")
+	if !v1.IsSet("default_profile") {
+		cmdListIPAddress.MarkFlagRequired("project-id")
+	}
+
 	cmdListIPAddress.MarkFlagRequired("ip-id")
 
 	// Add section
@@ -395,7 +502,7 @@ func main() {
 
 	// Add new ip address section
 	cmdAddIPAddress.Flags().StringP("project-id", "p", "", "Provide project-id")
-	cmdAddIPAddress.Flags().StringP("a-record", "a", "a-record.example.com", "Provide a-record")
+	cmdAddIPAddress.Flags().StringP("a-record", "a", "", "Provide a-record")
 	cmdAddIPAddress.Flags().StringP("ptr-record", "r", "ptr-record.examples.com", "Provide ptr-record")
 	cmdAddIPAddress.Flags().StringP("region", "g", "EU-East-1", "Provide region")
 	cmdAddIPAddress.Flags().StringP("routed-to", "t", "", "Provide ipaddress_id to route to")
@@ -419,7 +526,9 @@ func main() {
 	cmdAddServer.Flags().StringSliceP("ip-addresses", "d", ipSlice, "Provide ip-addresses")
 
 	// Required flags for creating a new server
-	cmdAddServer.MarkFlagRequired("project-id")
+	if !v1.IsSet("default_profile") {
+		cmdAddServer.MarkFlagRequired("project-id")
+	}
 	cmdAddServer.MarkFlagRequired("region")
 	cmdAddServer.MarkFlagRequired("image")
 	cmdAddServer.MarkFlagRequired("plan-id")
@@ -429,7 +538,9 @@ func main() {
 	cmdAddProject.Flags().StringP("project-name", "p", "", "Provide project-name")
 
 	// Required flags for creating new project
-	cmdAddProject.MarkFlagRequired("team-id")
+	if !v1.IsSet("default_profile") {
+		cmdAddProject.MarkFlagRequired("team-id")
+	}
 	cmdAddProject.MarkFlagRequired("project-name")
 
 	// Remove section
@@ -441,7 +552,9 @@ func main() {
 	cmdRemoveIPAddress.Flags().StringP("ip-id", "i", "", "Provide ip id for removal")
 	cmdRemoveIPAddress.Flags().IntP("project-id", "p", 0, "Provide project-id")
 	cmdRemoveIPAddress.MarkFlagRequired("ip-id")
-	cmdRemoveIPAddress.MarkFlagRequired("project-id")
+	if !v1.IsSet("default_profile") {
+		cmdRemoveIPAddress.MarkFlagRequired("project-id")
+	}
 
 	cmdRemoveServer.Flags().StringP("server-id", "s", "", "Provide server id for removal")
 	cmdRemoveServer.MarkFlagRequired("server-id")
@@ -496,6 +609,13 @@ func main() {
 
 	cmdRebootServer.Flags().StringP("server-id", "s", "", "Provide server id for reboot")
 	cmdRebootServer.MarkFlagRequired("server-id")
+
+	// Profile section
+	cmdProfile.AddCommand(cmdProfileSetDefault)
+	cmdProfileSetDefault.Flags().StringP("default-profile", "p", "", "Provide default profile name to use")
+
+	// Required flags for profile section
+	cmdProfileSetDefault.MarkFlagRequired("default-profile")
 
 	rootCmd.Execute()
 

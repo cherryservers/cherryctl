@@ -34,6 +34,32 @@ On Windows to export variable via PS run this command:
 $env:CHERRY_AUTH_TOKEN = "2b00042f7481c7b056c4b410d28f33cf"
 ```
 
+Or either you may use configuration file, which should be located at **$HOME/.cherry.yaml**.
+
+You may specify several profiles, for example:
+
+```
+user1:
+  project-id: 68433
+  team-id: 28519
+  token: LCJpYXQiOjE1NjM1MjMyNzR9d2SJm6kNllkq
+user2:
+  project-id: 40283
+  team-id: 28519
+  token: iUCq4JxHYjXuaUG0b4VAr8gkvd2SJm6kNllk
+default_profile: user1
+```
+
+Default profile of **user1** will be used. If you want to switch to another profile, you need to issue command:
+
+```
+cherryctl profile set -p user2
+```
+
+All three variables (**project-id, team-id and token**) must be specified in config file in order to use it.
+
+In such case you will not longer need to specify those variables in comman line arguments.
+
 Usage
 -----
 
