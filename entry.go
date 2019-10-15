@@ -64,8 +64,8 @@ func main() {
 
 	var cmdProfile = &cobra.Command{
 		Use:   "profile",
-		Short: "Manages profile settings from YAML config file .cherryservers.yaml",
-		Long:  "Manages profile settings from YAML config file .cherryservers.yaml",
+		Short: "Manages profile settings from YAML config file $HOME/.cherry.yaml",
+		Long:  "Manages profile settings from YAML config file $HOME/.cherry.yaml",
 	}
 
 	var cmdListPlans = &cobra.Command{
