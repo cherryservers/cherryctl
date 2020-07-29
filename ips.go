@@ -64,11 +64,11 @@ func updateIPAddress(c *cherrygo.Client, ptrRecord, aRecord, routedTo,
 	}
 
 	tw := tabwriter.NewWriter(os.Stdout, 13, 8, 2, '\t', 0)
-	fmt.Fprintf(tw, "\n-----\t-------\t----\t---\t----\n")
-	fmt.Fprintf(tw, "IP ID\tAddress\tCidr\tPTR\tType\n")
-	fmt.Fprintf(tw, "-----\t-------\t----\t---\t----\n")
-	fmt.Fprintf(tw, "%v\t%v\t%v\t%v\t%v\n", ip.ID, ip.Address, ip.Cidr, ip.PtrRecord, ip.Type)
-	fmt.Fprintf(tw, "-----\t-------\t----\t---\t----\n")
+	fmt.Fprintf(tw, "\n-----\t-------\t----\t---\t-\t----\n")
+	fmt.Fprintf(tw, "IP ID\tAddress\tCidr\tPTR\tA\tType\n")
+	fmt.Fprintf(tw, "-----\t-------\t----\t---\t-\t----\n")
+	fmt.Fprintf(tw, "%v\t%v\t%v\t%v\t%v\t%v\n", ip.ID, ip.Address, ip.Cidr, ip.PtrRecord, ip.ARecord, ip.Type)
+	fmt.Fprintf(tw, "-----\t-------\t----\t---\t-\t----\n")
 	tw.Flush()
 }
 
