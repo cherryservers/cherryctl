@@ -1,10 +1,10 @@
 package main
 
 import (
-	"cherrygo"
 	"fmt"
 	"log"
 
+	"github.com/cherryservers/cherrygo"
 	"github.com/spf13/cobra"
 )
 

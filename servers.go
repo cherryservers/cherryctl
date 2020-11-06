@@ -1,12 +1,13 @@
 package main
 
 import (
-	"cherrygo"
 	"encoding/json"
 	"fmt"
 	"log"
 	"os"
 	"text/tabwriter"
+
+	"github.com/cherryservers/cherrygo"
 )
 
 func addServer(c *cherrygo.Client, projectID, hostname string, ipaddresses, sshKeys []string, image, planID, region, userData string, tags map[string]string) {
