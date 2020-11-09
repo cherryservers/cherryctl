@@ -1,12 +1,13 @@
 package main
 
 import (
-	"cherrygo"
 	"fmt"
 	"log"
 	"os"
 	"strconv"
 	"text/tabwriter"
+
+	"github.com/cherryservers/cherrygo"
 )
 
 func addIPAddress(c *cherrygo.Client, projectID, aRecord, ptrRecord, routedTo, region string) {

@@ -1,11 +1,12 @@
 package main
 
 import (
-	"cherrygo"
 	"fmt"
 	"log"
 	"os"
 	"text/tabwriter"
+
+	"github.com/cherryservers/cherrygo"
 )
 
 func listProject(c *cherrygo.Client, projectID string) {

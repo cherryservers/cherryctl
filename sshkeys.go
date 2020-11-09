@@ -1,12 +1,13 @@
 package main
 
 import (
-	"cherrygo"
 	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
 	"text/tabwriter"
+
+	"github.com/cherryservers/cherrygo"
 )
 
 func createSSHKey(c *cherrygo.Client, label, key, keyPath string) {
