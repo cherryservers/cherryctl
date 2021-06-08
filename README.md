@@ -6,9 +6,9 @@ Introduction
 
 **cherryctl** is an command line tool to manage Cherry Servers services, order new servers, manage floating ips, ssh keys, etc. You may download it from below for desired operating system:
 
-* Download [cherryctl](http://downloads.cherryservers.com/other/cherryctl/linux/cherryctl) for Linux.
-* Download [cherryctl](http://downloads.cherryservers.com/other/cherryctl/mac/cherryctl) for Mac.
-* Download [cherryctl](http://downloads.cherryservers.com/other/cherryctl/windows/cherryctl) for Windows.
+* Download [cherryctl](https://downloads.cherryservers.com/other/cherryctl/linux/cherryctl) for Linux.
+* Download [cherryctl](https://downloads.cherryservers.com/other/cherryctl/mac/cherryctl) for Mac.
+* Download [cherryctl](https://downloads.cherryservers.com/other/cherryctl/windows/cherryctl) for Windows.
 
 Installation
 ------------
