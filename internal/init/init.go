@@ -9,13 +9,15 @@ import (
 	"syscall"
 
 	"github.com/cherryservers/cherrygo/v3"
+	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 	"golang.org/x/term"
 	"gopkg.in/yaml.v2"
 )
 
 type Client struct {
-	Servicer Servicer
+	Servicer    Servicer
+	UserService cherrygo.UsersService
 }
 
 func NewClient(s Servicer) *Client {
@@ -63,6 +65,12 @@ func (c *Client) NewCommand() *cobra.Command {
 			fmt.Println()
 			token := string(b)
 			c.Servicer.SetToken(token)
+			cherryclient := c.Servicer.API(cmd)
+			c.UserService = cherryclient.Users
+			_, _, err = c.UserService.CurrentUser(nil)
+			if err != nil {
+				return errors.Wrap(err, "Invalid authentication token")
+			}
 
 			fmt.Printf("Team ID: ")
 			userTeam := ""
