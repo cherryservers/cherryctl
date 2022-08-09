@@ -91,7 +91,7 @@ region: eu_nord_1
 
 ## Documentation
 
-The full CLI documentation can be found [here](docs/metal.md).
+The full CLI documentation can be found [here](docs/cherryctl.md).
 
 ## Examples
 
