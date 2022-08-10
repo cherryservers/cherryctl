@@ -7,7 +7,7 @@ on:
   pull_request:
 
 jobs:
-  docs:
+  test:
     name: docs
     runs-on: ubuntu-latest
     strategy:
