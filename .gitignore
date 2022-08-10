@@ -1,3 +1,5 @@
 .vscode/
 /cherryctl
 .DS_Store
+builds
+docs
