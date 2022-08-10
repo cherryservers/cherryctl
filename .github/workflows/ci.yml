@@ -3,11 +3,11 @@ name: 'ci'
 on:
   push:
     branches:
-    - main
+    - master
   pull_request:
 
 jobs:
-  docs:
+  test:
     name: docs
     runs-on: ubuntu-latest
     strategy:
