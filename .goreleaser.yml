@@ -13,8 +13,6 @@ builds:
   binary: cherryctl
   ldflags:
    - -X github.com/cherryservers/cherryctl/cmd.Version={{.Version}}
-   - -X github.com/cherryservers/cherryctl/cmd.Build=${.Commit}"
-
   goos:
     - linux
     - windows

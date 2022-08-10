@@ -24,10 +24,13 @@ import (
 	"github.com/spf13/cobra"
 )
 
+var (
+	Version string = "dev"
+)
+
 const (
 	apiTokenEnvVar = "CHERRY_AUTH_TOKEN"
 	apiURL         = "https://api.cherryservers.com/v1/"
-	version        = "dev"
 )
 
 type Cli struct {
@@ -40,7 +43,7 @@ func NewCli() *Cli {
 		Outputer: &outputs.Standard{},
 	}
 
-	rootClient := root.NewClient(os.Getenv(apiTokenEnvVar), apiURL, version)
+	rootClient := root.NewClient(os.Getenv(apiTokenEnvVar), apiURL, Version)
 	rootCmd := rootClient.NewCommand()
 	rootCmd.DisableSuggestions = false
 	cli.MainCmd = rootCmd
