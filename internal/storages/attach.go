@@ -58,7 +58,6 @@ func (c *Client) Attach() *cobra.Command {
 	storageAttachCmd.Flags().IntVarP(&projectID, "project-id", "p", 0, "The project's ID.")
 
 	storageAttachCmd.MarkFlagsMutuallyExclusive("server-id", "server-hostname")
-	storageAttachCmd.MarkFlagsRequiredTogether("server-hostname", "project-id")
 
 	storageAttachCmd.MarkFlagRequired("storage-id")
 

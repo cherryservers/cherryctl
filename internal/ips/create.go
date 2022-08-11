@@ -88,7 +88,6 @@ func (c *Client) Create() *cobra.Command {
 	ipCreateCmd.Flags().StringSliceVarP(&tags, "tags", "", []string{}, `Tag or list of tags for the server: --tags="key=value,env=prod".`)
 
 	ipCreateCmd.MarkFlagsMutuallyExclusive("target-hostname", "target-id", "target-ip-id")
-	ipCreateCmd.MarkFlagsRequiredTogether("target-hostname", "project-id")
 
 	ipCreateCmd.MarkFlagRequired("project-id")
 	ipCreateCmd.MarkFlagRequired("region")

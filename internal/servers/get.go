@@ -51,7 +51,6 @@ func (c *Client) Get() *cobra.Command {
 	serverGetCmd.Flags().IntVarP(&projectID, "project-id", "p", 0, "The project's ID.")
 
 	serverGetCmd.MarkFlagsMutuallyExclusive("server-id", "hostname")
-	serverGetCmd.MarkFlagsRequiredTogether("hostname", "project-id")
 
 	return serverGetCmd
 }

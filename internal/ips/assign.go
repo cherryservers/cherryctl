@@ -65,7 +65,6 @@ func (c *Client) Assign() *cobra.Command {
 	ipAssignCmd.Flags().StringVarP(&targetIPID, "target-ip-id", "", "", "Subnet or primary-ip type IP ID to route IP to.")
 
 	ipAssignCmd.MarkFlagsMutuallyExclusive("target-hostname", "target-id", "target-ip-id")
-	ipAssignCmd.MarkFlagsRequiredTogether("target-hostname", "project-id")
 	ipAssignCmd.MarkFlagRequired("ip-address-id")
 
 	return ipAssignCmd
