@@ -51,7 +51,7 @@ You can find the installed executable/binary in either `$GOPATH/bin` or `$HOME/g
 ### Install binary from Release Download
 
 Visit the [Releases page](https://github.com/cherryservers/cherryctl/releases) for the
-[`cherryctl` GitHub project](https://github.com/cherryservers/cherryctl/doctl), and find the
+[`cherryctl` GitHub project](https://github.com/cherryservers/cherryctl), and find the
 appropriate binary for your operating system and architecture. Download the appropriate binaries for your platform to the desired location, `chmod +x` it and rename it to `cherryctl`.
 
 ## Shell Completion
