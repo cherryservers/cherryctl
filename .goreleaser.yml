@@ -33,16 +33,16 @@ changelog:
     - '^docs:'
     - '^test:'
 
-brews: 
-  - homepage: "https://www.cherryservers.com/"
-    description: "Official Cherry Servers CLI"
-    license: "MIT"
-    dependencies:
-      - name: "go"
-        type: build
-    test: |
-      system "#{bin}/cherryctl -v"
-    commit_msg_template: "Brew formula update for {{ .ProjectName }} version {{ .Tag }}"
-    tap:
-      owner: cherryservers
-      name: homebrew-tap
+# brews: 
+#   - homepage: "https://www.cherryservers.com/"
+#     description: "Official Cherry Servers CLI"
+#     license: "MIT"
+#     dependencies:
+#       - name: "go"
+#         type: build
+#     test: |
+#       system "#{bin}/cherryctl -v"
+#     commit_msg_template: "Brew formula update for {{ .ProjectName }} version {{ .Tag }}"
+#     tap:
+#       owner: cherryservers
+#       name: homebrew-tap
