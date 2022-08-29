@@ -7,14 +7,14 @@ Reinstall a server.
 Reinstall the specified server.
 
 ```
-cherryctl server reinstall -i <server_id> --hostname --image <image_slug> --password <password> [--ssh-keys <ssh_key_ids>] [--os-partition-size <size>] [flags]
+cherryctl server reinstall ID --hostname <hostname> --image <image_slug> --password <password> [--ssh-keys <ssh_key_ids>] [--os-partition-size <size>] [flags]
 ```
 
 ### Examples
 
 ```
   # Reinstall the specified server:
-  cherryctl server reinstall -i 12345 -h staging-server-1 --image ubuntu_20_04 --password G1h2e_39Q9oT
+  cherryctl server reinstall 12345 -hostname staging-server-1 --image ubuntu_20_04 --password G1h2e_39Q9oT
 ```
 
 ### Options
@@ -25,7 +25,6 @@ cherryctl server reinstall -i <server_id> --hostname --image <image_slug> --pass
       --image string            Operating system slug for the server.
       --os-partition-size int   OS partition size in GB.
       --password string         Server password.
-  -i, --server-id int           The ID of a server.
       --ssh-keys strings        Comma separated list of SSH key IDs to be embed in the Server.
 ```
 

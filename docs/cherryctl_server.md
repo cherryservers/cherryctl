@@ -32,4 +32,5 @@ Server operations: create, get, list, delete, start, stop, reboot and reinstall.
 * [cherryctl server reinstall](cherryctl_server_reinstall.md)	 - Reinstall a server.
 * [cherryctl server start](cherryctl_server_start.md)	 - Starts a server.
 * [cherryctl server stop](cherryctl_server_stop.md)	 - Stop a server.
+* [cherryctl server update](cherryctl_server_update.md)	 - Update server.
 

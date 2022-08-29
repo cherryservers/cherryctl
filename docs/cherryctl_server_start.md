@@ -7,21 +7,20 @@ Starts a server.
 Starts or powers on a server that is currently stopped or powered off.
 
 ```
-cherryctl server start -i <server_id> [flags]
+cherryctl server start ID [flags]
 ```
 
 ### Examples
 
 ```
   # Starts the specified server:
-  cherryctl server start -i 12345
+  cherryctl server start 12345
 ```
 
 ### Options
 
 ```
-  -h, --help            help for start
-  -i, --server-id int   The ID of a server.
+  -h, --help   help for start
 ```
 
 ### Options inherited from parent commands

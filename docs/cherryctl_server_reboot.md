@@ -7,21 +7,20 @@ Reboot a server.
 Reboot the specified server.
 
 ```
-cherryctl server reboot -i <server_id> [flags]
+cherryctl server reboot ID [flags]
 ```
 
 ### Examples
 
 ```
   # Reboot the specified server:
-  cherryctl server reboot -i 12345
+  cherryctl server reboot 12345
 ```
 
 ### Options
 
 ```
-  -h, --help            help for reboot
-  -i, --server-id int   The ID of a server.
+  -h, --help   help for reboot
 ```
 
 ### Options inherited from parent commands

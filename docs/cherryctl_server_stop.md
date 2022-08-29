@@ -7,21 +7,20 @@ Stop a server.
 Stops or powers off a server that is currently powered on.
 
 ```
-cherryctl server stop -i <server_id> [flags]
+cherryctl server stop ID [flags]
 ```
 
 ### Examples
 
 ```
   # Stops the specified server:
-  cherryctl server stop -i 12345
+  cherryctl server stop 12345
 ```
 
 ### Options
 
 ```
-  -h, --help            help for stop
-  -i, --server-id int   The ID of a server.
+  -h, --help   help for stop
 ```
 
 ### Options inherited from parent commands

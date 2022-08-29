@@ -7,23 +7,21 @@ Retrieves server details.
 Retrieves the details of the specified server.
 
 ```
-cherryctl server get {-i <server_id> | --hostname} [-p <project_id>] [flags]
+cherryctl server get {ID | HOSTNAME} [-p <project_id>] [flags]
 ```
 
 ### Examples
 
 ```
   # Gets the details of the specified server:
-  cherryctl server get -i 12345
+  cherryctl server get 12345
 ```
 
 ### Options
 
 ```
-  -h, --help              help for get
-      --hostname string   The Hostname of a server.
-  -p, --project-id int    The project's ID.
-  -i, --server-id int     The ID of a server.
+  -h, --help             help for get
+  -p, --project-id int   The project's ID.
 ```
 
 ### Options inherited from parent commands

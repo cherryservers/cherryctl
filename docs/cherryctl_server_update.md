@@ -1,32 +1,29 @@
-## cherryctl server delete
+## cherryctl server update
 
-Delete a server.
+Update server.
 
 ### Synopsis
 
-Deletes the specified server with a confirmation prompt. To skip the confirmation use --force.
+Update server.
 
 ```
-cherryctl server delete ID [-f] [flags]
+cherryctl server update ID [--name <server_name>] [--hostname] [--tags] [--bgp] [flags]
 ```
 
 ### Examples
 
 ```
-  # Deletes the specified server:
-  cherryctl server delete 12345
-  >
-  ✔ Are you sure you want to delete server 12345: y
-  		
-  # Deletes a server, skipping confirmation:
-  cherryctl server delete 12345 -f
+  # Update server to change tags:
+  cherryctl server update 12345 --tags="env=stage"
 ```
 
 ### Options
 
 ```
-  -f, --force   Skips confirmation for the server deletion.
-  -h, --help    help for delete
+  -b, --bgp               True to enable BGP in a server.
+  -h, --help              help for update
+      --hostname string   Server hostname.
+      --tags strings      Tag or list of tags for the server: --tags="key=value,env=prod".
 ```
 
 ### Options inherited from parent commands
