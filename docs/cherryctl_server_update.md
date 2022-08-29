@@ -7,7 +7,7 @@ Update server.
 Update server.
 
 ```
-cherryctl server update ID [--name <server_name>] [--hostname] [--tags] [--bgp] [flags]
+cherryctl server update ID [--name <server_name>] [--hostname <hostname>] [--tags <tags>] [--bgp] [flags]
 ```
 
 ### Examples
