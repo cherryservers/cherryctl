@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/cherryservers/cherrygo/v3"
+	"github.com/google/uuid"
 	"github.com/pkg/errors"
 )
 
@@ -38,4 +39,9 @@ func serverList(projectID int, ServerService cherrygo.ServersService) ([]cherryg
 	serverList, _, err := ServerService.List(projectID, &getOptions)
 
 	return serverList, err
+}
+
+func IsValidUUID(u string) bool {
+	_, err := uuid.Parse(u)
+	return err == nil
 }

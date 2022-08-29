@@ -3,6 +3,7 @@ package ips
 import (
 	"fmt"
 
+	"github.com/cherryservers/cherryctl/internal/utils"
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 )
@@ -10,14 +11,22 @@ import (
 func (c *Client) Get() *cobra.Command {
 	var ipID string
 	ipGetCmd := &cobra.Command{
-		Use:   `get [-i <ip_address_id>]`,
+		Use:   `get UUID`,
+		Args:  cobra.ExactArgs(1),
 		Short: "Get an IP address details.",
 		Long:  "Get the details of the specified IP address.",
 		Example: `  # Gets the details of the specified IP address:
-  cherryctl ip get -i 12345`,
+  cherryctl ip get 30c15082-a06e-4c43-bfc3-252616b46eba`,
 
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cmd.SilenceUsage = true
+			if utils.IsValidUUID(args[0]) {
+				ipID = args[0]
+			} else {
+				fmt.Println("IP address with ID %s was not found.", args[0])
+				return nil
+			}
+
 			getOptions := c.Servicer.GetOptions()
 			getOptions.Fields = []string{"ip", "region", "hostname"}
 			i, _, err := c.Service.Get(ipID, getOptions)
@@ -32,9 +41,6 @@ func (c *Client) Get() *cobra.Command {
 			return c.Out.Output(i, header, &data)
 		},
 	}
-
-	ipGetCmd.Flags().StringVarP(&ipID, "ip-address-id", "i", "", "The ID of a IP address.")
-	_ = ipGetCmd.MarkFlagRequired("ip-address-id")
 
 	return ipGetCmd
 }
