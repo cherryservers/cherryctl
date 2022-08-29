@@ -12,11 +12,20 @@ import (
 func (c *Client) Get() *cobra.Command {
 	var projectID int
 	projectGetCmd := &cobra.Command{
-		Use:   `get [-p <project_id>]`,
+		Use: `get ID [-p <project_id>]`,
+		Args: func(cmd *cobra.Command, args []string) error {
+			if len(args) > 0 {
+				prID, err := strconv.Atoi(args[0])
+				if err == nil {
+					projectID = prID
+				}
+			}
+			return nil
+		},
 		Short: "Retrieves project details.",
 		Long:  "Retrieves the details of the specified project.",
 		Example: `  # Gets the details of the specified project:
-  cherryctl project get -p 12345`,
+  cherryctl project get 12345`,
 
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cmd.SilenceUsage = true
@@ -38,7 +47,6 @@ func (c *Client) Get() *cobra.Command {
 	}
 
 	projectGetCmd.Flags().IntVarP(&projectID, "project-id", "p", 0, "The project's ID.")
-	_ = projectGetCmd.MarkFlagRequired("project-id")
 
 	return projectGetCmd
 }

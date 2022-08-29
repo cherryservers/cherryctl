@@ -16,11 +16,20 @@ func (c *Client) Update() *cobra.Command {
 		name      string
 	)
 	projectUpdateCmd := &cobra.Command{
-		Use:   `update [-p <project_id>] [--name <project_name>] [--bgp <bool>]`,
+		Use: `update ID [-p <project_id>] [--name <project_name>] [--bgp <bool>]`,
+		Args: func(cmd *cobra.Command, args []string) error {
+			if len(args) > 0 {
+				prID, err := strconv.Atoi(args[0])
+				if err == nil {
+					projectID = prID
+				}
+			}
+			return nil
+		},
 		Short: "Update a project.",
 		Long:  "Update a project.",
 		Example: `  # Update project to enable BGP:
-  cherryctl project update -p 12345 --bgp true`,
+  cherryctl project update 12345 --bgp true`,
 
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cmd.SilenceUsage = true
@@ -48,8 +57,6 @@ func (c *Client) Update() *cobra.Command {
 	projectUpdateCmd.Flags().IntVarP(&projectID, "project-id", "p", 0, "The project's ID.")
 	projectUpdateCmd.Flags().BoolVarP(&bgp, "bgp", "b", false, "True to enable BGP in a project.")
 	projectUpdateCmd.Flags().StringVarP(&name, "name", "", "", "Project name.")
-
-	projectUpdateCmd.MarkFlagRequired("project-id")
 
 	return projectUpdateCmd
 }

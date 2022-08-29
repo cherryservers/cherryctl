@@ -13,7 +13,7 @@ func (c *Client) List() *cobra.Command {
 	var teamID int
 	var types []string
 	planGetCmd := &cobra.Command{
-		Use:     `list [-t <team_id>] [--region-id <region_slug>] [--type]`,
+		Use:     `list [-t <team_id>] [--region-id <region_slug>] [--type <type>]`,
 		Aliases: []string{"get"},
 		Short:   "Retrieves list of plans details.",
 		Long:    "Retrieves the details of plans.",
