@@ -11,32 +11,36 @@ import (
 
 func (c *Client) Get() *cobra.Command {
 	var serverID int
-	var hostname string
 	var projectID int
 	serverGetCmd := &cobra.Command{
-		Use:   `get {-i <server_id> | --hostname} [-p <project_id>]`,
+		Args: func(cmd *cobra.Command, args []string) error {
+			if len(args) < 1 {
+				return errors.New("Server ID or Hostname must be given as positional argument")
+			}
+			return nil
+		},
+		Use:   `get {ID | HOSTNAME} [-p <project_id>]`,
 		Short: "Retrieves server details.",
 		Long:  "Retrieves the details of the specified server.",
 		Example: `  # Gets the details of the specified server:
-  cherryctl server get -i 12345`,
+  cherryctl server get 12345`,
 
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cmd.SilenceUsage = true
 
-			if hostname == "" && serverID == 0 {
-				return fmt.Errorf("either server-id or hostname should be set")
-			}
-			if hostname != "" {
-				srvID, err := utils.ServerHostnameToID(hostname, projectID, c.Service)
+			if srvID, err := strconv.Atoi(args[0]); err == nil {
+				serverID = srvID
+			} else {
+				srvID, err := utils.ServerHostnameToID(args[0], projectID, c.Service)
 				if err != nil {
-					return errors.Wrap(err, "Could not get a Server")
+					return errors.Wrap(err, "Server with hostname %s was not found")
 				}
 				serverID = srvID
 			}
 
 			s, _, err := c.Service.Get(serverID, c.Servicer.GetOptions())
 			if err != nil {
-				return errors.Wrap(err, "Could not get Server")
+				return errors.Wrap(err, "Could not get a Server")
 			}
 			header := []string{"ID", "Plan", "Hostname", "Image", "State", "Public IP", "Private IP", "Region", "Tags", "Spot"}
 			data := make([][]string, 1)
@@ -46,11 +50,7 @@ func (c *Client) Get() *cobra.Command {
 		},
 	}
 
-	serverGetCmd.Flags().IntVarP(&serverID, "server-id", "i", 0, "The ID of a server.")
-	serverGetCmd.Flags().StringVarP(&hostname, "hostname", "", "", "The Hostname of a server.")
 	serverGetCmd.Flags().IntVarP(&projectID, "project-id", "p", 0, "The project's ID.")
-
-	serverGetCmd.MarkFlagsMutuallyExclusive("server-id", "hostname")
 
 	return serverGetCmd
 }

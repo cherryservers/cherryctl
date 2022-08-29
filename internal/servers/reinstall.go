@@ -2,6 +2,7 @@ package servers
 
 import (
 	"fmt"
+	"strconv"
 
 	"github.com/cherryservers/cherrygo/v3"
 	"github.com/pkg/errors"
@@ -10,7 +11,6 @@ import (
 
 func (c *Client) Reinstall() *cobra.Command {
 	var (
-		serverID        int
 		hostname        string
 		image           string
 		password        string
@@ -19,11 +19,12 @@ func (c *Client) Reinstall() *cobra.Command {
 	)
 
 	reinstallServerCmd := &cobra.Command{
-		Use:   `reinstall -i <server_id> --hostname --image <image_slug> --password <password> [--ssh-keys <ssh_key_ids>] [--os-partition-size <size>]`,
+		Use:   `reinstall ID --hostname <hostname> --image <image_slug> --password <password> [--ssh-keys <ssh_key_ids>] [--os-partition-size <size>]`,
+		Args:  cobra.ExactArgs(1),
 		Short: "Reinstall a server.",
 		Long:  "Reinstall the specified server.",
 		Example: `  # Reinstall the specified server:
-  cherryctl server reinstall -i 12345 -h staging-server-1 --image ubuntu_20_04 --password G1h2e_39Q9oT`,
+  cherryctl server reinstall 12345 -hostname staging-server-1 --image ubuntu_20_04 --password G1h2e_39Q9oT`,
 
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cmd.SilenceUsage = true
@@ -36,24 +37,27 @@ func (c *Client) Reinstall() *cobra.Command {
 				OSPartitionSize: osPartitionSize,
 			}
 
-			_, _, err := c.Service.Reinstall(serverID, request)
-			if err != nil {
-				return errors.Wrap(err, "Could not reinstall Server")
+			if serverID, err := strconv.Atoi(args[0]); err == nil {
+				_, _, err := c.Service.Reinstall(serverID, request)
+				if err != nil {
+					return errors.Wrap(err, "Could not reinstall a Server.")
+				}
+
+				fmt.Println("Server", serverID, "reinstall has been started.")
+				return nil
 			}
 
-			fmt.Println("Server", serverID, "reinstall has been started.")
+			fmt.Println("Server with ID %s was not found.", args[0])
 			return nil
 		},
 	}
 
-	reinstallServerCmd.Flags().IntVarP(&serverID, "server-id", "i", 0, "The ID of a server.")
 	reinstallServerCmd.Flags().StringVarP(&hostname, "hostname", "", "", "Hostname.")
 	reinstallServerCmd.Flags().StringVarP(&image, "image", "", "", "Operating system slug for the server.")
 	reinstallServerCmd.Flags().StringVarP(&password, "password", "", "", "Server password.")
 	reinstallServerCmd.Flags().StringSliceVarP(&sshKeys, "ssh-keys", "", []string{}, "Comma separated list of SSH key IDs to be embed in the Server.")
 	reinstallServerCmd.Flags().IntVarP(&osPartitionSize, "os-partition-size", "", 0, "OS partition size in GB.")
 
-	_ = reinstallServerCmd.MarkFlagRequired("server-id")
 	_ = reinstallServerCmd.MarkFlagRequired("hostname")
 	_ = reinstallServerCmd.MarkFlagRequired("image")
 	_ = reinstallServerCmd.MarkFlagRequired("password")

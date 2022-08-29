@@ -2,34 +2,37 @@ package servers
 
 import (
 	"fmt"
+	"strconv"
 
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 )
 
 func (c *Client) Reboot() *cobra.Command {
-	var serverID int
 	rebootServerCmd := &cobra.Command{
-		Use:   `reboot -i <server_id>`,
+		Use:   `reboot ID`,
+		Args:  cobra.ExactArgs(1),
 		Short: "Reboot a server.",
 		Long:  "Reboot the specified server.",
 		Example: `  # Reboot the specified server:
-  cherryctl server reboot -i 12345`,
+  cherryctl server reboot 12345`,
 
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cmd.SilenceUsage = true
-			_, _, err := c.Service.Reboot(serverID)
-			if err != nil {
-				return errors.Wrap(err, "Could not reboot a Server")
+			if serverID, err := strconv.Atoi(args[0]); err == nil {
+				_, _, err := c.Service.Reboot(serverID)
+				if err != nil {
+					return errors.Wrap(err, "Could not reboot a Server")
+				}
+
+				fmt.Println("Server", serverID, "successfully rebooted.")
+				return nil
 			}
 
-			fmt.Println("Server", serverID, "successfully rebooted.")
+			fmt.Println("Server with ID %s was not found", args[0])
 			return nil
 		},
 	}
-
-	rebootServerCmd.Flags().IntVarP(&serverID, "server-id", "i", 0, "The ID of a server.")
-	_ = rebootServerCmd.MarkFlagRequired("server-id")
 
 	return rebootServerCmd
 }

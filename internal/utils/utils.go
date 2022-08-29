@@ -17,6 +17,10 @@ func BoolToYesNo(b bool) string {
 }
 
 func ServerHostnameToID(hostname string, projectID int, ServerService cherrygo.ServersService) (int, error) {
+	if projectID == 0 {
+		return 0, fmt.Errorf("Project ID must be set")
+	}
+
 	serversList, err := serverList(projectID, ServerService)
 	for _, s := range serversList {
 		if strings.EqualFold(hostname, s.Hostname) {

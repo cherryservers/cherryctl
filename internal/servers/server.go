@@ -35,6 +35,7 @@ func (c *Client) NewCommand() *cobra.Command {
 		c.Get(),
 		c.List(),
 		c.Create(),
+		c.Update(),
 		c.Start(),
 		c.Stop(),
 		c.Reboot(),
