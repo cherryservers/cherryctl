@@ -104,7 +104,7 @@ cherryctl plan list
 ### List plan images
 
 ```sh
-cherryctl image list --plan [plna_slug]
+cherryctl image list --plan [plan_slug]
 ```
 
 ### List regions
