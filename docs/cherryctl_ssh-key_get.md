@@ -7,21 +7,20 @@ Retrieves ssh-key details.
 Retrieves the details of the specified ssh-key.
 
 ```
-cherryctl ssh-key get [-i <ssh_key_id>] [flags]
+cherryctl ssh-key get ID [flags]
 ```
 
 ### Examples
 
 ```
   # Gets the details of the specified ssh-key:
-  cherryctl ssh-key get -i 12345
+  cherryctl ssh-key get 12345
 ```
 
 ### Options
 
 ```
-  -h, --help             help for get
-  -i, --ssh-key-id int   The ID of ssh-key.
+  -h, --help   help for get
 ```
 
 ### Options inherited from parent commands

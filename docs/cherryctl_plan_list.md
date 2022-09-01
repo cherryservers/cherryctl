@@ -7,7 +7,7 @@ Retrieves list of plans details.
 Retrieves the details of plans.
 
 ```
-cherryctl plan list [-t <team_id>] [--region-id <region_slug>] [--type] [flags]
+cherryctl plan list [-t <team_id>] [--region-id <region_slug>] [--type <type>] [flags]
 ```
 
 ### Examples

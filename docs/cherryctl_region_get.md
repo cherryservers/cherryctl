@@ -7,21 +7,20 @@ Retrieves region details.
 Retrieves the details of the specified region.
 
 ```
-cherryctl region get [-i <region_slug>] [flags]
+cherryctl region get {ID | SLUG} [flags]
 ```
 
 ### Examples
 
 ```
   # Gets the details of the specified region:
-  cherryctl region get -i eu_nord_1
+  cherryctl region get eu_nord_1
 ```
 
 ### Options
 
 ```
-  -h, --help               help for get
-  -i, --region-id string   The Slug or ID of region.
+  -h, --help   help for get
 ```
 
 ### Options inherited from parent commands

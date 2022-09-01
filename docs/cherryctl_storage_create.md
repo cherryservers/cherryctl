@@ -7,7 +7,7 @@ Create storage.
 Create storage in speficied project.
 
 ```
-cherryctl storage create [-p <project_id>] --size <gigabytes> --region <region_slug> [--description] [flags]
+cherryctl storage create [-p <project_id>] --size <gigabytes> --region <region_slug> [--description <text>] [flags]
 ```
 
 ### Examples

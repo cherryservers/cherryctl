@@ -7,14 +7,14 @@ Update storage volume.
 Update storage size or description.
 
 ```
-cherryctl storage update -i <storage_id> [--size <gigabytes>] [--description] [flags]
+cherryctl storage update ID [--size <gigabytes>] [--description <text>] [flags]
 ```
 
 ### Examples
 
 ```
   # Update storage size to 1000 gigabyte:
-  cherryctl storage update -i 12345 --size 1000
+  cherryctl storage update 12345 --size 1000
 ```
 
 ### Options
@@ -23,7 +23,6 @@ cherryctl storage update -i <storage_id> [--size <gigabytes>] [--description] [f
       --description string   Storage description.
   -h, --help                 help for update
       --size int             Storage volume size in gigabytes. Value must be greater than current volume size.
-  -i, --storage-id int       The storage's ID.
 ```
 
 ### Options inherited from parent commands

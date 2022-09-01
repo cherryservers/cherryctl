@@ -7,19 +7,19 @@ Delete a project.
 Deletes the specified project with a confirmation prompt. To skip the confirmation use --force.
 
 ```
-cherryctl project delete -p <project_id> [flags]
+cherryctl project delete ID [flags]
 ```
 
 ### Examples
 
 ```
   # Deletes the specified project:
-  cherryctl project delete -p 12345
+  cherryctl project delete 12345
   >
   ✔ Are you sure you want to delete project 12345: y
   		
   # Deletes a project, skipping confirmation:
-  cherryctl project delete -f -p 12345
+  cherryctl project delete 12345 -f
 ```
 
 ### Options

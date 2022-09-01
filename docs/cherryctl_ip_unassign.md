@@ -7,21 +7,20 @@ Unassign an IP address.
 Unassign an IP address.
 
 ```
-cherryctl ip unassign -i <ip_address_id> [flags]
+cherryctl ip unassign UUID [flags]
 ```
 
 ### Examples
 
 ```
   # Unassign an IP address:
-		cherryctl ip unassign -i 12345
+		cherryctl ip unassign 30c15082-a06e-4c43-bfc3-252616b46eba
 ```
 
 ### Options
 
 ```
-  -h, --help                   help for unassign
-  -i, --ip-address-id string   The ID of an IP address.
+  -h, --help   help for unassign
 ```
 
 ### Options inherited from parent commands

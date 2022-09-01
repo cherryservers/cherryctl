@@ -7,14 +7,14 @@ Update a team.
 Update a team.
 
 ```
-cherryctl team update [-t <team_id>] [--name <team_name>] [--currency <currency_code>] [--type <team_type>] [flags]
+cherryctl team update ID [-t <team_id>] [--name <team_name>] [--currency <currency_code>] [--type <team_type>] [flags]
 ```
 
 ### Examples
 
 ```
   # Update a team to change currency to EUR:
-  cherryctl team update -t 12345 --currency EUR
+  cherryctl team update 12345 --currency EUR
 ```
 
 ### Options

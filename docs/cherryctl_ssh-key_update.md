@@ -7,14 +7,14 @@ Updates an SSH key.
 Updates an SSH key with either a new public key, a new label, or both.
 
 ```
-cherryctl ssh-key update -i <ssh_key_id> [--label] [--key <public_key>] [flags]
+cherryctl ssh-key update -i <ssh_key_id> [--label <text>] [--key <public_key>] [flags]
 ```
 
 ### Examples
 
 ```
   # Update team to change currency to EUR:
-  cherryctl ssh-key update -i 12345 --key AAAAB3N...user@domain.com
+  cherryctl ssh-key update 12345 --key AAAAB3N...user@domain.com
 ```
 
 ### Options

@@ -7,21 +7,20 @@ Retrieves storage details.
 Retrieves the details of the specified storage.
 
 ```
-cherryctl storage get [-i <storage_id>] [flags]
+cherryctl storage get ID [flags]
 ```
 
 ### Examples
 
 ```
   # Gets the details of the specified storage:
-  cherryctl storage get -i 12345
+  cherryctl storage get 12345
 ```
 
 ### Options
 
 ```
-  -h, --help             help for get
-  -i, --storage-id int   The ID of a storage volume.
+  -h, --help   help for get
 ```
 
 ### Options inherited from parent commands

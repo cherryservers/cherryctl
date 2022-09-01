@@ -7,21 +7,20 @@ Assign an IP address to a specified server or other IP address.
 Assign an IP address to a specified server or another IP address. IP address assignment to another IP is possible only if routed IP type is floating and target IP is subnet or primary-ip type.
 
 ```
-cherryctl ip assign -i <ip_address_id> {--target-hostname | --target-id | --target-ip-id} [-p <project_id>] [flags]
+cherryctl ip assign UUID {--target-hostname <hostname> | --target-id <server_id> | --target-ip-id <ip_id>} [-p <project_id>] [flags]
 ```
 
 ### Examples
 
 ```
   # Assign an IP address to a server:
-  cherryctl ip assign -i 30c15082-a06e-4c43-bfc3-252616b46eba --server-id 12345
+  cherryctl ip assign 30c15082-a06e-4c43-bfc3-252616b46eba --server-id 12345
 ```
 
 ### Options
 
 ```
   -h, --help                     help for assign
-  -i, --ip-address-id string     The ID of a IP address.
   -p, --project-id int           The project's ID.
       --target-hostname string   The hostname of the server to assign IP to.
       --target-id int            The ID of the server to assign IP to.

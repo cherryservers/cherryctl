@@ -7,27 +7,26 @@ Delete a storage.
 Deletes the specified storage with a confirmation prompt. To skip the confirmation use --force.
 
 ```
-cherryctl storage delete -i <storage_id> [flags]
+cherryctl storage delete ID [flags]
 ```
 
 ### Examples
 
 ```
   # Deletes the specified storage:
-  cherryctl storage delete -i 12345
+  cherryctl storage delete 12345
   >
   ✔ Are you sure you want to delete storage 12345: y
   		
   # Deletes a storage, skipping confirmation:
-  cherryctl storage delete -f -i 12345
+  cherryctl storage delete 12345 -f
 ```
 
 ### Options
 
 ```
-  -f, --force            Skips confirmation for the storage deletion.
-  -h, --help             help for delete
-  -i, --storage-id int   The ID of a storage volume.
+  -f, --force   Skips confirmation for the storage deletion.
+  -h, --help    help for delete
 ```
 
 ### Options inherited from parent commands

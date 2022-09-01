@@ -7,14 +7,14 @@ Attach storage volume to a specified server.
 Attach storage volume to a specified server.
 
 ```
-cherryctl storage attach -i <storage_id> {--server-id | --server-hostname} [-p <project_id>] [flags]
+cherryctl storage attach ID {--server-id <id> | --server-hostname <hostname>} [-p <project_id>] [flags]
 ```
 
 ### Examples
 
 ```
   # Attach storage to specified server:
-  cherryctl storage attach -i 12345 -s 12345
+  cherryctl storage attach 12345 --server-id 12345
 ```
 
 ### Options
@@ -24,7 +24,6 @@ cherryctl storage attach -i <storage_id> {--server-id | --server-hostname} [-p <
   -p, --project-id int           The project's ID.
       --server-hostname string   The Hostname of a server.
   -s, --server-id int            The server's ID.
-  -i, --storage-id int           The storage's ID.
 ```
 
 ### Options inherited from parent commands

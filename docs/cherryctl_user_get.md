@@ -7,7 +7,7 @@ Retrieves information about the current user or a specified user.
 Returns either information about the current user or information about a specified user. Specified user information is only available if that user shares a project with the current user.
 
 ```
-cherryctl user get [-i <user_id>] [flags]
+cherryctl user get ID [flags]
 ```
 
 ### Examples
@@ -17,14 +17,13 @@ cherryctl user get [-i <user_id>] [flags]
 		cherryctl user get
 		
 		# Returns information on user with ID 123:
-		cherryctl user get -i 123
+		cherryctl user get 123
 ```
 
 ### Options
 
 ```
-  -h, --help          help for get
-  -i, --user-id int   The ID of the user.
+  -h, --help   help for get
 ```
 
 ### Options inherited from parent commands

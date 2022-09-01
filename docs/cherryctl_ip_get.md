@@ -7,21 +7,20 @@ Get an IP address details.
 Get the details of the specified IP address.
 
 ```
-cherryctl ip get [-i <ip_address_id>] [flags]
+cherryctl ip get UUID [flags]
 ```
 
 ### Examples
 
 ```
   # Gets the details of the specified IP address:
-  cherryctl ip get -i 12345
+  cherryctl ip get 30c15082-a06e-4c43-bfc3-252616b46eba
 ```
 
 ### Options
 
 ```
-  -h, --help                   help for get
-  -i, --ip-address-id string   The ID of a IP address.
+  -h, --help   help for get
 ```
 
 ### Options inherited from parent commands

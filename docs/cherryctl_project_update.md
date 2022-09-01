@@ -7,14 +7,14 @@ Update a project.
 Update a project.
 
 ```
-cherryctl project update [-p <project_id>] [--name <project_name>] [--bgp <bool>] [flags]
+cherryctl project update ID [-p <project_id>] [--name <project_name>] [--bgp <bool>] [flags]
 ```
 
 ### Examples
 
 ```
   # Update project to enable BGP:
-  cherryctl project update -p 12345 --bgp true
+  cherryctl project update 12345 --bgp true
 ```
 
 ### Options

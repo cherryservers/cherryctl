@@ -7,14 +7,14 @@ Delete a team.
 Deletes the specified team with a confirmation prompt. To skip the confirmation use --force.
 
 ```
-cherryctl team delete -t <team_id> [flags]
+cherryctl team delete ID -t <team_id> [flags]
 ```
 
 ### Examples
 
 ```
   # Deletes the specified team:
-  cherryctl team delete -t 12345
+  cherryctl team delete 12345
   >
   ✔ Are you sure you want to delete team 12345: y
   		

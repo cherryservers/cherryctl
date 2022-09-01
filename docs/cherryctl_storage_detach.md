@@ -7,21 +7,20 @@ Detach storage volume from a server.
 Detach storage volume from a server.
 
 ```
-cherryctl storage detach -i <storage_id> [flags]
+cherryctl storage detach ID [flags]
 ```
 
 ### Examples
 
 ```
   # Detach storage:
-  cherryctl storage detach -i 12345
+  cherryctl storage detach 12345
 ```
 
 ### Options
 
 ```
-  -h, --help             help for detach
-  -i, --storage-id int   The storage's ID.
+  -h, --help   help for detach
 ```
 
 ### Options inherited from parent commands
