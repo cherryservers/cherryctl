@@ -17,11 +17,20 @@ func (c *Client) Update() *cobra.Command {
 		teamType string
 	)
 	teamUpdateCmd := &cobra.Command{
-		Use:   `update [-t <team_id>] [--name <team_name>] [--currency <currency_code>] [--type <team_type>]`,
+		Use: `update ID [-t <team_id>] [--name <team_name>] [--currency <currency_code>] [--type <team_type>]`,
+		Args: func(cmd *cobra.Command, args []string) error {
+			if len(args) > 0 {
+				tID, err := strconv.Atoi(args[0])
+				if err == nil {
+					teamID = tID
+				}
+			}
+			return nil
+		},
 		Short: "Update a team.",
 		Long:  "Update a team.",
 		Example: `  # Update a team to change currency to EUR:
-  cherryctl team update -t 12345 --currency EUR`,
+  cherryctl team update 12345 --currency EUR`,
 
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cmd.SilenceUsage = true
@@ -57,8 +66,6 @@ func (c *Client) Update() *cobra.Command {
 	teamUpdateCmd.Flags().StringVarP(&currency, "currency", "", "", "Team currency, available otions: EUR, USD.")
 	teamUpdateCmd.Flags().StringVarP(&teamType, "type", "", "", "Team type, available options: personal, business.")
 	teamUpdateCmd.Flags().StringVarP(&name, "name", "", "", "Team name.")
-
-	teamUpdateCmd.MarkFlagRequired("team-id")
 
 	return teamUpdateCmd
 }

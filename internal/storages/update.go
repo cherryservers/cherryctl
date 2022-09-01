@@ -16,14 +16,18 @@ func (c *Client) Update() *cobra.Command {
 		description string
 	)
 	storageUpdateCmd := &cobra.Command{
-		Use:   `update -i <storage_id> [--size <gigabytes>] [--description]`,
+		Use:   `update ID [--size <gigabytes>] [--description <text>]`,
+		Args:  cobra.ExactArgs(1),
 		Short: "Update storage volume.",
 		Long:  "Update storage size or description.",
 		Example: `  # Update storage size to 1000 gigabyte:
-  cherryctl storage update -i 12345 --size 1000`,
+  cherryctl storage update 12345 --size 1000`,
 
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cmd.SilenceUsage = true
+			if storID, err := strconv.Atoi(args[0]); err == nil {
+				storageID = storID
+			}
 			request := &cherrygo.UpdateStorage{
 				StorageID:   storageID,
 				Size:        size,
@@ -43,11 +47,8 @@ func (c *Client) Update() *cobra.Command {
 		},
 	}
 
-	storageUpdateCmd.Flags().IntVarP(&storageID, "storage-id", "i", 0, "The storage's ID.")
 	storageUpdateCmd.Flags().IntVarP(&size, "size", "", 0, "Storage volume size in gigabytes. Value must be greater than current volume size.")
 	storageUpdateCmd.Flags().StringVarP(&description, "description", "", "", "Storage description.")
-
-	storageUpdateCmd.MarkFlagRequired("storage-id")
 
 	return storageUpdateCmd
 }

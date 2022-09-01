@@ -2,6 +2,7 @@ package storages
 
 import (
 	"fmt"
+	"strconv"
 
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
@@ -12,14 +13,18 @@ func (c *Client) Detach() *cobra.Command {
 		storageID int
 	)
 	storageDetachCmd := &cobra.Command{
-		Use:   `detach -i <storage_id>`,
+		Use:   `detach ID`,
+		Args:  cobra.ExactArgs(1),
 		Short: "Detach storage volume from a server.",
 		Long:  "Detach storage volume from a server.",
 		Example: `  # Detach storage:
-  cherryctl storage detach -i 12345`,
+  cherryctl storage detach 12345`,
 
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cmd.SilenceUsage = true
+			if storID, err := strconv.Atoi(args[0]); err == nil {
+				storageID = storID
+			}
 
 			_, err := c.Service.Detach(storageID)
 			if err != nil {
@@ -30,10 +35,6 @@ func (c *Client) Detach() *cobra.Command {
 			return nil
 		},
 	}
-
-	storageDetachCmd.Flags().IntVarP(&storageID, "storage-id", "i", 0, "The storage's ID.")
-
-	storageDetachCmd.MarkFlagRequired("storage-id")
 
 	return storageDetachCmd
 }

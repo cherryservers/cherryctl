@@ -11,14 +11,18 @@ import (
 func (c *Client) Get() *cobra.Command {
 	var storageID int
 	storagesGetCmd := &cobra.Command{
-		Use:   `get [-i <storage_id>]`,
+		Use:   `get ID`,
+		Args:  cobra.ExactArgs(1),
 		Short: "Retrieves storage details.",
 		Long:  "Retrieves the details of the specified storage.",
 		Example: `  # Gets the details of the specified storage:
-  cherryctl storage get -i 12345`,
+  cherryctl storage get 12345`,
 
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cmd.SilenceUsage = true
+			if storID, err := strconv.Atoi(args[0]); err == nil {
+				storageID = storID
+			}
 			getOptions := c.Servicer.GetOptions()
 			getOptions.Fields = []string{"storage", "region", "id", "hostname"}
 			o, _, err := c.Service.Get(storageID, getOptions)
@@ -33,9 +37,6 @@ func (c *Client) Get() *cobra.Command {
 			return c.Out.Output(o, header, &data)
 		},
 	}
-
-	storagesGetCmd.Flags().IntVarP(&storageID, "storage-id", "i", 0, "The ID of a storage volume.")
-	_ = storagesGetCmd.MarkFlagRequired("storage-id")
 
 	return storagesGetCmd
 }

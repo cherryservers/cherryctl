@@ -2,6 +2,7 @@ package storages
 
 import (
 	"fmt"
+	"strconv"
 
 	"github.com/manifoldco/promptui"
 	"github.com/pkg/errors"
@@ -12,19 +13,23 @@ func (c *Client) Delete() *cobra.Command {
 	var storageID int
 	var force bool
 	deleteStorageCmd := &cobra.Command{
-		Use:   `delete -i <storage_id>`,
+		Use:   `delete ID`,
+		Args:  cobra.ExactArgs(1),
 		Short: "Delete a storage.",
 		Long:  "Deletes the specified storage with a confirmation prompt. To skip the confirmation use --force.",
 		Example: `  # Deletes the specified storage:
-  cherryctl storage delete -i 12345
+  cherryctl storage delete 12345
   >
   ✔ Are you sure you want to delete storage 12345: y
   		
   # Deletes a storage, skipping confirmation:
-  cherryctl storage delete -f -i 12345`,
+  cherryctl storage delete 12345 -f`,
 
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cmd.SilenceUsage = true
+			if storID, err := strconv.Atoi(args[0]); err == nil {
+				storageID = storID
+			}
 			if !force {
 				prompt := promptui.Prompt{
 					Label:     fmt.Sprintf("Are you sure you want to delete storage %d? ", storageID),
@@ -47,10 +52,7 @@ func (c *Client) Delete() *cobra.Command {
 		},
 	}
 
-	deleteStorageCmd.Flags().IntVarP(&storageID, "storage-id", "i", 0, "The ID of a storage volume.")
 	deleteStorageCmd.Flags().BoolVarP(&force, "force", "f", false, "Skips confirmation for the storage deletion.")
-
-	_ = deleteStorageCmd.MarkFlagRequired("storage-id")
 
 	return deleteStorageCmd
 }

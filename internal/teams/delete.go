@@ -2,6 +2,7 @@ package teams
 
 import (
 	"fmt"
+	"strconv"
 
 	"github.com/manifoldco/promptui"
 	"github.com/pkg/errors"
@@ -12,11 +13,20 @@ func (c *Client) Delete() *cobra.Command {
 	var teamID int
 	var force bool
 	deleteTeamCmd := &cobra.Command{
-		Use:   `delete -t <team_id>`,
+		Use: `delete ID -t <team_id>`,
+		Args: func(cmd *cobra.Command, args []string) error {
+			if len(args) > 0 {
+				tID, err := strconv.Atoi(args[0])
+				if err == nil {
+					teamID = tID
+				}
+			}
+			return nil
+		},
 		Short: "Delete a team.",
 		Long:  "Deletes the specified team with a confirmation prompt. To skip the confirmation use --force.",
 		Example: `  # Deletes the specified team:
-  cherryctl team delete -t 12345
+  cherryctl team delete 12345
   >
   ✔ Are you sure you want to delete team 12345: y
   		
@@ -48,8 +58,6 @@ func (c *Client) Delete() *cobra.Command {
 
 	deleteTeamCmd.Flags().IntVarP(&teamID, "team-id", "t", 0, "The ID of a team.")
 	deleteTeamCmd.Flags().BoolVarP(&force, "force", "f", false, "Skips confirmation for the tean deletion.")
-
-	_ = deleteTeamCmd.MarkFlagRequired("team-id")
 
 	return deleteTeamCmd
 }

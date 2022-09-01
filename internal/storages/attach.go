@@ -2,6 +2,7 @@ package storages
 
 import (
 	"fmt"
+	"strconv"
 
 	"github.com/cherryservers/cherryctl/internal/utils"
 	"github.com/cherryservers/cherrygo/v3"
@@ -17,14 +18,18 @@ func (c *Client) Attach() *cobra.Command {
 		projectID      int
 	)
 	storageAttachCmd := &cobra.Command{
-		Use:   `attach -i <storage_id> {--server-id | --server-hostname} [-p <project_id>]`,
+		Use:   `attach ID {--server-id <id> | --server-hostname <hostname>} [-p <project_id>]`,
+		Args:  cobra.ExactArgs(1),
 		Short: "Attach storage volume to a specified server.",
 		Long:  "Attach storage volume to a specified server.",
 		Example: `  # Attach storage to specified server:
-  cherryctl storage attach -i 12345 -s 12345`,
+  cherryctl storage attach 12345 --server-id 12345`,
 
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cmd.SilenceUsage = true
+			if storID, err := strconv.Atoi(args[0]); err == nil {
+				storageID = storID
+			}
 
 			if serverHostname == "" && serverID == 0 {
 				return fmt.Errorf("either server-id or server-hostname should be set")
@@ -52,14 +57,11 @@ func (c *Client) Attach() *cobra.Command {
 		},
 	}
 
-	storageAttachCmd.Flags().IntVarP(&storageID, "storage-id", "i", 0, "The storage's ID.")
 	storageAttachCmd.Flags().IntVarP(&serverID, "server-id", "s", 0, "The server's ID.")
 	storageAttachCmd.Flags().StringVarP(&serverHostname, "server-hostname", "", "", "The Hostname of a server.")
 	storageAttachCmd.Flags().IntVarP(&projectID, "project-id", "p", 0, "The project's ID.")
 
 	storageAttachCmd.MarkFlagsMutuallyExclusive("server-id", "server-hostname")
-
-	storageAttachCmd.MarkFlagRequired("storage-id")
 
 	return storageAttachCmd
 }

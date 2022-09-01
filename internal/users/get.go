@@ -12,19 +12,22 @@ import (
 func (c *Client) Get() *cobra.Command {
 	var userID int
 	userGetCmd := &cobra.Command{
-		Use:   `get [-i <user_id>]`,
+		Use:   `get ID`,
+		Args:  cobra.ExactArgs(1),
 		Short: "Retrieves information about the current user or a specified user.",
 		Long:  "Returns either information about the current user or information about a specified user. Specified user information is only available if that user shares a project with the current user.",
 		Example: `  # Gets the current user's information:
 		cherryctl user get
 		
 		# Returns information on user with ID 123:
-		cherryctl user get -i 123`,
+		cherryctl user get 123`,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cmd.SilenceUsage = true
 			var user cherrygo.User
 			var err error
-
+			if uID, err := strconv.Atoi(args[0]); err == nil {
+				userID = uID
+			}
 			if userID == 0 {
 				user, _, err = c.Service.CurrentUser(c.Servicer.GetOptions())
 				if err != nil {
@@ -45,8 +48,6 @@ func (c *Client) Get() *cobra.Command {
 			return c.Out.Output(user, header, &data)
 		},
 	}
-
-	userGetCmd.Flags().IntVarP(&userID, "user-id", "i", 0, "The ID of the user.")
 
 	return userGetCmd
 }

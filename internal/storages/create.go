@@ -17,7 +17,7 @@ func (c *Client) Create() *cobra.Command {
 		region      string
 	)
 	storageCreateCmd := &cobra.Command{
-		Use:   `create [-p <project_id>] --size <gigabytes> --region <region_slug> [--description]`,
+		Use:   `create [-p <project_id>] --size <gigabytes> --region <region_slug> [--description <text>]`,
 		Short: "Create storage.",
 		Long:  "Create storage in speficied project.",
 		Example: `  # Create storage volume with 500GB space in EU-Nord-1 location:

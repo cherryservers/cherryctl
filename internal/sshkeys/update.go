@@ -15,14 +15,18 @@ func (c *Client) Update() *cobra.Command {
 		publicKey string
 	)
 	sshKeyUpdateCmd := &cobra.Command{
-		Use:   `update -i <ssh_key_id> [--label] [--key <public_key>]`,
+		Use:   `update -i <ssh_key_id> [--label <text>] [--key <public_key>]`,
+		Args:  cobra.ExactArgs(1),
 		Short: "Updates an SSH key.",
 		Long:  "Updates an SSH key with either a new public key, a new label, or both.",
 		Example: `  # Update team to change currency to EUR:
-  cherryctl ssh-key update -i 12345 --key AAAAB3N...user@domain.com`,
+  cherryctl ssh-key update 12345 --key AAAAB3N...user@domain.com`,
 
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cmd.SilenceUsage = true
+			if sshID, err := strconv.Atoi(args[0]); err == nil {
+				sshKeyID = sshID
+			}
 			request := &cherrygo.UpdateSSHKey{}
 
 			if label != "" {
