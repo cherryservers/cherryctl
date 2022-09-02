@@ -122,5 +122,5 @@ cherryctl server create --plan [plan_slug] -h [hostname] --image [os_slug] --reg
 ### Get a device
 
 ```sh
-cherryctl server get -i [server_ID]
+cherryctl server get [server_ID]
 ```
