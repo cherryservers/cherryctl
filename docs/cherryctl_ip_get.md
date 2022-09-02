@@ -7,7 +7,7 @@ Get an IP address details.
 Get the details of the specified IP address.
 
 ```
-cherryctl ip get UUID [flags]
+cherryctl ip get ID [flags]
 ```
 
 ### Examples

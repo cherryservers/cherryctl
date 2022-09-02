@@ -18,7 +18,7 @@ func (c *Client) Assign() *cobra.Command {
 		targetHostname string
 	)
 	ipAssignCmd := &cobra.Command{
-		Use:     `assign UUID {--target-hostname <hostname> | --target-id <server_id> | --target-ip-id <ip_id>} [-p <project_id>]`,
+		Use:     `assign ID {--target-hostname <hostname> | --target-id <server_id> | --target-ip-id <ip_id>} [-p <project_id>]`,
 		Args:    cobra.ExactArgs(1),
 		Aliases: []string{"attach"},
 		Short:   "Assign an IP address to a specified server or other IP address.",

@@ -11,7 +11,7 @@ import (
 func (c *Client) Get() *cobra.Command {
 	var ipID string
 	ipGetCmd := &cobra.Command{
-		Use:   `get UUID`,
+		Use:   `get ID`,
 		Args:  cobra.ExactArgs(1),
 		Short: "Get an IP address details.",
 		Long:  "Get the details of the specified IP address.",

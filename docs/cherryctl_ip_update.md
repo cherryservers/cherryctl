@@ -7,7 +7,7 @@ Update IP address.
 Update tags, ptr record, a record or target server of a IP address.
 
 ```
-cherryctl ip update UUID [--ptr-record <ptr>] [--a-record <a>] [--tags <tags>] [flags]
+cherryctl ip update ID [--ptr-record <ptr>] [--a-record <a>] [--tags <tags>] [flags]
 ```
 
 ### Examples

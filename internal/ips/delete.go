@@ -13,7 +13,7 @@ func (c *Client) Delete() *cobra.Command {
 	var ipID string
 	var force bool
 	deleteIpCmd := &cobra.Command{
-		Use:   `delete UUID`,
+		Use:   `delete ID`,
 		Args:  cobra.ExactArgs(1),
 		Short: "Delete an IP address.",
 		Long:  "Deletes the specified IP address with a confirmation prompt. To skip the confirmation use --force.",

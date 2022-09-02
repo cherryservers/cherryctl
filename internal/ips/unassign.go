@@ -13,7 +13,7 @@ func (c *Client) Unassign() *cobra.Command {
 		ipID string
 	)
 	ipDetachCmd := &cobra.Command{
-		Use:     `unassign UUID`,
+		Use:     `unassign ID`,
 		Args:    cobra.ExactArgs(1),
 		Aliases: []string{"detach", "unasign"},
 		Short:   "Unassign an IP address.",

@@ -18,7 +18,7 @@ func (c *Client) Update() *cobra.Command {
 		tags      []string
 	)
 	ipUpdateCmd := &cobra.Command{
-		Use:   `update UUID [--ptr-record <ptr>] [--a-record <a>] [--tags <tags>]`,
+		Use:   `update ID [--ptr-record <ptr>] [--a-record <a>] [--tags <tags>]`,
 		Args:  cobra.ExactArgs(1),
 		Short: "Update IP address.",
 		Long:  "Update tags, ptr record, a record or target server of a IP address.",

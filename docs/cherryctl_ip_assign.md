@@ -7,7 +7,7 @@ Assign an IP address to a specified server or other IP address.
 Assign an IP address to a specified server or another IP address. IP address assignment to another IP is possible only if routed IP type is floating and target IP is subnet or primary-ip type.
 
 ```
-cherryctl ip assign UUID {--target-hostname <hostname> | --target-id <server_id> | --target-ip-id <ip_id>} [-p <project_id>] [flags]
+cherryctl ip assign ID {--target-hostname <hostname> | --target-id <server_id> | --target-ip-id <ip_id>} [-p <project_id>] [flags]
 ```
 
 ### Examples

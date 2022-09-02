@@ -7,7 +7,7 @@ Unassign an IP address.
 Unassign an IP address.
 
 ```
-cherryctl ip unassign UUID [flags]
+cherryctl ip unassign ID [flags]
 ```
 
 ### Examples

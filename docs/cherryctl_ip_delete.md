@@ -7,7 +7,7 @@ Delete an IP address.
 Deletes the specified IP address with a confirmation prompt. To skip the confirmation use --force.
 
 ```
-cherryctl ip delete UUID [flags]
+cherryctl ip delete ID [flags]
 ```
 
 ### Examples
