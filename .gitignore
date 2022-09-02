@@ -1,4 +1,4 @@
-._*
-*.linux
-*.mac
-*.windows
+.vscode/
+/cherryctl
+.DS_Store
+builds
