@@ -15,6 +15,7 @@ cherryctl
 * [Requirements](#requirements)
 * [Supported Platforms](#supported-platforms)
 * [Installation](#installation)
+  * [Install via Homebrew](#use-homebrew-to-install-cherryctl)
   * [Install binary from Source](#install-binary-from-source)
   * [Install binary from Release Download](#install-binary-from-release-download)
 * [Shell Completion](#shell-completion)
@@ -37,6 +38,13 @@ The Cherry Servers CLI wraps the [Cherry Servers Go SDK](https://github.com/cher
 The [Cherry Servers CLI binaries](https://github.com/cherryservers/cherryctl/releases) are available for Linux, Windows, and Mac OS X for various architectures including ARM.
 
 ## Installation
+
+### Use [Homebrew](https://brew.sh/) to install `cherryctl`
+
+```sh
+brew tap cherryservers/cherryctl
+brew install cherryctl
+```
 
 ### Install binary from Source
 
