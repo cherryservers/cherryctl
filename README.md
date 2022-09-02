@@ -15,6 +15,7 @@ cherryctl
 * [Requirements](#requirements)
 * [Supported Platforms](#supported-platforms)
 * [Installation](#installation)
+  * [Install via Homebrew](#use-homebrew-to-install-cherryctl)
   * [Install binary from Source](#install-binary-from-source)
   * [Install binary from Release Download](#install-binary-from-release-download)
 * [Shell Completion](#shell-completion)
