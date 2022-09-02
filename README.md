@@ -38,6 +38,13 @@ The [Cherry Servers CLI binaries](https://github.com/cherryservers/cherryctl/rel
 
 ## Installation
 
+### Use [Homebrew](https://brew.sh/) to install `cherryctl`
+
+```sh
+brew tap cherryservers/cherryctl
+brew install cherryctl
+```
+
 ### Install binary from Source
 
 If you have `go` 1.17 or later installed, you can build and install the latest development version with:
