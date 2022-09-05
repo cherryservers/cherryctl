@@ -7,6 +7,7 @@ import (
 	"path/filepath"
 	"strconv"
 	"syscall"
+	"text/tabwriter"
 
 	"github.com/cherryservers/cherrygo/v3"
 	"github.com/pkg/errors"
@@ -72,10 +73,43 @@ func (c *Client) NewCommand() *cobra.Command {
 				return errors.Wrap(err, "Invalid authentication token")
 			}
 
+			teams, _, err := cherryclient.Teams.List(&cherrygo.GetOptions{})
+			if err != nil {
+				return errors.Wrap(err, "Failed to get team list")
+			}
+			fmt.Printf("Choose Team ID from list below:")
+			tw := tabwriter.NewWriter(os.Stdout, 8, 8, 0, '\t', 0)
+			fmt.Fprintf(tw, "\n-------\t---------\t---------------\n")
+			fmt.Fprintf(tw, "Team ID\tTeam name\tRemaining credit\n")
+			fmt.Fprintf(tw, "-------\t---------\t---------------\n")
+
+			for _, t := range teams {
+				fmt.Fprintf(tw, "%v\t%v\t%v\n",
+					t.ID, t.Name, (t.Credit.Account.Remaining + t.Credit.Promo.Remaining))
+			}
+			tw.Flush()
+			fmt.Printf("\n")
 			fmt.Printf("Team ID: ")
 			userTeam := ""
 			fmt.Scanln(&userTeam)
 
+			teamID, _ := strconv.Atoi(userTeam)
+			projects, _, err := cherryclient.Projects.List(teamID, &cherrygo.GetOptions{})
+			if err != nil {
+				return errors.Wrap(err, "Failed to get project list")
+			}
+			fmt.Printf("Choose Project ID from list below:")
+			tw = tabwriter.NewWriter(os.Stdout, 8, 8, 0, '\t', 0)
+			fmt.Fprintf(tw, "\n-------\t---------\n")
+			fmt.Fprintf(tw, "Project ID\tProject name\n")
+			fmt.Fprintf(tw, "-------\t---------\n")
+
+			for _, p := range projects {
+				fmt.Fprintf(tw, "%v\t%v\n",
+					p.ID, p.Name)
+			}
+			tw.Flush()
+			fmt.Printf("\n")
 			fmt.Printf("Project ID: ")
 			userProj := ""
 			fmt.Scanln(&userProj)
