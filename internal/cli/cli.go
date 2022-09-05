@@ -52,7 +52,7 @@ func (c *Client) API(cmd *cobra.Command) *cherrygo.Client {
 	}
 
 	if c.apiClient == nil {
-		client, err := cherrygo.NewClient(cherrygo.WithAuthToken(c.cherryToken), cherrygo.WithUserAgent("cherry-cli"))
+		client, err := cherrygo.NewClient(cherrygo.WithAuthToken(c.cherryToken), cherrygo.WithUserAgent("cherry-cli/"+c.Version))
 		if err != nil {
 			return nil
 		}
