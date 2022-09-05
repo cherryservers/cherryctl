@@ -39,7 +39,7 @@ func (c *Client) List() *cobra.Command {
 			data := make([][]string, len(servers))
 
 			for i, s := range servers {
-				data[i] = []string{strconv.Itoa(s.ID), s.Name, s.Hostname, s.Image, s.State, getServerIPByType(s, "primary-ip"), getServerIPByType(s, "private-ip"), s.Region.Name, fmt.Sprintf("%v", s.Tags), utils.BoolToYesNo(s.SpotInstance)}
+				data[i] = []string{strconv.Itoa(s.ID), s.Name, s.Hostname, s.Image, s.State, getServerIPByType(s, "primary-ip"), getServerIPByType(s, "private-ip"), s.Region.Name, utils.FormatStringTags(&s.Tags), utils.BoolToYesNo(s.SpotInstance)}
 			}
 			header := []string{"ID", "Name", "Hostname", "Image", "State", "Public IP", "Private IP", "Region", "Tags", "Spot"}
 

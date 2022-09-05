@@ -1,8 +1,7 @@
 package ips
 
 import (
-	"fmt"
-
+	"github.com/cherryservers/cherryctl/internal/utils"
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 )
@@ -33,7 +32,7 @@ func (c *Client) List() *cobra.Command {
 			data := make([][]string, len(ips))
 
 			for i, ip := range ips {
-				data[i] = []string{ip.ID, ip.Address, ip.Cidr, ip.Type, ip.TargetedTo.Hostname, ip.Region.Name, ip.Region.Name, ip.PtrRecord, fmt.Sprintf("%v", ip.Tags)}
+				data[i] = []string{ip.ID, ip.Address, ip.Cidr, ip.Type, ip.TargetedTo.Hostname, ip.Region.Name, ip.Region.Name, ip.PtrRecord, utils.FormatStringTags(ip.Tags)}
 			}
 			header := []string{"ID", "Address", "Cidr", "Type", "Target", "Region", "PTR record", "A record", "Tags"}
 

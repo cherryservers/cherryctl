@@ -5,6 +5,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/cherryservers/cherryctl/internal/utils"
 	"github.com/cherryservers/cherrygo/v3"
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
@@ -61,9 +62,9 @@ func (c *Client) Update() *cobra.Command {
 				return errors.Wrap(err, "Could not update server")
 			}
 
-			header := []string{"ID", "Name", "Hostname", "Image", "State", "Region"}
+			header := []string{"ID", "Name", "Hostname", "Image", "State", "Region", "Tags"}
 			data := make([][]string, 1)
-			data[0] = []string{strconv.Itoa(s.ID), s.Name, s.Hostname, s.Image, s.State, s.Region.Name}
+			data[0] = []string{strconv.Itoa(s.ID), s.Name, s.Hostname, s.Image, s.State, s.Region.Name, utils.FormatStringTags(&s.Tags)}
 
 			return c.Out.Output(s, header, &data)
 		},
