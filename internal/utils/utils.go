@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"bytes"
 	"fmt"
 	"strings"
 
@@ -44,4 +45,14 @@ func serverList(projectID int, ServerService cherrygo.ServersService) ([]cherryg
 func IsValidUUID(u string) bool {
 	_, err := uuid.Parse(u)
 	return err == nil
+}
+
+func FormatStringTags(tags *map[string]string) string {
+	var buffer bytes.Buffer
+
+	for key, val := range *tags {
+		buffer.WriteString(key + ":" + val + " ")
+	}
+
+	return buffer.String()
 }

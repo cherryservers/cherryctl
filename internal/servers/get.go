@@ -1,7 +1,6 @@
 package servers
 
 import (
-	"fmt"
 	"strconv"
 
 	"github.com/cherryservers/cherryctl/internal/utils"
@@ -44,7 +43,7 @@ func (c *Client) Get() *cobra.Command {
 			}
 			header := []string{"ID", "Plan", "Hostname", "Image", "State", "Public IP", "Private IP", "Region", "Tags", "Spot"}
 			data := make([][]string, 1)
-			data[0] = []string{strconv.Itoa(s.ID), s.Plan.Name, s.Hostname, s.Image, s.State, getServerIPByType(s, "primary-ip"), getServerIPByType(s, "private-ip"), s.Region.Name, fmt.Sprintf("%v", s.Tags), utils.BoolToYesNo(s.SpotInstance)}
+			data[0] = []string{strconv.Itoa(s.ID), s.Plan.Name, s.Hostname, s.Image, s.State, getServerIPByType(s, "primary-ip"), getServerIPByType(s, "private-ip"), s.Region.Name, utils.FormatStringTags(&s.Tags), utils.BoolToYesNo(s.SpotInstance)}
 
 			return c.Out.Output(s, header, &data)
 		},

@@ -62,7 +62,7 @@ func (c *Client) Update() *cobra.Command {
 
 			header := []string{"ID", "Address", "Cidr", "Type", "Region", "PTR record", "A record", "Tags"}
 			data := make([][]string, 1)
-			data[0] = []string{i.ID, i.Address, i.Cidr, i.Type, i.Region.Name, i.PtrRecord, i.ARecord, fmt.Sprintf("%v", i.Tags)}
+			data[0] = []string{i.ID, i.Address, i.Cidr, i.Type, i.Region.Name, i.PtrRecord, i.ARecord, utils.FormatStringTags(i.Tags)}
 
 			return c.Out.Output(i, header, &data)
 		},
