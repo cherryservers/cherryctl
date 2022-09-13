@@ -139,7 +139,7 @@ func formatConfig(userProj, userTeam, token string) ([]byte, error) {
 }
 
 func writeConfig(config string, b []byte) error {
-	fmt.Fprintf(os.Stderr, "\nWriting %s\n", config)
+	fmt.Fprintf(os.Stderr, "\nWriting configuretion to: %s\n", config)
 	dir := filepath.Dir(config)
 	if err := os.MkdirAll(dir, 0o700); err != nil {
 		return fmt.Errorf("could not make directory %q: %s", dir, err)
