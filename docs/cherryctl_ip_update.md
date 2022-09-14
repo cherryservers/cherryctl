@@ -37,5 +37,5 @@ cherryctl ip update ID [--ptr-record <ptr>] [--a-record <a>] [--tags <tags>] [fl
 
 ### SEE ALSO
 
-* [cherryctl ip](cherryctl_ip.md)	 - IP address operations.
+* [cherryctl ip](cherryctl_ip.md)	 - IP address operations. For more information on IP addresses check Product Docs: https://docs.cherryservers.com/knowledge/product-docs#ip-addressing
 

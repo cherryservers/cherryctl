@@ -41,5 +41,5 @@ cherryctl team delete ID -t <team_id> [flags]
 
 ### SEE ALSO
 
-* [cherryctl team](cherryctl_team.md)	 - Team operations.
+* [cherryctl team](cherryctl_team.md)	 - Team operations. For more information on Teams check Product Docs: https://docs.cherryservers.com/knowledge/product-docs#teams
 

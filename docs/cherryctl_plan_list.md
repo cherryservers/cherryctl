@@ -1,10 +1,10 @@
 ## cherryctl plan list
 
-Retrieves list of plans details.
+Retrieves a list of server plans.
 
 ### Synopsis
 
-Retrieves the details of plans.
+Retrieves a list of server plans with their corresponding hourly rates and stock volumes.
 
 ```
 cherryctl plan list [-t <team_id>] [--region-id <region_slug>] [--type <type>] [flags]

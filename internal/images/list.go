@@ -12,8 +12,8 @@ func (c *Client) List() *cobra.Command {
 	imageGetCmd := &cobra.Command{
 		Use:     `list --plan <plan_slug>`,
 		Aliases: []string{"get"},
-		Short:   "Retrieves list of images available for the given plan.",
-		Long:    "Retrieves list of images available for the given plan.",
+		Short:   "Retrieves a list of images available for the given plan.",
+		Long:    "Retrieves a list of images available for the given plan.",
 		Example: `  # Lists the operating system images available for E5-1620v4 plan :
   cherryctl images list --plan e5_1620v4`,
 

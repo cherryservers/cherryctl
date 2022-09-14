@@ -1,6 +1,6 @@
 ## cherryctl team
 
-Team operations.
+Team operations. For more information on Teams check Product Docs: https://docs.cherryservers.com/knowledge/product-docs#teams
 
 ### Synopsis
 
@@ -23,7 +23,7 @@ Team operations: get, list.
 
 ### SEE ALSO
 
-* [cherryctl](cherryctl.md)	 - Command line interface for Cherry Servers
+* [cherryctl](cherryctl.md)	 - Cherry Servers Command Line Interface (CLI)
 * [cherryctl team create](cherryctl_team_create.md)	 - Create a team.
 * [cherryctl team delete](cherryctl_team_delete.md)	 - Delete a team.
 * [cherryctl team list](cherryctl_team_list.md)	 - Retrieves list of teams details.

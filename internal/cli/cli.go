@@ -83,8 +83,8 @@ func (c *Client) NewCommand() *cobra.Command {
 	// rootCmd represents the base command when called without any subcommands
 	rootCmd := &cobra.Command{
 		Use:               "cherryctl",
-		Short:             "Command line interface for Cherry Servers",
-		Long:              `cherryctl is a command line interface for Cherry Servers API`,
+		Short:             "Cherry Servers Command Line Interface (CLI)",
+		Long:              `cherryctl is a command line interface (CLI) for Cherry Servers API`,
 		DisableAutoGenTag: true,
 
 		PersistentPreRun: func(cmd *cobra.Command, args []string) {

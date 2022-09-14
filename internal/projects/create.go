@@ -18,8 +18,8 @@ func (c *Client) Create() *cobra.Command {
 	projectCreateCmd := &cobra.Command{
 		Use:   `create [-t <team_id>] --name <project_name> [--bgp <bool>]`,
 		Short: "Create a project.",
-		Long:  "Create a project in speficied team.",
-		Example: `  # Create project with BGP enabled:
+		Long:  "Create a new project in a speficied team.",
+		Example: `  # To create a new project with BGP enabled:
   cherryctl project create -t 12345 --name "Project with BGP" --bgp true`,
 
 		RunE: func(cmd *cobra.Command, args []string) error {

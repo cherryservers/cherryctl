@@ -1,6 +1,6 @@
 ## cherryctl storage
 
-Storage operations. For more information visit https://docs.cherryservers.com/knowledge/elastic-block-storage/.
+Storage operations. For more information on Elastic Block Storage check Product Docs: https://docs.cherryservers.com/knowledge/elastic-block-storage/
 
 ### Synopsis
 
@@ -23,7 +23,7 @@ Storage operations: create, get, list, delete, attach and detach.
 
 ### SEE ALSO
 
-* [cherryctl](cherryctl.md)	 - Command line interface for Cherry Servers
+* [cherryctl](cherryctl.md)	 - Cherry Servers Command Line Interface (CLI)
 * [cherryctl storage attach](cherryctl_storage_attach.md)	 - Attach storage volume to a specified server.
 * [cherryctl storage create](cherryctl_storage_create.md)	 - Create storage.
 * [cherryctl storage delete](cherryctl_storage_delete.md)	 - Delete a storage.

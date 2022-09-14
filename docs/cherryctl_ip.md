@@ -1,6 +1,6 @@
 ## cherryctl ip
 
-IP address operations.
+IP address operations. For more information on IP addresses check Product Docs: https://docs.cherryservers.com/knowledge/product-docs#ip-addressing
 
 ### Synopsis
 
@@ -23,7 +23,7 @@ IP address operations: get, list, create, update, assign, unassign and remove.
 
 ### SEE ALSO
 
-* [cherryctl](cherryctl.md)	 - Command line interface for Cherry Servers
+* [cherryctl](cherryctl.md)	 - Cherry Servers Command Line Interface (CLI)
 * [cherryctl ip assign](cherryctl_ip_assign.md)	 - Assign an IP address to a specified server or other IP address.
 * [cherryctl ip create](cherryctl_ip_create.md)	 - Create floating IP address.
 * [cherryctl ip delete](cherryctl_ip_delete.md)	 - Delete an IP address.

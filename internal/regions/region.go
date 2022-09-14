@@ -17,7 +17,7 @@ func (c *Client) NewCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     `region`,
 		Aliases: []string{"regions", "location", "locations"},
-		Short:   "Region operations.",
+		Short:   "Region operations. For more information on Networking check Product Docs: https://docs.cherryservers.com/knowledge/product-docs#network",
 		Long:    "Region operations: get, list.",
 
 		PersistentPreRun: func(cmd *cobra.Command, args []string) {

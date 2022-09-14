@@ -35,5 +35,5 @@ cherryctl storage list [-p <project_id>] [flags]
 
 ### SEE ALSO
 
-* [cherryctl storage](cherryctl_storage.md)	 - Storage operations. For more information visit https://docs.cherryservers.com/knowledge/elastic-block-storage/.
+* [cherryctl storage](cherryctl_storage.md)	 - Storage operations. For more information on Elastic Block Storage check Product Docs: https://docs.cherryservers.com/knowledge/elastic-block-storage/
 

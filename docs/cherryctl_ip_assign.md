@@ -38,5 +38,5 @@ cherryctl ip assign ID {--target-hostname <hostname> | --target-id <server_id> |
 
 ### SEE ALSO
 
-* [cherryctl ip](cherryctl_ip.md)	 - IP address operations.
+* [cherryctl ip](cherryctl_ip.md)	 - IP address operations. For more information on IP addresses check Product Docs: https://docs.cherryservers.com/knowledge/product-docs#ip-addressing
 
