@@ -8,8 +8,8 @@ import (
 func NewCommand() *cobra.Command {
 	return &cobra.Command{
 		Use:   `docs <destination>`,
-		Short: "Generate command markdown documentation.",
-		Long:  "Generates command markdown documentation in the specified directory. Each command gets a markdown file.",
+		Short: "Generate a local verion of the CLI documentation.",
+		Long:  "Generates a local version of the CLI documentation in the specified directory. Each command gets a markdown file.",
 		Example: `  # Generate documentation in the ./docs directory:
   cherryctl docs ./docs`,
 

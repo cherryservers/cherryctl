@@ -34,5 +34,5 @@ cherryctl region get {ID | SLUG} [flags]
 
 ### SEE ALSO
 
-* [cherryctl region](cherryctl_region.md)	 - Region operations.
+* [cherryctl region](cherryctl_region.md)	 - Region operations. For more information on Networking check Product Docs: https://docs.cherryservers.com/knowledge/product-docs#network
 

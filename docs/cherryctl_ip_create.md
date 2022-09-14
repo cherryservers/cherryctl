@@ -42,5 +42,5 @@ cherryctl ip create [-p <project_id>] --region <region_slug> [--target-hostname 
 
 ### SEE ALSO
 
-* [cherryctl ip](cherryctl_ip.md)	 - IP address operations.
+* [cherryctl ip](cherryctl_ip.md)	 - IP address operations. For more information on IP addresses check Product Docs: https://docs.cherryservers.com/knowledge/product-docs#ip-addressing
 

@@ -25,7 +25,7 @@ See each sub-command's help for details on how to use the generated script.
 
 ### SEE ALSO
 
-* [cherryctl](cherryctl.md)	 - Command line interface for Cherry Servers
+* [cherryctl](cherryctl.md)	 - Cherry Servers Command Line Interface (CLI)
 * [cherryctl completion bash](cherryctl_completion_bash.md)	 - Generate the autocompletion script for bash
 * [cherryctl completion fish](cherryctl_completion_fish.md)	 - Generate the autocompletion script for fish
 * [cherryctl completion powershell](cherryctl_completion_powershell.md)	 - Generate the autocompletion script for powershell

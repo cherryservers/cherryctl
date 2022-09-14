@@ -23,10 +23,10 @@ Project operations: get, list, create, update and delete.
 
 ### SEE ALSO
 
-* [cherryctl](cherryctl.md)	 - Command line interface for Cherry Servers
+* [cherryctl](cherryctl.md)	 - Cherry Servers Command Line Interface (CLI)
 * [cherryctl project create](cherryctl_project_create.md)	 - Create a project.
 * [cherryctl project delete](cherryctl_project_delete.md)	 - Delete a project.
 * [cherryctl project get](cherryctl_project_get.md)	 - Retrieves project details.
-* [cherryctl project list](cherryctl_project_list.md)	 - Retrieves list of projects details.
+* [cherryctl project list](cherryctl_project_list.md)	 - Retrieves a list of projects details.
 * [cherryctl project update](cherryctl_project_update.md)	 - Update a project.
 
