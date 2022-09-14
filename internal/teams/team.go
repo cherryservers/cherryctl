@@ -32,6 +32,7 @@ func (c *Client) NewCommand() *cobra.Command {
 	}
 
 	cmd.AddCommand(
+		c.Get(),
 		c.List(),
 		c.Create(),
 		c.Delete(),

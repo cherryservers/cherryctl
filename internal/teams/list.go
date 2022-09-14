@@ -11,7 +11,7 @@ import (
 func (c *Client) List() *cobra.Command {
 	teamListCmd := &cobra.Command{
 		Use:     `list`,
-		Aliases: []string{"get"},
+		Aliases: []string{"ls"},
 		Short:   "Retrieves list of teams details.",
 		Long:    "Retrieves the details of teams.",
 		Example: `  # List available teams:
