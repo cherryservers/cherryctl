@@ -40,8 +40,8 @@ func (c *Client) NewCommand() *cobra.Command {
 	// projectId := v.GetString("project-id")
 	initCmd := &cobra.Command{
 		Use:   `init`,
-		Short: "Create a configuration file.",
-		Long:  "Init will prompt for account settings and store the values as defaults in a configuration file that may be shared with other Cherry Servers tools. This file is typically stored in $HOME/.config/cherry/config.yaml. Any Cherry CLI command line argument can be specified in the config file. Be careful not to define options that you do not intend to use as defaults. The configuration file written to can be changed with CHERRY_CONFIG and --config.",
+		Short: "Configuration file initialization.",
+		Long:  "Init will prompt for account settings and store the values as defaults in a configuration file that may be shared with other Cherry Servers tools. This file is typically stored in $HOME/.config/cherry/config.yaml. Any Cherry CLI command line argument can be specified in the config file. Be careful not to define options that you do not intend to use as defaults. The configuration file path can be changed with the CHERRY_CONFIG environment variable or --config option.",
 
 		Example: `  # Example config:
   --
@@ -139,7 +139,7 @@ func formatConfig(userProj, userTeam, token string) ([]byte, error) {
 }
 
 func writeConfig(config string, b []byte) error {
-	fmt.Fprintf(os.Stderr, "\nWriting %s\n", config)
+	fmt.Fprintf(os.Stderr, "\nWriting configuration to: %s\n", config)
 	dir := filepath.Dir(config)
 	if err := os.MkdirAll(dir, 0o700); err != nil {
 		return fmt.Errorf("could not make directory %q: %s", dir, err)

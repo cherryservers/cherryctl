@@ -1,10 +1,10 @@
 ## cherryctl init
 
-Create a configuration file.
+Configuration file initialization.
 
 ### Synopsis
 
-Init will prompt for account settings and store the values as defaults in a configuration file that may be shared with other Cherry Servers tools. This file is typically stored in $HOME/.config/cherry/config.yaml. Any Cherry CLI command line argument can be specified in the config file. Be careful not to define options that you do not intend to use as defaults. The configuration file written to can be changed with CHERRY_CONFIG and --config.
+Init will prompt for account settings and store the values as defaults in a configuration file that may be shared with other Cherry Servers tools. This file is typically stored in $HOME/.config/cherry/config.yaml. Any Cherry CLI command line argument can be specified in the config file. Be careful not to define options that you do not intend to use as defaults. The configuration file path can be changed with the CHERRY_CONFIG environment variable or --config option.
 
 ```
 cherryctl init
@@ -38,5 +38,5 @@ cherryctl init
 
 ### SEE ALSO
 
-* [cherryctl](cherryctl.md)	 - Command line interface for Cherry Servers
+* [cherryctl](cherryctl.md)	 - Cherry Servers Command Line Interface (CLI)
 

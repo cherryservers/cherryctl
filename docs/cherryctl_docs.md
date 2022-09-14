@@ -1,10 +1,10 @@
 ## cherryctl docs
 
-Generate command markdown documentation.
+Generate a local verion of the CLI documentation.
 
 ### Synopsis
 
-Generates command markdown documentation in the specified directory. Each command gets a markdown file.
+Generates a local version of the CLI documentation in the specified directory. Each command gets a markdown file.
 
 ```
 cherryctl docs <destination>
@@ -35,5 +35,5 @@ cherryctl docs <destination>
 
 ### SEE ALSO
 
-* [cherryctl](cherryctl.md)	 - Command line interface for Cherry Servers
+* [cherryctl](cherryctl.md)	 - Cherry Servers Command Line Interface (CLI)
 

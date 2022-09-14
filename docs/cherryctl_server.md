@@ -1,6 +1,6 @@
 ## cherryctl server
 
-Server operations. For more information on provisioning on Cherry Servers, visit https://docs.cherryservers.com/knowledge/product-docs.
+Server operations. For more information on server types check Product Docs: https://docs.cherryservers.com/knowledge/product-docs#compute
 
 ### Synopsis
 
@@ -24,7 +24,7 @@ Server operations: create, get, list, delete, start, stop, reboot and reinstall.
 
 ### SEE ALSO
 
-* [cherryctl](cherryctl.md)	 - Command line interface for Cherry Servers
+* [cherryctl](cherryctl.md)	 - Cherry Servers Command Line Interface (CLI)
 * [cherryctl server create](cherryctl_server_create.md)	 - Create a server.
 * [cherryctl server delete](cherryctl_server_delete.md)	 - Delete a server.
 * [cherryctl server get](cherryctl_server_get.md)	 - Retrieves server details.

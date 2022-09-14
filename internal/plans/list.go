@@ -15,8 +15,8 @@ func (c *Client) List() *cobra.Command {
 	planGetCmd := &cobra.Command{
 		Use:     `list [-t <team_id>] [--region-id <region_slug>] [--type <type>]`,
 		Aliases: []string{"get"},
-		Short:   "Retrieves list of plans details.",
-		Long:    "Retrieves the details of plans.",
+		Short:   "Retrieves a list of server plans.",
+		Long:    "Retrieves a list of server plans with their corresponding hourly rates and stock volumes.",
 		Example: `  # List available plans:
   cherryctl plans list`,
 

@@ -13,7 +13,7 @@ func (c *Client) List() *cobra.Command {
 	var teamID int
 	projectListCmd := &cobra.Command{
 		Use:   `list [-p <project_id>]`,
-		Short: "Retrieves list of projects details.",
+		Short: "Retrieves a list of projects details.",
 		Long:  "Retrieves the details of projects.",
 		Example: `  # List available projects:
   cherryctl project list -t 12345`,

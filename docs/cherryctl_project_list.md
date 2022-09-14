@@ -1,6 +1,6 @@
 ## cherryctl project list
 
-Retrieves list of projects details.
+Retrieves a list of projects details.
 
 ### Synopsis
 

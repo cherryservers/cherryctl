@@ -1,10 +1,10 @@
 ## cherryctl image list
 
-Retrieves list of images available for the given plan.
+Retrieves a list of images available for the given plan.
 
 ### Synopsis
 
-Retrieves list of images available for the given plan.
+Retrieves a list of images available for the given plan.
 
 ```
 cherryctl image list --plan <plan_slug> [flags]

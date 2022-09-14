@@ -24,6 +24,6 @@ Image operations: list.
 
 ### SEE ALSO
 
-* [cherryctl](cherryctl.md)	 - Command line interface for Cherry Servers
-* [cherryctl image list](cherryctl_image_list.md)	 - Retrieves list of images available for the given plan.
+* [cherryctl](cherryctl.md)	 - Cherry Servers Command Line Interface (CLI)
+* [cherryctl image list](cherryctl_image_list.md)	 - Retrieves a list of images available for the given plan.
 

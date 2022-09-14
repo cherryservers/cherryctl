@@ -1,6 +1,6 @@
 ## cherryctl region
 
-Region operations.
+Region operations. For more information on Networking check Product Docs: https://docs.cherryservers.com/knowledge/product-docs#network
 
 ### Synopsis
 
@@ -24,7 +24,7 @@ Region operations: get, list.
 
 ### SEE ALSO
 
-* [cherryctl](cherryctl.md)	 - Command line interface for Cherry Servers
+* [cherryctl](cherryctl.md)	 - Cherry Servers Command Line Interface (CLI)
 * [cherryctl region get](cherryctl_region_get.md)	 - Retrieves region details.
 * [cherryctl region list](cherryctl_region_list.md)	 - Retrieves list of regions.
 

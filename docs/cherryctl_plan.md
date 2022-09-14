@@ -24,6 +24,6 @@ Plan operations: get, list.
 
 ### SEE ALSO
 
-* [cherryctl](cherryctl.md)	 - Command line interface for Cherry Servers
-* [cherryctl plan list](cherryctl_plan_list.md)	 - Retrieves list of plans details.
+* [cherryctl](cherryctl.md)	 - Cherry Servers Command Line Interface (CLI)
+* [cherryctl plan list](cherryctl_plan_list.md)	 - Retrieves a list of server plans.
 

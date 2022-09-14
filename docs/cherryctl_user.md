@@ -24,6 +24,6 @@ User operations: get.
 
 ### SEE ALSO
 
-* [cherryctl](cherryctl.md)	 - Command line interface for Cherry Servers
+* [cherryctl](cherryctl.md)	 - Cherry Servers Command Line Interface (CLI)
 * [cherryctl user get](cherryctl_user_get.md)	 - Retrieves information about the current user or a specified user.
 
