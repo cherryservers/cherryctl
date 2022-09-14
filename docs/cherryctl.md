@@ -9,6 +9,7 @@ cherryctl is a command line interface for Cherry Servers API
 ### Options
 
 ```
+      --api-url string   Override default API endpoint (default "https://api.cherryservers.com/v1/")
       --config string    Path to JSON or YAML configuration file
       --fields strings   Comma separated object field names to output in result. Fields can be used for list and get actions.
   -h, --help             help for cherryctl

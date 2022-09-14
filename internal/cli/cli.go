@@ -52,7 +52,13 @@ func (c *Client) API(cmd *cobra.Command) *cherrygo.Client {
 	}
 
 	if c.apiClient == nil {
-		client, err := cherrygo.NewClient(cherrygo.WithAuthToken(c.cherryToken), cherrygo.WithUserAgent("cherry-cli/"+c.Version))
+		args := []cherrygo.ClientOpt{cherrygo.WithAuthToken(c.cherryToken), cherrygo.WithUserAgent("cherry-cli/" + c.Version)}
+
+		if c.apiURL != "" {
+			args = append(args, cherrygo.WithURL(c.apiURL))
+		}
+
+		client, err := cherrygo.NewClient(args...)
 		if err != nil {
 			return nil
 		}
@@ -96,6 +102,7 @@ func (c *Client) NewCommand() *cobra.Command {
 	authtoken := rootCmd.PersistentFlags().Lookup("auth-token")
 	authtoken.Hidden = true
 	rootCmd.PersistentFlags().StringVar(&c.cfgFile, "config", c.cfgFile, "Path to JSON or YAML configuration file")
+	rootCmd.PersistentFlags().StringVar(&c.apiURL, "api-url", c.apiURL, "Override default API endpoint")
 	rootCmd.PersistentFlags().StringVarP(&c.outputFormat, "output", "o", "", "Output format (*table, json, yaml)")
 	c.fields = rootCmd.PersistentFlags().StringSlice("fields", nil, "Comma separated object field names to output in result. Fields can be used for list and get actions.")
 
