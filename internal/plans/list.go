@@ -39,21 +39,23 @@ func (c *Client) List() *cobra.Command {
 
 			data := make([][]string, 0)
 			for _, p := range plans {
-				price := ""
+				priceHour := "-"
+				priceSpot := "-"
 				for _, pricing := range p.Pricing {
 					if pricing.Unit == "Hourly" {
-						price = fmt.Sprintf("%f", pricing.Price)
-						break
+						priceHour = fmt.Sprintf("%f", pricing.Price)
+					} else if pricing.Unit == "Spot hourly" {
+						priceSpot = fmt.Sprintf("%f", pricing.Price)
 					}
 				}
 
 				for _, r := range p.AvailableRegions {
 					if regionID == "" || regionID == r.Slug || regionID == strconv.Itoa(r.ID) {
-						data = append(data, []string{p.Slug, p.Name, price, r.Name, strconv.Itoa(r.StockQty), strconv.Itoa(r.SpotQty)})
+						data = append(data, []string{p.Slug, r.Slug, strconv.Itoa(r.StockQty), priceHour, strconv.Itoa(r.SpotQty), priceSpot})
 					}
 				}
 			}
-			header := []string{"Slug", "Name", "Price", "Region", "Stock qty", "Spot qty"}
+			header := []string{"Plan Slug", "Region Slug", "Stock Hourly", "Hourly Price", "Stock Spot", "Spot Price"}
 
 			return c.Out.Output(plans, header, &data)
 		},
