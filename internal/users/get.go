@@ -12,8 +12,16 @@ import (
 func (c *Client) Get() *cobra.Command {
 	var userID int
 	userGetCmd := &cobra.Command{
-		Use:   `get ID`,
-		Args:  cobra.ExactArgs(1),
+		Use: `get ID`,
+		Args: func(cmd *cobra.Command, args []string) error {
+			if len(args) > 0 {
+				usrID, err := strconv.Atoi(args[0])
+				if err == nil {
+					userID = usrID
+				}
+			}
+			return nil
+		},
 		Short: "Retrieves information about the current user or a specified user.",
 		Long:  "Returns either information about the current user or information about a specified user. Specified user information is only available if that user shares a project with the current user.",
 		Example: `  # Gets the current user's information:
@@ -25,9 +33,6 @@ func (c *Client) Get() *cobra.Command {
 			cmd.SilenceUsage = true
 			var user cherrygo.User
 			var err error
-			if uID, err := strconv.Atoi(args[0]); err == nil {
-				userID = uID
-			}
 			if userID == 0 {
 				user, _, err = c.Service.CurrentUser(c.Servicer.GetOptions())
 				if err != nil {
