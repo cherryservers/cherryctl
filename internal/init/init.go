@@ -52,9 +52,9 @@ func (c *Client) NewCommand() *cobra.Command {
 		DisableFlagsInUseLine: true,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cmd.SilenceUsage = true
-			config, _ := cmd.Flags().GetString("config")
-			if config == "" {
-				config = c.Servicer.DefaultConfig(true)
+			config, _ := cmd.Flags().GetString("context")
+			if config != "" {
+				config = c.Servicer.ConfigFilePath(config, true)
 			}
 
 			fmt.Print("Cherry Servers API Tokens can be obtained through the portal at http://portal.cherryservers.com/.\n\n")
@@ -150,5 +150,5 @@ func writeConfig(config string, b []byte) error {
 type Servicer interface {
 	API(*cobra.Command) *cherrygo.Client
 	SetToken(string)
-	DefaultConfig(bool) string
+	ConfigFilePath(string, bool) string
 }

@@ -20,6 +20,7 @@ cherryctl
   * [Install binary from Release Download](#install-binary-from-release-download)
 * [Shell Completion](#shell-completion)
 * [Authentication](#authentication)
+  * [Working With Multiple User Profiles](#working-with-multiple-user-profiles)
 * [Configuring Default Values](#configuring-default-values)
 * [Documentation](#documentation)
 * [Examples](#examples)
@@ -90,16 +91,31 @@ Token (hidden):
 Team ID []: 12345
 Project ID []: 123456
 
-Writing /Users/username/.config/cherry/cherry.yaml
+Writing configuration to: /Users/username/.config/cherry/default.yaml
 ```
 
-The Cherry Servers authentication token can be stored in the `$CHERRY_AUTH_TOKEN` environment variable, as well as in JSON or YAML configuration files. The configuration file path can be overridden with the `--config` flag.  The default configuration file is stored in "$HOME/config/cherry/cherry.yaml".
+The Cherry Servers authentication token can be stored in the `$CHERRY_AUTH_TOKEN` environment variable, as well as in JSON or YAML configuration files. The configuration file path can be overridden with the `--config` flag.  The default configuration file is stored in "$HOME/config/cherry/default.yaml".
+
+### Working With Multiple User Profiles
+
+A user profile is a collection of settings specific to a certain user that is stored in a configuration file. It consists of at least an API token, a Team ID and a Project ID, yet you may add many additional configuration options.
+
+You may work with multiple user profiles at the same time, since `cherryctl` allows you to switch between them by using a `--context` option.
+
+By default, the `--context` option has a value `default`. To create a new context, run `cherryctl init --context <new_context_name>`. You will be prompted for a Token, a Team ID and a Project ID which will be associated with the new context. You will be able to add any other options by editing the newly generated configuration file.
+
+To use a non-default context name to any `cherryctl` command:
+```sh
+
+cherryctl servers list --context <new_context_name>
+
+```
 
 ## Configuring Default Values
 
 The `cherryctl` configuration file is used to store your API authentication token as well as the default command flags settings. If you find yourself using certain flags frequently, you can set their default values to avoid typing them every time. This can be useful when, for example, you want to deploy all infrastructure in the same region.
 
-`cherryctl` saves its configuration in `${HOME}/cherry/config.yaml`. The `${HOME}/cherry/` directory and the `config.yaml` file will be created once you run `cherryctl init`.
+`cherryctl` saves its configuration in `${HOME}/cherry/default.yaml`. The `${HOME}/cherry/` directory and the `config.yaml` file will be created once you run `cherryctl init`.
 
 If you want to change the default value for a `--region` flag, open `.config.yaml` file and add the corresponding key-value pair at the end of the file. For isntance, in the following example we have changed the default region to eu_nord_1:
 

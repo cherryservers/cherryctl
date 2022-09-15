@@ -16,8 +16,9 @@ import (
 )
 
 const (
-	envPrefix                  = "CHERRY"
-	configFileWithoutExtension = "cherry"
+	envPrefix        = "CHERRY"
+	configPathSuffix = "/.config/cherry"
+	defaultContext   = "default"
 )
 
 type Client struct {
@@ -26,6 +27,7 @@ type Client struct {
 	fields       *[]string
 	queryParams  map[string]string
 	cfgFile      string
+	context      string
 	outputFormat string
 	cherryToken  string
 	apiURL       string
@@ -102,6 +104,7 @@ func (c *Client) NewCommand() *cobra.Command {
 	authtoken := rootCmd.PersistentFlags().Lookup("auth-token")
 	authtoken.Hidden = true
 	rootCmd.PersistentFlags().StringVar(&c.cfgFile, "config", c.cfgFile, "Path to JSON or YAML configuration file")
+	rootCmd.PersistentFlags().StringVar(&c.context, "context", defaultContext, "Specify a custom context name")
 	rootCmd.PersistentFlags().StringVar(&c.apiURL, "api-url", c.apiURL, "Override default API endpoint")
 	rootCmd.PersistentFlags().StringVarP(&c.outputFormat, "output", "o", "", "Output format (*table, json, yaml)")
 	c.fields = rootCmd.PersistentFlags().StringSlice("fields", nil, "Comma separated object field names to output in result. Fields can be used for list and get actions.")
@@ -122,14 +125,24 @@ func (c *Client) Config(cmd *cobra.Command) *viper.Viper {
 			// Use config file from the flag.
 			v.SetConfigFile(c.cfgFile)
 		} else {
+			// Backward compatability (cherry was renamed to default)
+			if c.context == defaultContext {
+				if _, err := os.Stat(c.ConfigFilePath(defaultContext, true)); err != nil {
+					if _, err := os.Stat(c.ConfigFilePath("cherry", true)); err != nil {
+						log.Fatalln(fmt.Errorf("Couldn't find configuration file. To initiate run `cherryctl init` command"))
+					} else {
+						c.context = "cherry"
+					}
+				}
+			}
+			// Use context file from the flag.
 			configDir := defaultConfigPath()
-			v.SetConfigName(configFileWithoutExtension)
+
+			v.SetConfigName(c.context)
 			v.AddConfigPath(configDir)
 		}
 		if err := v.ReadInConfig(); err != nil {
-			if _, ok := err.(viper.ConfigFileNotFoundError); !ok {
-				panic(fmt.Errorf("Could not read config: %s", err))
-			}
+			log.Fatalln(fmt.Errorf("Could not read config: %s", err))
 		}
 		c.cfgFile = v.ConfigFileUsed()
 
@@ -140,8 +153,6 @@ func (c *Client) Config(cmd *cobra.Command) *viper.Viper {
 
 	flagToken := cmd.Flag("token").Value.String()
 	envToken := cmd.Flag("auth-token").Value.String()
-	// TODO: are we ok with this being configured by file too? yes?
-	// TODO: let cli arg take higher priority
 	c.cherryToken = flagToken
 	if envToken != "" {
 		c.cherryToken = envToken
@@ -169,12 +180,12 @@ func bindFlags(cmd *cobra.Command, v *viper.Viper) {
 }
 
 func defaultConfigPath() string {
-	return path.Join(userHomeDir(), "/.config/cherry")
+	return path.Join(userHomeDir(), configPathSuffix)
 }
 
-func (c *Client) DefaultConfig(withExtension bool) string {
+func (c *Client) ConfigFilePath(context string, withExtension bool) string {
 	dir := defaultConfigPath()
-	config := path.Join(dir, configFileWithoutExtension)
+	config := path.Join(dir, context)
 	if withExtension {
 		config = config + ".yaml"
 	}
