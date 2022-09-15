@@ -98,7 +98,6 @@ func (c *Client) Create() *cobra.Command {
 
 	_ = createServerCmd.MarkFlagRequired("project-id")
 	_ = createServerCmd.MarkFlagRequired("plan")
-	_ = createServerCmd.MarkFlagRequired("hostname")
 	_ = createServerCmd.MarkFlagRequired("region")
 
 	return createServerCmd
