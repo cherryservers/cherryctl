@@ -28,7 +28,9 @@ cherryctl ssh-key create --key <public_key> --label <label> [flags]
 ### Options inherited from parent commands
 
 ```
+      --api-url string   Override default API endpoint (default "https://api.cherryservers.com/v1/")
       --config string    Path to JSON or YAML configuration file
+      --context string   Specify a custom context name (default "default")
       --fields strings   Comma separated object field names to output in result. Fields can be used for list and get actions.
   -o, --output string    Output format (*table, json, yaml)
       --token string     API Token (CHERRY_AUTH_TOKEN)
