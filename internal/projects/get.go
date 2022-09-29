@@ -12,16 +12,7 @@ import (
 func (c *Client) Get() *cobra.Command {
 	var projectID int
 	projectGetCmd := &cobra.Command{
-		Use: `get ID [-p <project_id>]`,
-		Args: func(cmd *cobra.Command, args []string) error {
-			if len(args) > 0 {
-				prID, err := strconv.Atoi(args[0])
-				if err == nil {
-					projectID = prID
-				}
-			}
-			return nil
-		},
+		Use:   `get ID [-p <project_id>]`,
 		Short: "Retrieves project details.",
 		Long:  "Retrieves the details of the specified project.",
 		Example: `  # Gets the details of the specified project:
@@ -29,6 +20,13 @@ func (c *Client) Get() *cobra.Command {
 
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cmd.SilenceUsage = true
+			if len(args) > 0 {
+				prID, err := strconv.Atoi(args[0])
+				if err == nil {
+					projectID = prID
+				}
+			}
+
 			if projectID == 0 {
 				return fmt.Errorf("project-id should be set %v\t", projectID)
 			}

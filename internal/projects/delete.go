@@ -13,16 +13,7 @@ func (c *Client) Delete() *cobra.Command {
 	var projectID int
 	var force bool
 	deleteProjectCmd := &cobra.Command{
-		Use: `delete ID`,
-		Args: func(cmd *cobra.Command, args []string) error {
-			if len(args) > 0 {
-				prID, err := strconv.Atoi(args[0])
-				if err == nil {
-					projectID = prID
-				}
-			}
-			return nil
-		},
+		Use:   `delete ID`,
 		Short: "Delete a project.",
 		Long:  "Deletes the specified project with a confirmation prompt. To skip the confirmation use --force.",
 		Example: `  # Deletes the specified project:
@@ -35,6 +26,13 @@ func (c *Client) Delete() *cobra.Command {
 
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cmd.SilenceUsage = true
+			if len(args) > 0 {
+				prID, err := strconv.Atoi(args[0])
+				if err == nil {
+					projectID = prID
+				}
+			}
+
 			if !force {
 				prompt := promptui.Prompt{
 					Label:     fmt.Sprintf("Are you sure you want to delete project %d? All asociated resources (servers, IP addresses, storages, etc.) will be terminated also. ", projectID),

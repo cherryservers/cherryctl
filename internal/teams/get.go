@@ -11,16 +11,7 @@ import (
 func (c *Client) Get() *cobra.Command {
 	var teamID int
 	teamGetCmd := &cobra.Command{
-		Use: `get ID`,
-		Args: func(cmd *cobra.Command, args []string) error {
-			if len(args) > 0 {
-				tID, err := strconv.Atoi(args[0])
-				if err == nil {
-					teamID = tID
-				}
-			}
-			return nil
-		},
+		Use:   `get ID`,
 		Short: "Retrieves team details.",
 		Long:  "Retrieves the details of the specified team.",
 		Example: `  # Gets the details of the specified team:
@@ -28,6 +19,13 @@ func (c *Client) Get() *cobra.Command {
 
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cmd.SilenceUsage = true
+			if len(args) > 0 {
+				tID, err := strconv.Atoi(args[0])
+				if err == nil {
+					teamID = tID
+				}
+			}
+
 			if teamID == 0 {
 				return fmt.Errorf("team-id should be set %v\t", teamID)
 			}
