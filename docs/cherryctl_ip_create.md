@@ -20,10 +20,10 @@ cherryctl ip create [-p <project_id>] --region <region_slug> [--target-hostname 
 ### Options
 
 ```
-      --a-record string          Slug of the region from where IP address will requested.
+      --a-record string          Relative DNS name for the IP address. Resulting FQDN will be '<relative-dns-name>.cloud.cherryservers.net' and must be globally unique.
   -h, --help                     help for create
   -p, --project-id int           The project's ID.
-      --ptr-record string        Slug of the region from where IP address will requested.
+      --ptr-record string        Reverse DNS name for the IP address.
       --region string            Slug of the region from where IP address will requested.
       --tags strings             Tag or list of tags for the server: --tags="key=value,env=prod".
       --target-hostname string   The hostname of the server to assign the created IP to.
