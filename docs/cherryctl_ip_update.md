@@ -20,9 +20,9 @@ cherryctl ip update ID [--ptr-record <ptr>] [--a-record <a>] [--tags <tags>] [fl
 ### Options
 
 ```
-      --a-record string     Slug of the region from where IP address will requested.
+      --a-record string     Relative DNS name for the IP address. Resulting FQDN will be '<relative-dns-name>.cloud.cherryservers.net' and must be globally unique.
   -h, --help                help for update
-      --ptr-record string   Slug of the region from where IP address will requested.
+      --ptr-record string   Reverse DNS name for the IP address.
       --tags strings        Tag or list of tags for the server: --tags="key=value,env=prod".
 ```
 

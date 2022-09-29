@@ -82,8 +82,8 @@ func (c *Client) Create() *cobra.Command {
 	ipCreateCmd.Flags().StringVarP(&targetHostname, "target-hostname", "", "", "The hostname of the server to assign the created IP to.")
 	ipCreateCmd.Flags().IntVarP(&targetID, "target-id", "", 0, "The ID of the server to assign the created IP to.")
 	ipCreateCmd.Flags().StringVarP(&targetIP, "target-ip-id", "", "", "Subnet or primary-ip type IP ID to route the created IP to.")
-	ipCreateCmd.Flags().StringVarP(&ptrRecord, "ptr-record", "", "", "Slug of the region from where IP address will requested.")
-	ipCreateCmd.Flags().StringVarP(&aRecord, "a-record", "", "", "Slug of the region from where IP address will requested.")
+	ipCreateCmd.Flags().StringVarP(&ptrRecord, "ptr-record", "", "", "Reverse DNS name for the IP address.")
+	ipCreateCmd.Flags().StringVarP(&aRecord, "a-record", "", "", "Relative DNS name for the IP address. Resulting FQDN will be '<relative-dns-name>.cloud.cherryservers.net' and must be globally unique.")
 	ipCreateCmd.Flags().StringSliceVarP(&tags, "tags", "", []string{}, `Tag or list of tags for the server: --tags="key=value,env=prod".`)
 
 	ipCreateCmd.MarkFlagsMutuallyExclusive("target-hostname", "target-id", "target-ip-id")

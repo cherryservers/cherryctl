@@ -68,8 +68,8 @@ func (c *Client) Update() *cobra.Command {
 		},
 	}
 
-	ipUpdateCmd.Flags().StringVarP(&ptrRecord, "ptr-record", "", "", "Slug of the region from where IP address will requested.")
-	ipUpdateCmd.Flags().StringVarP(&aRecord, "a-record", "", "", "Slug of the region from where IP address will requested.")
+	ipUpdateCmd.Flags().StringVarP(&ptrRecord, "ptr-record", "", "", "Reverse DNS name for the IP address.")
+	ipUpdateCmd.Flags().StringVarP(&aRecord, "a-record", "", "", "Relative DNS name for the IP address. Resulting FQDN will be '<relative-dns-name>.cloud.cherryservers.net' and must be globally unique.")
 	ipUpdateCmd.Flags().StringSliceVarP(&tags, "tags", "", []string{}, `Tag or list of tags for the server: --tags="key=value,env=prod".`)
 
 	return ipUpdateCmd
