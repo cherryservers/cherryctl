@@ -16,16 +16,7 @@ func (c *Client) Update() *cobra.Command {
 		name      string
 	)
 	projectUpdateCmd := &cobra.Command{
-		Use: `update ID [-p <project_id>] [--name <project_name>] [--bgp <bool>]`,
-		Args: func(cmd *cobra.Command, args []string) error {
-			if len(args) > 0 {
-				prID, err := strconv.Atoi(args[0])
-				if err == nil {
-					projectID = prID
-				}
-			}
-			return nil
-		},
+		Use:   `update ID [-p <project_id>] [--name <project_name>] [--bgp <bool>]`,
 		Short: "Update a project.",
 		Long:  "Update a project.",
 		Example: `  # Update project to enable BGP:
@@ -33,6 +24,13 @@ func (c *Client) Update() *cobra.Command {
 
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cmd.SilenceUsage = true
+			if len(args) > 0 {
+				prID, err := strconv.Atoi(args[0])
+				if err == nil {
+					projectID = prID
+				}
+			}
+
 			request := &cherrygo.UpdateProject{
 				Bgp: &bgp,
 			}

@@ -13,16 +13,7 @@ func (c *Client) Delete() *cobra.Command {
 	var teamID int
 	var force bool
 	deleteTeamCmd := &cobra.Command{
-		Use: `delete ID -t <team_id>`,
-		Args: func(cmd *cobra.Command, args []string) error {
-			if len(args) > 0 {
-				tID, err := strconv.Atoi(args[0])
-				if err == nil {
-					teamID = tID
-				}
-			}
-			return nil
-		},
+		Use:   `delete ID -t <team_id>`,
 		Short: "Delete a team.",
 		Long:  "Deletes the specified team with a confirmation prompt. To skip the confirmation use --force.",
 		Example: `  # Deletes the specified team:
@@ -35,6 +26,12 @@ func (c *Client) Delete() *cobra.Command {
 
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cmd.SilenceUsage = true
+			if len(args) > 0 {
+				tID, err := strconv.Atoi(args[0])
+				if err == nil {
+					teamID = tID
+				}
+			}
 			if !force {
 				prompt := promptui.Prompt{
 					Label:     fmt.Sprintf("Are you sure you want to delete team %d? All asociated resources (servers, IP addresses, storages, etc.) will be terminated also. ", teamID),
