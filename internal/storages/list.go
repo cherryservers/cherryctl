@@ -11,7 +11,7 @@ import (
 func (c *Client) List() *cobra.Command {
 	var projectID int
 	storagesListCmd := &cobra.Command{
-		Use:   `list [-p <project_id>]`,
+		Use:   `list -p <project_id>`,
 		Short: "Retrieves storage list.",
 		Long:  "Retrieves a list of storages in the project.",
 		Example: `  # Gets a list of storages in the specified project:

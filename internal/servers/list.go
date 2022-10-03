@@ -13,7 +13,7 @@ func (c *Client) List() *cobra.Command {
 	var projectID int
 	var search string
 	serverListCmd := &cobra.Command{
-		Use:     `list [-p <project_id>]`,
+		Use:     `list -p <project_id>`,
 		Aliases: []string{"list"},
 		Short:   "Retrieves server list.",
 		Long:    "Retrieves a list of servers in the project.",

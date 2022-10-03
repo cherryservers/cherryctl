@@ -7,7 +7,7 @@ Retrieves a list of server plans.
 Retrieves a list of server plans with their corresponding hourly rates and stock volumes.
 
 ```
-cherryctl plan list [-t <team_id>] [--region-id <region_slug>] [--type <type>] [flags]
+cherryctl plan list -t <team_id> [--region-id <region_slug>] [--type <type>] [flags]
 ```
 
 ### Examples

@@ -12,7 +12,7 @@ import (
 func (c *Client) Get() *cobra.Command {
 	var projectID int
 	projectGetCmd := &cobra.Command{
-		Use:   `get ID [-p <project_id>]`,
+		Use:   `get ID`,
 		Short: "Retrieves project details.",
 		Long:  "Retrieves the details of the specified project.",
 		Example: `  # Gets the details of the specified project:

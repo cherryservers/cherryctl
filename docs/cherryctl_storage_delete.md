@@ -7,7 +7,7 @@ Delete a storage.
 Deletes the specified storage with a confirmation prompt. To skip the confirmation use --force.
 
 ```
-cherryctl storage delete ID [flags]
+cherryctl storage delete ID [f] [flags]
 ```
 
 ### Examples

@@ -13,7 +13,7 @@ func (c *Client) Delete() *cobra.Command {
 	var storageID int
 	var force bool
 	deleteStorageCmd := &cobra.Command{
-		Use:   `delete ID`,
+		Use:   `delete ID [f]`,
 		Args:  cobra.ExactArgs(1),
 		Short: "Delete a storage.",
 		Long:  "Deletes the specified storage with a confirmation prompt. To skip the confirmation use --force.",

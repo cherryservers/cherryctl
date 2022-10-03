@@ -7,7 +7,7 @@ Update a project.
 Update a project.
 
 ```
-cherryctl project update ID [-p <project_id>] [--name <project_name>] [--bgp <bool>] [flags]
+cherryctl project update ID [--name <project_name>] [--bgp <bool>] [flags]
 ```
 
 ### Examples

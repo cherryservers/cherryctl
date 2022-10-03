@@ -7,7 +7,7 @@ Retrieves project details.
 Retrieves the details of the specified project.
 
 ```
-cherryctl project get ID [-p <project_id>] [flags]
+cherryctl project get ID [flags]
 ```
 
 ### Examples

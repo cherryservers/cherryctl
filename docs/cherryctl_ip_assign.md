@@ -21,7 +21,7 @@ cherryctl ip assign ID {--target-hostname <hostname> | --target-id <server_id> |
 
 ```
   -h, --help                     help for assign
-  -p, --project-id int           The project's ID.
+  -p, --project-id int           The project's ID. Require if assignement 
       --target-hostname string   The hostname of the server to assign IP to.
       --target-id int            The ID of the server to assign IP to.
       --target-ip-id string      Subnet or primary-ip type IP ID to route IP to.

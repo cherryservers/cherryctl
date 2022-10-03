@@ -7,7 +7,7 @@ Retrieves storage list.
 Retrieves a list of storages in the project.
 
 ```
-cherryctl storage list [-p <project_id>] [flags]
+cherryctl storage list -p <project_id> [flags]
 ```
 
 ### Examples

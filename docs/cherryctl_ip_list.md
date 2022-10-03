@@ -7,7 +7,7 @@ Retrieves list of IP addresses.
 Retrieves the details of IP addresses in the project.
 
 ```
-cherryctl ip list [-p <project_id>] [flags]
+cherryctl ip list -p <project_id> [flags]
 ```
 
 ### Examples

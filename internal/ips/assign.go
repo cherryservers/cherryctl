@@ -40,6 +40,10 @@ func (c *Client) Assign() *cobra.Command {
 			if targetIPID != "" && utils.IsValidUUID(targetIPID) {
 				request.IpID = targetIPID
 			} else if targetHostname != "" {
+				if projectID == 0 {
+					fmt.Println("--project-id argument is required with --target-hostname.")
+					return nil
+				}
 				srvID, err := utils.ServerHostnameToID(targetHostname, projectID, c.ServerService)
 				if err != nil {
 					return errors.Wrap(err, "Could not find a target by hostname")
