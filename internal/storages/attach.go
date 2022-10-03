@@ -40,6 +40,10 @@ func (c *Client) Attach() *cobra.Command {
 			}
 
 			if serverHostname != "" {
+				if projectID == 0 {
+					fmt.Println("--project-id argument is required with --server-hostname.")
+					return nil
+				}
 				srvID, err := utils.ServerHostnameToID(serverHostname, projectID, c.ServerService)
 				if err != nil {
 					return errors.Wrap(err, "Could not get a Server")

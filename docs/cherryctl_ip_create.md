@@ -7,7 +7,7 @@ Create floating IP address.
 Create floating IP address in speficied project.
 
 ```
-cherryctl ip create [-p <project_id>] --region <region_slug> [--target-hostname <hostname> | --target-id <server_id> | --target-ip-id <ip_uuid>] [--ptr-record <ptr>] [--a-record <a>] [--tags <tags>] [flags]
+cherryctl ip create -p <project_id> --region <region_slug> [--target-hostname <hostname> | --target-id <server_id> | --target-ip-id <ip_uuid>] [--ptr-record <ptr>] [--a-record <a>] [--tags <tags>] [flags]
 ```
 
 ### Examples

@@ -7,7 +7,7 @@ Retrieves project members ssh-keys details.
 Retrieves project members ssh-keys details.
 
 ```
-cherryctl ssh-key list [-p <project_id>] [flags]
+cherryctl ssh-key list -p <project_id> [flags]
 ```
 
 ### Examples

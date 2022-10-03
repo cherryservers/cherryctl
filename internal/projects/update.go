@@ -16,7 +16,7 @@ func (c *Client) Update() *cobra.Command {
 		name      string
 	)
 	projectUpdateCmd := &cobra.Command{
-		Use:   `update ID [-p <project_id>] [--name <project_name>] [--bgp <bool>]`,
+		Use:   `update ID [--name <project_name>] [--bgp <bool>]`,
 		Short: "Update a project.",
 		Long:  "Update a project.",
 		Example: `  # Update project to enable BGP:

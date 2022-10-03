@@ -40,6 +40,10 @@ func (c *Client) Assign() *cobra.Command {
 			if targetIPID != "" && utils.IsValidUUID(targetIPID) {
 				request.IpID = targetIPID
 			} else if targetHostname != "" {
+				if projectID == 0 {
+					fmt.Println("--project-id argument is required with --target-hostname.")
+					return nil
+				}
 				srvID, err := utils.ServerHostnameToID(targetHostname, projectID, c.ServerService)
 				if err != nil {
 					return errors.Wrap(err, "Could not find a target by hostname")
@@ -66,7 +70,7 @@ func (c *Client) Assign() *cobra.Command {
 		},
 	}
 
-	ipAssignCmd.Flags().IntVarP(&projectID, "project-id", "p", 0, "The project's ID.")
+	ipAssignCmd.Flags().IntVarP(&projectID, "project-id", "p", 0, "The project's ID. Require if assignement ")
 	ipAssignCmd.Flags().StringVarP(&targetHostname, "target-hostname", "", "", "The hostname of the server to assign IP to.")
 	ipAssignCmd.Flags().IntVarP(&targetID, "target-id", "", 0, "The ID of the server to assign IP to.")
 	ipAssignCmd.Flags().StringVarP(&targetIPID, "target-ip-id", "", "", "Subnet or primary-ip type IP ID to route IP to.")

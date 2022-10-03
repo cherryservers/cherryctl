@@ -7,7 +7,7 @@ Deletes an SSH key.
 Deletes an SSH key with a confirmation prompt. To skip the confirmation use --force. Does not remove the SSH key from existing servers.
 
 ```
-cherryctl ssh-key delete -i <ssh_key_id> [flags]
+cherryctl ssh-key delete -i <ssh_key_id> [-f] [flags]
 ```
 
 ### Examples

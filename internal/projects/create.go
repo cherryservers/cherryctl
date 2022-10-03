@@ -16,7 +16,7 @@ func (c *Client) Create() *cobra.Command {
 		name   string
 	)
 	projectCreateCmd := &cobra.Command{
-		Use:   `create [-t <team_id>] --name <project_name> [--bgp <bool>]`,
+		Use:   `create -t <team_id> --name <project_name> [--bgp <bool>]`,
 		Short: "Create a project.",
 		Long:  "Create a new project in a speficied team.",
 		Example: `  # To create a new project with BGP enabled:

@@ -30,6 +30,9 @@ func (c *Client) Get() *cobra.Command {
 			if srvID, err := strconv.Atoi(args[0]); err == nil {
 				serverID = srvID
 			} else {
+				if projectID == 0 {
+					return errors.Wrap(err, "server get by hostname requires project-id argument.")
+				}
 				srvID, err := utils.ServerHostnameToID(args[0], projectID, c.Service)
 				if err != nil {
 					return errors.Wrap(err, "Server with hostname %s was not found")

@@ -7,7 +7,7 @@ Create a server.
 Create a server in speficied project.
 
 ```
-cherryctl server create -p <project_id>  --plan <plan_slug> --hostname --region <region_slug> [--image <image_slug>] [--ssh-keys <ssh_key_ids>] [--ip-addresses <ip_addresses_ids>] [--os-partition-size <size>] [--userdata-file <filepath>] [--tags] [--spot-instance] [flags]
+cherryctl server create -p <project_id> --plan <plan_slug> --hostname --region <region_slug> [--image <image_slug>] [--ssh-keys <ssh_key_ids>] [--ip-addresses <ip_addresses_ids>] [--os-partition-size <size>] [--userdata-file <filepath>] [--tags] [--spot-instance] [flags]
 ```
 
 ### Examples

@@ -17,7 +17,7 @@ func (c *Client) Update() *cobra.Command {
 		teamType string
 	)
 	teamUpdateCmd := &cobra.Command{
-		Use: `update ID [-t <team_id>] [--name <team_name>] [--currency <currency_code>] [--type <team_type>]`,
+		Use: `update ID [--name <team_name>] [--currency <currency_code>] [--type <team_type>]`,
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) > 0 {
 				tID, err := strconv.Atoi(args[0])

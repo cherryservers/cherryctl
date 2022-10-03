@@ -7,7 +7,7 @@ Retrieves server list.
 Retrieves a list of servers in the project.
 
 ```
-cherryctl server list [-p <project_id>] [flags]
+cherryctl server list -p <project_id> [flags]
 ```
 
 ### Examples

@@ -13,7 +13,7 @@ func (c *Client) Delete() *cobra.Command {
 	var projectID int
 	var force bool
 	deleteProjectCmd := &cobra.Command{
-		Use:   `delete ID`,
+		Use:   `delete ID [-f]`,
 		Short: "Delete a project.",
 		Long:  "Deletes the specified project with a confirmation prompt. To skip the confirmation use --force.",
 		Example: `  # Deletes the specified project:

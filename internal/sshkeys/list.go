@@ -10,7 +10,7 @@ import (
 func (c *Client) List() *cobra.Command {
 	var projectID int
 	sshListCmd := &cobra.Command{
-		Use:   `list [-p <project_id>]`,
+		Use:   `list -p <project_id>`,
 		Short: "Retrieves project members ssh-keys details.",
 		Long:  "Retrieves project members ssh-keys details.",
 		Example: `  # List of project ssh-keys:
