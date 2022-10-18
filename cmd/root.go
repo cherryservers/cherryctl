@@ -1,12 +1,12 @@
 /*
 Copyright © 2022 Cherry Severs <support@cherryservers.com>
-
 */
 package cmd
 
 import (
 	"os"
 
+	"github.com/cherryservers/cherryctl/internal/backups"
 	root "github.com/cherryservers/cherryctl/internal/cli"
 	"github.com/cherryservers/cherryctl/internal/docs"
 	"github.com/cherryservers/cherryctl/internal/images"
@@ -66,6 +66,7 @@ func (cli *Cli) RegisterCommands(client *root.Client) {
 		servers.NewClient(client, cli.Outputer).NewCommand(),
 		ips.NewClient(client, cli.Outputer).NewCommand(),
 		storages.NewClient(client, cli.Outputer).NewCommand(),
+		backups.NewClient(client, cli.Outputer).NewCommand(),
 		regions.NewClient(client, cli.Outputer).NewCommand(),
 		plans.NewClient(client, cli.Outputer).NewCommand(),
 		projects.NewClient(client, cli.Outputer).NewCommand(),
