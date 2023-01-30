@@ -10,7 +10,7 @@ func (c *Client) List() *cobra.Command {
 	var projectID int
 	var types []string
 	ipListCmd := &cobra.Command{
-		Use:   `list [-p <project_id>]`,
+		Use:   `list -p <project_id>`,
 		Short: "Retrieves list of IP addresses.",
 		Long:  "Retrieves the details of IP addresses in the project.",
 		Example: `  # Gets a list of IP addresses in the specified project:

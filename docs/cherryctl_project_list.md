@@ -7,7 +7,7 @@ Retrieves a list of projects details.
 Retrieves the details of projects.
 
 ```
-cherryctl project list [-p <project_id>] [flags]
+cherryctl project list -t <team_id> [flags]
 ```
 
 ### Examples

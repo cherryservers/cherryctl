@@ -7,7 +7,7 @@ Delete a project.
 Deletes the specified project with a confirmation prompt. To skip the confirmation use --force.
 
 ```
-cherryctl project delete ID [flags]
+cherryctl project delete ID [-f] [flags]
 ```
 
 ### Examples

@@ -7,7 +7,7 @@ Create a project.
 Create a new project in a speficied team.
 
 ```
-cherryctl project create [-t <team_id>] --name <project_name> [--bgp <bool>] [flags]
+cherryctl project create -t <team_id> --name <project_name> [--bgp <bool>] [flags]
 ```
 
 ### Examples

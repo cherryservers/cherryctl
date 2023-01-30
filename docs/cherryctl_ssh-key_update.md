@@ -7,7 +7,7 @@ Updates an SSH key.
 Updates an SSH key with either a new public key, a new label, or both.
 
 ```
-cherryctl ssh-key update -i <ssh_key_id> [--label <text>] [--key <public_key>] [flags]
+cherryctl ssh-key update ID [--label <text>] [--key <public_key>] [flags]
 ```
 
 ### Examples

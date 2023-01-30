@@ -7,7 +7,7 @@ Update a team.
 Update a team.
 
 ```
-cherryctl team update ID [-t <team_id>] [--name <team_name>] [--currency <currency_code>] [--type <team_type>] [flags]
+cherryctl team update ID [--name <team_name>] [--currency <currency_code>] [--type <team_type>] [flags]
 ```
 
 ### Examples

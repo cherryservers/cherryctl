@@ -15,7 +15,7 @@ func (c *Client) Update() *cobra.Command {
 		publicKey string
 	)
 	sshKeyUpdateCmd := &cobra.Command{
-		Use:   `update -i <ssh_key_id> [--label <text>] [--key <public_key>]`,
+		Use:   `update ID [--label <text>] [--key <public_key>]`,
 		Args:  cobra.ExactArgs(1),
 		Short: "Updates an SSH key.",
 		Long:  "Updates an SSH key with either a new public key, a new label, or both.",

@@ -13,7 +13,7 @@ func (c *Client) Delete() *cobra.Command {
 	var teamID int
 	var force bool
 	deleteTeamCmd := &cobra.Command{
-		Use:   `delete ID -t <team_id>`,
+		Use:   `delete ID [f]`,
 		Short: "Delete a team.",
 		Long:  "Deletes the specified team with a confirmation prompt. To skip the confirmation use --force.",
 		Example: `  # Deletes the specified team:

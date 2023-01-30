@@ -12,7 +12,7 @@ import (
 func (c *Client) List() *cobra.Command {
 	var teamID int
 	projectListCmd := &cobra.Command{
-		Use:   `list [-p <project_id>]`,
+		Use:   `list -t <team_id>`,
 		Short: "Retrieves a list of projects details.",
 		Long:  "Retrieves the details of projects.",
 		Example: `  # List available projects:

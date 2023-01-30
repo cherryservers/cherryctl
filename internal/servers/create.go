@@ -28,7 +28,7 @@ func (c *Client) Create() *cobra.Command {
 	)
 
 	createServerCmd := &cobra.Command{
-		Use:   `create -p <project_id>  --plan <plan_slug> --hostname --region <region_slug> [--image <image_slug>] [--ssh-keys <ssh_key_ids>] [--ip-addresses <ip_addresses_ids>] [--os-partition-size <size>] [--userdata-file <filepath>] [--tags] [--spot-instance]`,
+		Use:   `create -p <project_id> --plan <plan_slug> --hostname --region <region_slug> [--image <image_slug>] [--ssh-keys <ssh_key_ids>] [--ip-addresses <ip_addresses_ids>] [--os-partition-size <size>] [--userdata-file <filepath>] [--tags] [--spot-instance]`,
 		Short: "Create a server.",
 		Long:  "Create a server in speficied project.",
 		Example: `  # Provisions a E5-1620v4 server in EU-Nord-1 location running on a Ubuntu 20.04:

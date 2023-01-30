@@ -23,7 +23,7 @@ func (c *Client) Create() *cobra.Command {
 		tags           []string
 	)
 	ipCreateCmd := &cobra.Command{
-		Use:   `create [-p <project_id>] --region <region_slug> [--target-hostname <hostname> | --target-id <server_id> | --target-ip-id <ip_uuid>] [--ptr-record <ptr>] [--a-record <a>] [--tags <tags>]`,
+		Use:   `create -p <project_id> --region <region_slug> [--target-hostname <hostname> | --target-id <server_id> | --target-ip-id <ip_uuid>] [--ptr-record <ptr>] [--a-record <a>] [--tags <tags>]`,
 		Short: "Create floating IP address.",
 		Long:  "Create floating IP address in speficied project.",
 		Example: `  # Create a floating IP address in EU-Nord-1 location:
