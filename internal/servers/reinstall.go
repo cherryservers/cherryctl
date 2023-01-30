@@ -24,7 +24,7 @@ func (c *Client) Reinstall() *cobra.Command {
 		Short: "Reinstall a server.",
 		Long:  "Reinstall the specified server.",
 		Example: `  # Reinstall the specified server:
-  cherryctl server reinstall 12345 -hostname staging-server-1 --image ubuntu_20_04 --password G1h2e_39Q9oT`,
+  cherryctl server reinstall 12345 --hostname staging-server-1 --image ubuntu_20_04 --password G1h2e_39Q9oT`,
 
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cmd.SilenceUsage = true
