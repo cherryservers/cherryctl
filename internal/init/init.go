@@ -50,8 +50,19 @@ func (c *Client) NewCommand() *cobra.Command {
   project-id: 123`,
 
 		DisableFlagsInUseLine: true,
-		RunE: func(cmd *cobra.Command, args []string) error {
-			cmd.SilenceUsage = true
+		
+	    RunE: func(cmd *cobra.Command, args []string) error {
+            homeDir, err := os.UserHomeDir()
+            if err != nil {
+                return fmt.Errorf("Error finding home directory: %s", err)
+            }
+ 
+			configDir := filepath.Join(homeDir, ".config", "cherry")
+			err = c.checkAndCreateConfig(configDir)
+            if err != nil {
+                return err
+            }
+			
 			config, _ := cmd.Flags().GetString("context")
 			if config != "" {
 				config = c.Servicer.ConfigFilePath(config, true)
@@ -145,6 +156,30 @@ func writeConfig(config string, b []byte) error {
 		return fmt.Errorf("could not make directory %q: %s", dir, err)
 	}
 	return ioutil.WriteFile(config, b, 0o600)
+}
+
+func (c *Client) checkAndCreateConfig(configDir string) error {
+    if _, err := os.Stat(configDir); os.IsNotExist(err) {
+        if err := os.MkdirAll(configDir, 0o700); err != nil {
+            return fmt.Errorf("could not create directory %q: %s", configDir, err)
+        }
+    }
+
+    files, err := filepath.Glob(filepath.Join(configDir, "*.yaml"))
+    if err != nil {
+        return fmt.Errorf("error checking for YAML files: %s", err)
+    }
+
+    if len(files) == 0 {
+		defaultConfigPath := filepath.Join(configDir, "default.yaml")
+        file, err := os.Create(defaultConfigPath)
+        if err != nil {
+            return fmt.Errorf("failed to create default config file %q: %s", defaultConfigPath, err)
+        }
+        defer file.Close()
+    }
+
+    return nil
 }
 
 type Servicer interface {
