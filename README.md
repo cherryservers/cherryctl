@@ -47,6 +47,12 @@ brew tap cherryservers/cherryctl
 brew install cherryctl
 ```
 
+### Install `cherryctl` from the [AUR]([https://brew.sh/](https://aur.archlinux.org/packages/cherryctl)
+
+```sh
+paru -S cherryctl
+```
+
 ### Install `cherryctl` from Source
 
 If you have `go` 1.17 or later installed, you can build and install the latest development version with:
