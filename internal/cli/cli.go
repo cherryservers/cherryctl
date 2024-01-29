@@ -115,50 +115,53 @@ func (c *Client) NewCommand() *cobra.Command {
 }
 
 func (c *Client) Config(cmd *cobra.Command) *viper.Viper {
-	if c.viper == nil {
-		v := viper.New()
-		v.AutomaticEnv()
+	if cmd.Name() != "init" {
+		if c.viper == nil {
+			v := viper.New()
+			v.AutomaticEnv()
 
-		replacer := strings.NewReplacer("-", "_", ".", "_")
-		v.SetEnvKeyReplacer(replacer)
-		if c.cfgFile != "" {
-			// Use config file from the flag.
-			v.SetConfigFile(c.cfgFile)
-		} else {
-			// Backward compatability (cherry was renamed to default)
-			if c.context == defaultContext {
-				if _, err := os.Stat(c.ConfigFilePath(defaultContext, true)); err != nil {
-					if _, err := os.Stat(c.ConfigFilePath("cherry", true)); err != nil {
-						log.Fatalln(fmt.Errorf("Couldn't find configuration file. To initiate run `cherryctl init` command"))
-					} else {
-						c.context = "cherry"
+			replacer := strings.NewReplacer("-", "_", ".", "_")
+			v.SetEnvKeyReplacer(replacer)	
+			if c.cfgFile != "" {
+				// Use config file from the flag.
+				v.SetConfigFile(c.cfgFile)
+			} else {
+				// Backward compatability (cherry was renamed to default)
+				if c.context == defaultContext {
+					if _, err := os.Stat(c.ConfigFilePath(defaultContext, true)); err != nil {
+						if _, err := os.Stat(c.ConfigFilePath("cherry", true)); err != nil {
+							log.Fatalln(fmt.Errorf("Couldn't find configuration file. To initiate run `cherryctl init` command"))
+						} else {
+							c.context = "cherry"
+						}
 					}
 				}
+				// Use context file from the flag.
+				configDir := defaultConfigPath()
+
+				v.SetConfigName(c.context)
+				v.AddConfigPath(configDir)
 			}
-			// Use context file from the flag.
-			configDir := defaultConfigPath()
+			if err := v.ReadInConfig(); err != nil {
+				log.Fatalln(fmt.Errorf("Could not read config: %s", err))
+			}
+			c.cfgFile = v.ConfigFileUsed()
 
-			v.SetConfigName(c.context)
-			v.AddConfigPath(configDir)
+			v.SetEnvPrefix(envPrefix)
+			c.viper = v
+			bindFlags(cmd, v)
 		}
-		if err := v.ReadInConfig(); err != nil {
-			log.Fatalln(fmt.Errorf("Could not read config: %s", err))
+
+		flagToken := cmd.Flag("token").Value.String()
+		envToken := cmd.Flag("auth-token").Value.String()
+		c.cherryToken = flagToken
+		if envToken != "" {
+			c.cherryToken = envToken
 		}
-		c.cfgFile = v.ConfigFileUsed()
 
-		v.SetEnvPrefix(envPrefix)
-		c.viper = v
-		bindFlags(cmd, v)
+		return c.viper
 	}
-
-	flagToken := cmd.Flag("token").Value.String()
-	envToken := cmd.Flag("auth-token").Value.String()
-	c.cherryToken = flagToken
-	if envToken != "" {
-		c.cherryToken = envToken
-	}
-
-	return c.viper
+	return nil
 }
 
 // Credit to https://carolynvanslyck.com/blog/2020/08/sting-of-the-viper/
