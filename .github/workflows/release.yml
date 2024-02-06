@@ -23,5 +23,5 @@ jobs:
         version: latest
         args: release --clean
       env:
-        # GitHub sets the GITHUB_TOKEN secret automatically.
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        # https://goreleaser.com/errors/resource-not-accessible-by-integration/
+        GITHUB_TOKEN: ${{ secrets.GH_PAT }}
