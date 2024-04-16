@@ -1,7 +1,9 @@
 package servers
 
 import (
+	"encoding/base64"
 	"fmt"
+	"os"
 	"strconv"
 
 	"github.com/cherryservers/cherrygo/v3"
@@ -15,11 +17,13 @@ func (c *Client) Reinstall() *cobra.Command {
 		image           string
 		password        string
 		sshKeys         []string
+		userDataFile    string
+		userdata        string
 		osPartitionSize int
 	)
 
 	reinstallServerCmd := &cobra.Command{
-		Use:   `reinstall ID --hostname <hostname> --image <image_slug> --password <password> [--ssh-keys <ssh_key_ids>] [--os-partition-size <size>]`,
+		Use:   `reinstall ID --hostname <hostname> --image <image_slug> --password <password> [--ssh-keys <ssh_key_ids>] [--os-partition-size <size>] [--userdata-file <filepath>]`,
 		Args:  cobra.ExactArgs(1),
 		Short: "Reinstall a server.",
 		Long:  "Reinstall the specified server.",
@@ -29,11 +33,20 @@ func (c *Client) Reinstall() *cobra.Command {
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cmd.SilenceUsage = true
 
+			if userDataFile != "" {
+				userdataRaw, readErr := os.ReadFile(userDataFile)
+				if readErr != nil {
+					return errors.Wrap(readErr, "Could not read userdata-file")
+				}
+				userdata = base64.StdEncoding.EncodeToString(userdataRaw)
+			}
+
 			request := &cherrygo.ReinstallServerFields{
 				Image:           image,
 				Hostname:        hostname,
 				Password:        password,
 				SSHKeys:         sshKeys,
+				UserData:        userdata,
 				OSPartitionSize: osPartitionSize,
 			}
 
@@ -57,6 +70,7 @@ func (c *Client) Reinstall() *cobra.Command {
 	reinstallServerCmd.Flags().StringVarP(&password, "password", "", "", "Server password.")
 	reinstallServerCmd.Flags().StringSliceVarP(&sshKeys, "ssh-keys", "", []string{}, "Comma separated list of SSH key IDs to be embed in the Server.")
 	reinstallServerCmd.Flags().IntVarP(&osPartitionSize, "os-partition-size", "", 0, "OS partition size in GB.")
+	reinstallServerCmd.Flags().StringVarP(&userDataFile, "userdata-file", "", "", "Path to a userdata file for server initialization.")
 
 	_ = reinstallServerCmd.MarkFlagRequired("hostname")
 	_ = reinstallServerCmd.MarkFlagRequired("image")

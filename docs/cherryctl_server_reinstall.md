@@ -7,7 +7,7 @@ Reinstall a server.
 Reinstall the specified server.
 
 ```
-cherryctl server reinstall ID --hostname <hostname> --image <image_slug> --password <password> [--ssh-keys <ssh_key_ids>] [--os-partition-size <size>] [flags]
+cherryctl server reinstall ID --hostname <hostname> --image <image_slug> --password <password> [--ssh-keys <ssh_key_ids>] [--os-partition-size <size>] [--userdata-file <filepath>] [flags]
 ```
 
 ### Examples
@@ -26,6 +26,7 @@ cherryctl server reinstall ID --hostname <hostname> --image <image_slug> --passw
       --os-partition-size int   OS partition size in GB.
       --password string         Server password.
       --ssh-keys strings        Comma separated list of SSH key IDs to be embed in the Server.
+      --userdata-file string    Path to a userdata file for server initialization.
 ```
 
 ### Options inherited from parent commands
