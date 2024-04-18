@@ -4,25 +4,26 @@ Create a project.
 
 ### Synopsis
 
-Create a new project in a speficied team.
+Create a new project in a specified team.
 
 ```
-cherryctl project create -t <team_id> --name <project_name> [--bgp <bool>] [flags]
+cherryctl project create -t <team_id> --name <project_name> [--bgp] [--no-bgp] [flags]
 ```
 
 ### Examples
 
 ```
   # To create a new project with BGP enabled:
-  cherryctl project create -t 12345 --name "Project with BGP" --bgp true
+  cherryctl project create -t 12345 --name "Project with BGP" --bgp
 ```
 
 ### Options
 
 ```
-  -b, --bgp           True to enable BGP in a project.
+  -b, --bgp           Enable BGP in a project.
   -h, --help          help for create
       --name string   Project name.
+      --no-bgp        Disable BGP in a project. (default true)
   -t, --team-id int   The teams's ID.
 ```
 
