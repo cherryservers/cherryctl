@@ -15,6 +15,8 @@ cherryctl server reset-bmc-password ID [flags]
 ```
   # Reset BMC password for the specified server:
   cherryctl server reset-bmc-password 12345
+  # Retrieve the new password:
+  cherryctl server get 12345 -o json | jq .bmc
 ```
 
 ### Options
