@@ -4,7 +4,7 @@ IP address operations. For more information on IP addresses check Product Docs: 
 
 ### Synopsis
 
-IP address operations: get, list, create, update, assign, unassign and remove.
+IP address operations: get, list, create, update, assign, unassign and delete.
 
 ### Options
 
