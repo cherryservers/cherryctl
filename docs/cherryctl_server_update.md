@@ -23,6 +23,7 @@ cherryctl server update ID [--name <server_name>] [--hostname <hostname>] [--tag
   -b, --bgp               True to enable BGP in a server.
   -h, --help              help for update
       --hostname string   Server hostname.
+      --name string       Server name.
       --tags strings      Tag or list of tags for the server: --tags="key=value,env=prod".
 ```
 
