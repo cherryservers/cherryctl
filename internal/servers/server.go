@@ -39,6 +39,7 @@ func (c *Client) NewCommand() *cobra.Command {
 		c.Start(),
 		c.Stop(),
 		c.Reboot(),
+		c.Rescue(),
 		c.Reinstall(),
 		c.Delete(),
 		c.ResetBMC(),
