@@ -1,27 +1,26 @@
-## cherryctl server rescue
+## cherryctl server exit-rescue
 
-Rescue a server.
+Exit server rescue mode.
 
 ### Synopsis
 
-Rescue the specified server.
+Put the specified server out of rescue mode.
 
 ```
-cherryctl server rescue ID --password <password> [flags]
+cherryctl server exit-rescue ID [flags]
 ```
 
 ### Examples
 
 ```
-  # Rescue the specified server:
-  cherryctl server rescue 12345 --password abcdef
+  # Put the specified server out of rescue mode:
+  cherryctl server exit-rescue 12345
 ```
 
 ### Options
 
 ```
-  -h, --help              help for rescue
-      --password string   Server password.
+  -h, --help   help for exit-rescue
 ```
 
 ### Options inherited from parent commands

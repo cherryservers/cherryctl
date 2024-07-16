@@ -39,8 +39,12 @@ dmitri.shuralyov.com/gpu/mtl v0.0.0-20190408044501-666a987793e9/go.mod h1:H6x//7
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
 github.com/BurntSushi/xgb v0.0.0-20160522181843-27f122750802/go.mod h1:IVnqGOEym/WlBOVXweHU+Q+/VP0lqqI8lqeDx9IjBqo=
 github.com/census-instrumentation/opencensus-proto v0.2.1/go.mod h1:f6KPmirojxKA12rnyqOA5BBL4O983OfeGPqjHWSTneU=
+github.com/cherryservers/cherrygo v2.0.0+incompatible h1:ayR7Z3QgvXysGzwNaYSki8IQdXOdNknrbgv4Ao0+siQ=
+github.com/cherryservers/cherrygo v2.0.0+incompatible/go.mod h1:bIjHwQGKgXs2chXq9AZouU42yPkYc/Mseqg9K/KhzEM=
 github.com/cherryservers/cherrygo/v3 v3.3.0 h1:D6Yw0gkjNIU6OsYdNTCEhwmjk9c1zs6hBcd16xmRy1Y=
 github.com/cherryservers/cherrygo/v3 v3.3.0/go.mod h1:ubyz7yqr8CaC6k7RSzkI2P6tNXk094BOADodGejEcLQ=
+github.com/cherryservers/cherrygo/v3 v3.4.0 h1:Za1wwky0Rc9uEpxrgULYrxGmaFnfxtwVXYAsitTb2+0=
+github.com/cherryservers/cherrygo/v3 v3.4.0/go.mod h1:ubyz7yqr8CaC6k7RSzkI2P6tNXk094BOADodGejEcLQ=
 github.com/chzyer/logex v1.1.10 h1:Swpa1K6QvQznwJRcfTfQJmTE72DqScAa40E+fbHEXEE=
 github.com/chzyer/logex v1.1.10/go.mod h1:+Ywpsq7O8HXn0nuIou7OrIPyXbp3wmkHB+jjWRnGsAI=
 github.com/chzyer/readline v0.0.0-20180603132655-2972be24d48e h1:fY5BOSpyZCqRo5OhCuC+XN+r/bBCmeuuJtjz+bCNIf8=
