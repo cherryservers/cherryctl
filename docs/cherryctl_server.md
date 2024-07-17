@@ -28,6 +28,8 @@ Server operations: create, get, list, delete, start, stop, reboot, reinstall and
 * [cherryctl](cherryctl.md)	 - Cherry Servers Command Line Interface (CLI)
 * [cherryctl server create](cherryctl_server_create.md)	 - Create a server.
 * [cherryctl server delete](cherryctl_server_delete.md)	 - Delete a server.
+* [cherryctl server enter-rescue](cherryctl_server_enter-rescue.md)	 - Enter server rescue mode.
+* [cherryctl server exit-rescue](cherryctl_server_exit-rescue.md)	 - Exit server rescue mode.
 * [cherryctl server get](cherryctl_server_get.md)	 - Retrieves server details.
 * [cherryctl server list](cherryctl_server_list.md)	 - Retrieves server list.
 * [cherryctl server reboot](cherryctl_server_reboot.md)	 - Reboot a server.
