@@ -1,20 +1,20 @@
 ## cherryctl ssh-key list
 
-Retrieves project members ssh-keys details.
+Retrieves ssh-keys.
 
 ### Synopsis
 
-Retrieves project members ssh-keys details.
+Retrieves ssh-keys. If the project ID is specified, will return all SSH keys assigned to a specific project.
 
 ```
-cherryctl ssh-key list -p <project_id> [flags]
+cherryctl ssh-key list [-p <project_id>] [flags]
 ```
 
 ### Examples
 
 ```
-  # List of project ssh-keys:
-  cherryctl ssh-key list -i 12345
+  # List of ssh-keys:
+  cherryctl ssh-key list
 ```
 
 ### Options
