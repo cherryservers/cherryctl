@@ -2,10 +2,11 @@ package init
 
 import (
 	"fmt"
-	"io/ioutil"
+	"github.com/cherryservers/cherryctl/internal/cli"
 	"os"
 	"path/filepath"
 	"strconv"
+	"strings"
 	"syscall"
 	"text/tabwriter"
 
@@ -52,20 +53,22 @@ func (c *Client) NewCommand() *cobra.Command {
 		DisableFlagsInUseLine: true,
 
 		RunE: func(cmd *cobra.Command, args []string) error {
-			homeDir, err := os.UserHomeDir()
-			if err != nil {
-				return fmt.Errorf("Error finding home directory: %s", err)
-			}
-
-			configDir := filepath.Join(homeDir, ".config", "cherry")
-			err = c.checkAndCreateConfig(configDir)
+			configPath, err := cmd.Flags().GetString("config")
 			if err != nil {
 				return err
 			}
 
-			context, _ := cmd.Flags().GetString("context")
-			if context != "" {
-				context = c.Servicer.ConfigFilePath(context, true)
+			if configPath == "" {
+				configDir, err := os.UserConfigDir()
+				if err != nil {
+					return err
+				}
+				configPath = filepath.Join(configDir, cli.DefaultConfigDirName)
+			}
+
+			err = c.checkAndCreateConfigDir(configPath)
+			if err != nil {
+				return err
 			}
 
 			token, err := c.getAPIToken()
@@ -92,7 +95,13 @@ func (c *Client) NewCommand() *cobra.Command {
 			if err != nil {
 				return err
 			}
-			return writeConfig(context, b)
+
+			context, _ := cmd.Flags().GetString("context")
+			if !strings.HasSuffix(context, ".yaml") {
+				context += ".yaml"
+			}
+
+			return writeConfig(configPath, context, b)
 		},
 	}
 
@@ -184,41 +193,25 @@ func formatConfig(userProj, userTeam, token string) ([]byte, error) {
 	return b, err
 }
 
-func writeConfig(config string, b []byte) error {
-	fmt.Fprintf(os.Stderr, "\nWriting configuration to: %s\n", config)
-	dir := filepath.Dir(config)
-	if err := os.MkdirAll(dir, 0o700); err != nil {
-		return fmt.Errorf("could not make directory %q: %s", dir, err)
-	}
-	return ioutil.WriteFile(config, b, 0o600)
+func writeConfig(configPath string, context string, b []byte) error {
+	configDest := filepath.Join(configPath, context)
+	fmt.Fprintf(os.Stderr, "\nWriting configuration to: %s\n", configDest)
+	return os.WriteFile(configDest, b, 0o600)
 }
 
-func (c *Client) checkAndCreateConfig(configDir string) error {
+func (c *Client) checkAndCreateConfigDir(configDir string) error {
 	if _, err := os.Stat(configDir); os.IsNotExist(err) {
 		if err := os.MkdirAll(configDir, 0o700); err != nil {
 			return fmt.Errorf("could not create directory %q: %s", configDir, err)
 		}
 	}
-
-	files, err := filepath.Glob(filepath.Join(configDir, "*.yaml"))
-	if err != nil {
-		return fmt.Errorf("error checking for YAML files: %s", err)
-	}
-
-	if len(files) == 0 {
-		defaultConfigPath := filepath.Join(configDir, "default.yaml")
-		file, err := os.Create(defaultConfigPath)
-		if err != nil {
-			return fmt.Errorf("failed to create default config file %q: %s", defaultConfigPath, err)
-		}
-		defer file.Close()
-	}
-
 	return nil
 }
 
 type Servicer interface {
 	API(*cobra.Command) *cherrygo.Client
 	SetToken(string)
-	ConfigFilePath(string, bool) string
+	ConfigFilePath(bool) string
 }
+
+var _ Servicer = (*cli.Client)(nil)

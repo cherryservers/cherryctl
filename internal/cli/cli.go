@@ -5,7 +5,7 @@ import (
 	"log"
 	"os"
 	"path"
-	"runtime"
+	"path/filepath"
 	"strings"
 
 	"github.com/cherryservers/cherryctl/internal/outputs"
@@ -16,9 +16,10 @@ import (
 )
 
 const (
-	envPrefix        = "CHERRY"
-	configPathSuffix = "/.config/cherry"
-	defaultContext   = "default"
+	envPrefix                = "CHERRY"
+	DefaultContext           = "default"
+	DefaultConfigDirName     = "cherryctl"
+	DeprecatedDefaultContext = "cherry"
 )
 
 type Client struct {
@@ -26,7 +27,7 @@ type Client struct {
 
 	fields       *[]string
 	queryParams  map[string]string
-	cfgFile      string
+	configPath   string
 	context      string
 	outputFormat string
 	cherryToken  string
@@ -103,8 +104,9 @@ func (c *Client) NewCommand() *cobra.Command {
 	rootCmd.PersistentFlags().String("auth-token", "", "API Token (Alias)")
 	authtoken := rootCmd.PersistentFlags().Lookup("auth-token")
 	authtoken.Hidden = true
-	rootCmd.PersistentFlags().StringVar(&c.cfgFile, "config", c.cfgFile, "Path to JSON or YAML configuration file")
-	rootCmd.PersistentFlags().StringVar(&c.context, "context", defaultContext, "Specify a custom context name")
+
+	rootCmd.PersistentFlags().StringVar(&c.configPath, "config", "", "Path to JSON or YAML configuration file")
+	rootCmd.PersistentFlags().StringVar(&c.context, "context", DefaultContext, "Specify a custom context name")
 	rootCmd.PersistentFlags().StringVar(&c.apiURL, "api-url", c.apiURL, "Override default API endpoint")
 	rootCmd.PersistentFlags().StringVarP(&c.outputFormat, "output", "o", "", "Output format (*table, json, yaml)")
 	c.fields = rootCmd.PersistentFlags().StringSlice("fields", nil, "Comma separated object field names to output in result. Fields can be used for list and get actions.")
@@ -121,31 +123,33 @@ func (c *Client) Config(cmd *cobra.Command) *viper.Viper {
 			v.AutomaticEnv()
 
 			replacer := strings.NewReplacer("-", "_", ".", "_")
-			v.SetEnvKeyReplacer(replacer)	
-			if c.cfgFile != "" {
-				// Use config file from the flag.
-				v.SetConfigFile(c.cfgFile)
-			} else {
-				// Backward compatability (cherry was renamed to default)
-				if c.context == defaultContext {
-					if _, err := os.Stat(c.ConfigFilePath(defaultContext, true)); err != nil {
-						if _, err := os.Stat(c.ConfigFilePath("cherry", true)); err != nil {
-							log.Fatalln(fmt.Errorf("Couldn't find configuration file. To initiate run `cherryctl init` command"))
-						} else {
-							c.context = "cherry"
-						}
+			v.SetEnvKeyReplacer(replacer)
+
+			if c.configPath == "" {
+				var err error
+				c.configPath, err = defaultConfigPath()
+				if err != nil {
+					log.Fatalln(err)
+				}
+			}
+
+			// Backward compatability (cherry was renamed to default)
+			if c.context == DefaultContext {
+				if _, err := os.Stat(filepath.Join(c.configPath, DefaultContext)); err != nil {
+					if _, err := os.Stat(filepath.Join(c.configPath, DeprecatedDefaultContext)); err != nil {
+						log.Fatalln(fmt.Errorf("Couldn't find configuration file. To initiate run `cherryctl init` command"))
+					} else {
+						c.context = DeprecatedDefaultContext
 					}
 				}
-				// Use context file from the flag.
-				configDir := defaultConfigPath()
-
-				v.SetConfigName(c.context)
-				v.AddConfigPath(configDir)
 			}
+
+			v.SetConfigName(c.context)
+			v.AddConfigPath(c.configPath)
+
 			if err := v.ReadInConfig(); err != nil {
 				log.Fatalln(fmt.Errorf("Could not read config: %s", err))
 			}
-			c.cfgFile = v.ConfigFileUsed()
 
 			v.SetEnvPrefix(envPrefix)
 			c.viper = v
@@ -182,28 +186,22 @@ func bindFlags(cmd *cobra.Command, v *viper.Viper) {
 	})
 }
 
-func defaultConfigPath() string {
-	return path.Join(userHomeDir(), configPathSuffix)
+func defaultConfigPath() (string, error) {
+	configDir, err := os.UserConfigDir()
+	if err != nil {
+		return configDir, err
+	}
+
+	return path.Join(configDir, DefaultConfigDirName), nil
 }
 
-func (c *Client) ConfigFilePath(context string, withExtension bool) string {
-	dir := defaultConfigPath()
-	config := path.Join(dir, context)
+// TODO deprecate
+func (c *Client) ConfigFilePath(withExtension bool) string {
+	config := path.Join(c.configPath, c.context)
 	if withExtension {
 		config = config + ".yaml"
 	}
 	return config
-}
-
-func userHomeDir() string {
-	if runtime.GOOS == "windows" {
-		home := os.Getenv("HOMEDRIVE") + os.Getenv("HOMEPATH")
-		if home == "" {
-			home = os.Getenv("USERPROFILE")
-		}
-		return home
-	}
-	return os.Getenv("HOME")
 }
 
 func (c *Client) GetOptions() *cherrygo.GetOptions {
