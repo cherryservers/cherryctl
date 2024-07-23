@@ -82,7 +82,7 @@ The configuration directory path can be changed with the CHERRY_CONFIG environme
 				return err
 			}
 
-			token, err := c.getAPIToken()
+			token, err := c.readAPIToken()
 			if err != nil {
 				return err
 			}
@@ -92,12 +92,12 @@ The configuration directory path can be changed with the CHERRY_CONFIG environme
 
 			cherryClient := c.Servicer.API(cmd)
 
-			userTeam, err := c.getUserTeam(cherryClient)
+			userTeam, err := c.readUserTeam(cherryClient)
 			if err != nil {
 				return err
 			}
 
-			userProj, err := c.getUserProject(cherryClient, userTeam)
+			userProj, err := c.readUserProject(cherryClient, userTeam)
 			if err != nil {
 				return err
 			}
@@ -119,7 +119,7 @@ The configuration directory path can be changed with the CHERRY_CONFIG environme
 	return initCmd
 }
 
-func (c *Client) getAPIToken() (string, error) {
+func (c *Client) readAPIToken() (string, error) {
 	fmt.Print("Cherry Servers API Tokens can be obtained through the portal at http://portal.cherryservers.com/.\n\n")
 	fmt.Print("Token (hidden): ")
 	b, err := term.ReadPassword(int(syscall.Stdin))
@@ -143,7 +143,7 @@ func (c *Client) validateToken(cmd *cobra.Command) error {
 	return nil
 }
 
-func (c *Client) getUserTeam(cherryClient *cherrygo.Client) (string, error) {
+func (c *Client) readUserTeam(cherryClient *cherrygo.Client) (string, error) {
 	teams, _, err := cherryClient.Teams.List(&cherrygo.GetOptions{})
 	if err != nil {
 		return "", errors.Wrap(err, "Failed to get team list")
@@ -167,7 +167,7 @@ func (c *Client) getUserTeam(cherryClient *cherrygo.Client) (string, error) {
 	return userTeam, nil
 }
 
-func (c *Client) getUserProject(cherryClient *cherrygo.Client, userTeam string) (string, error) {
+func (c *Client) readUserProject(cherryClient *cherrygo.Client, userTeam string) (string, error) {
 	teamID, _ := strconv.Atoi(userTeam)
 	projects, _, err := cherryClient.Projects.List(teamID, &cherrygo.GetOptions{})
 	if err != nil {
