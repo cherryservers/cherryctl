@@ -43,11 +43,11 @@ func (c *Client) NewCommand() *cobra.Command {
 		Use:   `init`,
 		Short: "Configuration file initialization.",
 		Long: `Init will prompt for account settings and store the values as defaults in a configuration file that may be shared with other Cherry Servers tools.
-				This file is stored in the default user configuration directory, unless otherwise specified by the --config flag.
-				The --context flag can be used to change default configuration file name.
-				Any Cherry CLI command line argument can be specified in the config file.
-				Be careful not to define options that you do not intend to use as defaults.
-				The configuration directory path can be changed with the CHERRY_CONFIG environment variable or --config option.`,
+This file is stored in the default user configuration directory, unless otherwise specified by the --config flag.
+The --context flag can be used to change the default config file name.
+Any Cherry CLI command line argument can be specified in the config file.
+Be careful not to define options that you do not intend to use as defaults.
+The configuration directory path can be changed with the CHERRY_CONFIG environment variable or --config option.`,
 
 		Example: `  # Example config:
   --
