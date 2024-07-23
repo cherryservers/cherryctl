@@ -42,7 +42,12 @@ func (c *Client) NewCommand() *cobra.Command {
 	initCmd := &cobra.Command{
 		Use:   `init`,
 		Short: "Configuration file initialization.",
-		Long:  "Init will prompt for account settings and store the values as defaults in a configuration file that may be shared with other Cherry Servers tools. This file is typically stored in $HOME/.config/cherry/config.yaml. Any Cherry CLI command line argument can be specified in the config file. Be careful not to define options that you do not intend to use as defaults. The configuration file path can be changed with the CHERRY_CONFIG environment variable or --config option.",
+		Long: `Init will prompt for account settings and store the values as defaults in a configuration file that may be shared with other Cherry Servers tools.
+				This file is stored in the default user configuration directory, unless otherwise specified by the --config flag.
+				The --context flag can be used to change default configuration file name.
+				Any Cherry CLI command line argument can be specified in the config file.
+				Be careful not to define options that you do not intend to use as defaults.
+				The configuration directory path can be changed with the CHERRY_CONFIG environment variable or --config option.`,
 
 		Example: `  # Example config:
   --
@@ -58,12 +63,18 @@ func (c *Client) NewCommand() *cobra.Command {
 				return err
 			}
 
+			// If config path is empty, check env var and if that is not set, use OS default.
 			if configPath == "" {
-				configDir, err := os.UserConfigDir()
-				if err != nil {
-					return err
+				configPath = os.Getenv(cli.EnvPrefix + "_CONFIG")
+
+				if configPath == "" {
+					configDir, err := os.UserConfigDir()
+					if err != nil {
+						return err
+					}
+					configPath = filepath.Join(configDir, cli.DefaultConfigDirName)
 				}
-				configPath = filepath.Join(configDir, cli.DefaultConfigDirName)
+
 			}
 
 			err = c.checkAndCreateConfigDir(configPath)
@@ -211,7 +222,6 @@ func (c *Client) checkAndCreateConfigDir(configDir string) error {
 type Servicer interface {
 	API(*cobra.Command) *cherrygo.Client
 	SetToken(string)
-	ConfigFilePath(bool) string
 }
 
 var _ Servicer = (*cli.Client)(nil)

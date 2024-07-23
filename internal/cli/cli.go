@@ -6,6 +6,7 @@ import (
 	"os"
 	"path"
 	"path/filepath"
+	"runtime"
 	"strings"
 
 	"github.com/cherryservers/cherryctl/internal/outputs"
@@ -16,10 +17,11 @@ import (
 )
 
 const (
-	envPrefix                = "CHERRY"
-	DefaultContext           = "default"
-	DefaultConfigDirName     = "cherryctl"
-	DeprecatedDefaultContext = "cherry"
+	EnvPrefix            = "CHERRY"
+	DefaultContext       = "default"
+	DefaultConfigDirName = "cherryctl"
+	OldDefaultContext    = "cherry"
+	OldConfigPathSuffix  = "/.config/cherry"
 )
 
 type Client struct {
@@ -105,7 +107,7 @@ func (c *Client) NewCommand() *cobra.Command {
 	authtoken := rootCmd.PersistentFlags().Lookup("auth-token")
 	authtoken.Hidden = true
 
-	rootCmd.PersistentFlags().StringVar(&c.configPath, "config", "", "Path to JSON or YAML configuration file")
+	rootCmd.PersistentFlags().StringVar(&c.configPath, "config", "", "Path to configuration file directory. The CHERRY_CONFIG environment variable can be used as well.")
 	rootCmd.PersistentFlags().StringVar(&c.context, "context", DefaultContext, "Specify a custom context name")
 	rootCmd.PersistentFlags().StringVar(&c.apiURL, "api-url", c.apiURL, "Override default API endpoint")
 	rootCmd.PersistentFlags().StringVarP(&c.outputFormat, "output", "o", "", "Output format (*table, json, yaml)")
@@ -120,38 +122,46 @@ func (c *Client) Config(cmd *cobra.Command) *viper.Viper {
 	if cmd.Name() != "init" {
 		if c.viper == nil {
 			v := viper.New()
+			v.SetEnvPrefix(EnvPrefix)
 			v.AutomaticEnv()
 
 			replacer := strings.NewReplacer("-", "_", ".", "_")
 			v.SetEnvKeyReplacer(replacer)
 
-			if c.configPath == "" {
-				var err error
-				c.configPath, err = defaultConfigPath()
-				if err != nil {
-					log.Fatalln(err)
-				}
-			}
-
-			// Backward compatability (cherry was renamed to default)
-			if c.context == DefaultContext {
-				if _, err := os.Stat(filepath.Join(c.configPath, DefaultContext)); err != nil {
-					if _, err := os.Stat(filepath.Join(c.configPath, DeprecatedDefaultContext)); err != nil {
-						log.Fatalln(fmt.Errorf("Couldn't find configuration file. To initiate run `cherryctl init` command"))
-					} else {
-						c.context = DeprecatedDefaultContext
-					}
-				}
-			}
-
 			v.SetConfigName(c.context)
+
+			// Viper looks for config files in the specified paths in the order they were added.
+			// This can be leveraged to prioritize the most directly defined paths.
+			// Look for config in the --config flag specified path first.
 			v.AddConfigPath(c.configPath)
 
-			if err := v.ReadInConfig(); err != nil {
-				log.Fatalln(fmt.Errorf("Could not read config: %s", err))
+			// Look for config in the env variable specified path.
+			v.AddConfigPath(os.Getenv(EnvPrefix + "_CONFIG"))
+
+			// If no config is found in the user specified path, look in the standard default path.
+			defaultConfigPath, err := getDefaultConfigPath()
+			if err != nil {
+				log.Fatalln(err)
+			}
+			v.AddConfigPath(defaultConfigPath)
+
+			// If no config is found in the standard default path, check the old default path.
+			defaultConfigPath = filepath.Join(userHomeDir(), OldConfigPathSuffix)
+			v.AddConfigPath(defaultConfigPath)
+
+			if err = v.ReadInConfig(); err != nil {
+				// For backward compatability (the default context was renamed from `cherry` to `default`).
+				if c.context == DefaultContext {
+					v.SetConfigName(OldDefaultContext)
+					if err = v.ReadInConfig(); err != nil {
+						log.Fatalln(fmt.Errorf("could not read config: %s. Initiate new configuration with `cherryctl init`", err))
+					}
+				} else {
+					log.Fatalln(fmt.Errorf("could not read config: %s. Initiate new configuration with `cherryctl init`", err))
+				}
+
 			}
 
-			v.SetEnvPrefix(envPrefix)
 			c.viper = v
 			bindFlags(cmd, v)
 		}
@@ -175,7 +185,7 @@ func bindFlags(cmd *cobra.Command, v *viper.Viper) {
 		// keys with underscores, e.g. --favorite-color to STING_FAVORITE_COLOR
 		// if strings.Contains(f.Name, "-") {
 		// 	envVarSuffix := strings.ToUpper(strings.ReplaceAll(f.Name, "-", "_"))
-		// 	_ = v.BindEnv(f.Name, fmt.Sprintf("%s_%s", envPrefix, envVarSuffix))
+		// 	_ = v.BindEnv(f.Name, fmt.Sprintf("%s_%s", EnvPrefix, envVarSuffix))
 		// }
 
 		// Apply the viper config value to the flag when the flag is not set and viper has a value
@@ -186,7 +196,7 @@ func bindFlags(cmd *cobra.Command, v *viper.Viper) {
 	})
 }
 
-func defaultConfigPath() (string, error) {
+func getDefaultConfigPath() (string, error) {
 	configDir, err := os.UserConfigDir()
 	if err != nil {
 		return configDir, err
@@ -195,13 +205,17 @@ func defaultConfigPath() (string, error) {
 	return path.Join(configDir, DefaultConfigDirName), nil
 }
 
-// TODO deprecate
-func (c *Client) ConfigFilePath(withExtension bool) string {
-	config := path.Join(c.configPath, c.context)
-	if withExtension {
-		config = config + ".yaml"
+// Deprecated.
+// Used only for checking the old default config directory.
+func userHomeDir() string {
+	if runtime.GOOS == "windows" {
+		home := os.Getenv("HOMEDRIVE") + os.Getenv("HOMEPATH")
+		if home == "" {
+			home = os.Getenv("USERPROFILE")
+		}
+		return home
 	}
-	return config
+	return os.Getenv("HOME")
 }
 
 func (c *Client) GetOptions() *cherrygo.GetOptions {
