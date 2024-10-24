@@ -7,7 +7,7 @@ Create a server.
 Create a server in specified project.
 
 ```
-cherryctl server create -p <project_id> --plan <plan_slug> --region <region_slug> [--hostname <hostname>] [--image <image_slug>] [--ssh-keys <ssh_key_ids>] [--ip-addresses <ip_addresses_ids>] [--os-partition-size <size>] [--userdata-file <filepath>] [--tags] [--spot-instance] [flags]
+cherryctl server create -p <project_id> --plan <plan_slug> --region <region_slug> [--hostname <hostname>] [--image <image_slug>] [--ssh-keys <ssh_key_ids>] [--ip-addresses <ip_addresses_ids>] [--os-partition-size <size>] [--userdata-file <filepath>] [--tags] [--spot-instance] [--storage-id <storage_id>] [flags]
 ```
 
 ### Examples
@@ -30,6 +30,7 @@ cherryctl server create -p <project_id> --plan <plan_slug> --region <region_slug
       --region string           Slug of the region where server will be provisioned.
       --spot-instance           Provisions the server as a spot instance.
       --ssh-keys strings        Comma separated list of SSH key ID's to be embed in the Server.
+      --storage-id int          ID of the storage that will be attached to server.
       --tags strings            Tag or list of tags for the server: --tags="key=value,env=prod".
       --userdata-file string    Path to a userdata file for server initialization.
 ```
