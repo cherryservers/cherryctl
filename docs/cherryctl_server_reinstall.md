@@ -14,7 +14,7 @@ cherryctl server reinstall ID --hostname <hostname> --image <image_slug> --passw
 
 ```
   # Reinstall the specified server:
-  cherryctl server reinstall 12345 --hostname staging-server-1 --image ubuntu_20_04 --password G1h2e_39Q9oT
+  cherryctl server reinstall 12345 --hostname staging-server-1 --image ubuntu_24_04 --password G1h2e_39Q9oT
 ```
 
 ### Options
@@ -42,5 +42,5 @@ cherryctl server reinstall ID --hostname <hostname> --image <image_slug> --passw
 
 ### SEE ALSO
 
-* [cherryctl server](cherryctl_server.md)	 - Server operations. For more information on server types check Product Docs: https://docs.cherryservers.com/knowledge/product-docs#compute
+* [cherryctl server](cherryctl_server.md)	 - Server operations. For more information on server types, check the Product Docs: https://docs.cherryservers.com/knowledge/product-docs#compute
 

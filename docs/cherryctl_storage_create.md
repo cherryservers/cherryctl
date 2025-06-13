@@ -13,8 +13,8 @@ cherryctl storage create -p <project_id> --size <gigabytes> --region <region_slu
 ### Examples
 
 ```
-  # Create storage volume with 500GB space in EU-Nord-1 location:
-  cherryctl storage create -p 12345 --size 500 --region eu_nord_1
+  # Create storage volume with 500GB of space in the LT-Siauliai location:
+  cherryctl storage create -p 12345 --size 500 --region LT-Siauliai
 ```
 
 ### Options
@@ -40,5 +40,5 @@ cherryctl storage create -p <project_id> --size <gigabytes> --region <region_slu
 
 ### SEE ALSO
 
-* [cherryctl storage](cherryctl_storage.md)	 - Storage operations. For more information on Elastic Block Storage check Product Docs: https://docs.cherryservers.com/knowledge/elastic-block-storage/
+* [cherryctl storage](cherryctl_storage.md)	 - Storage operations. For more information on Elastic Block Storage, check the Product Docs: https://docs.cherryservers.com/knowledge/elastic-block-storage/
 

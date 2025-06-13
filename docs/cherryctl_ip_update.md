@@ -4,7 +4,7 @@ Update IP address.
 
 ### Synopsis
 
-Update tags, ptr record, a record or target server of a IP address.
+Update tags, ptr record, a record or target server of an IP address.
 
 ```
 cherryctl ip update ID [--ptr-record <ptr>] [--a-record <a>] [--tags <tags>] [flags]
@@ -39,5 +39,5 @@ cherryctl ip update ID [--ptr-record <ptr>] [--a-record <a>] [--tags <tags>] [fl
 
 ### SEE ALSO
 
-* [cherryctl ip](cherryctl_ip.md)	 - IP address operations. For more information on IP addresses check Product Docs: https://docs.cherryservers.com/knowledge/product-docs#ip-addressing
+* [cherryctl ip](cherryctl_ip.md)	 - IP address operations. For more information on IP addresses, check out the Product Docs: https://docs.cherryservers.com/knowledge/product-docs#ip-addressing
 

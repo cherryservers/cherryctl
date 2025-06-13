@@ -13,8 +13,8 @@ cherryctl ip create -p <project_id> --region <region_slug> [--target-hostname <h
 ### Examples
 
 ```
-  # Create a floating IP address in EU-Nord-1 location:
-  cherryctl ip create -p <project_id> --region eu_nord_1
+  # Create a floating IP address in the LT-Siauliai location:
+  cherryctl ip create -p <project_id> --region LT-Siauliai
 ```
 
 ### Options
@@ -44,5 +44,5 @@ cherryctl ip create -p <project_id> --region <region_slug> [--target-hostname <h
 
 ### SEE ALSO
 
-* [cherryctl ip](cherryctl_ip.md)	 - IP address operations. For more information on IP addresses check Product Docs: https://docs.cherryservers.com/knowledge/product-docs#ip-addressing
+* [cherryctl ip](cherryctl_ip.md)	 - IP address operations. For more information on IP addresses, check out the Product Docs: https://docs.cherryservers.com/knowledge/product-docs#ip-addressing
 

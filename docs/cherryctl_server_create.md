@@ -13,8 +13,8 @@ cherryctl server create -p <project_id> --plan <plan_slug> --region <region_slug
 ### Examples
 
 ```
-  # Provisions a E5-1620v4 server in EU-Nord-1 location running on a Ubuntu 20.04:
-  cherryctl server create -p <project_id> --plan e5_1620v4 --hostname staging-server-1 --image ubuntu_20_04 --region eu_nord_1
+  # Provisions a E5-1620v4 server in the LT-Siauliai location running on Ubuntu 24.04:
+  cherryctl server create -p <project_id> --plan e5_1620v4 --hostname staging-server-1 --image ubuntu_24_04 --region LT-Siauliai
 ```
 
 ### Options
@@ -48,5 +48,5 @@ cherryctl server create -p <project_id> --plan <plan_slug> --region <region_slug
 
 ### SEE ALSO
 
-* [cherryctl server](cherryctl_server.md)	 - Server operations. For more information on server types check Product Docs: https://docs.cherryservers.com/knowledge/product-docs#compute
+* [cherryctl server](cherryctl_server.md)	 - Server operations. For more information on server types, check the Product Docs: https://docs.cherryservers.com/knowledge/product-docs#compute
 
