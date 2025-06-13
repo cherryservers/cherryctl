@@ -47,7 +47,7 @@ brew tap cherryservers/cherryctl
 brew install cherryctl
 ```
 
-### Install `cherryctl` from the [AUR]([https://brew.sh/](https://aur.archlinux.org/packages/cherryctl)
+### Install `cherryctl` from the [AUR](https://aur.archlinux.org/packages/cherryctl)
 
 ```sh
 paru -S cherryctl
