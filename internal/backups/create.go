@@ -23,8 +23,8 @@ func (c *Client) Create() *cobra.Command {
 		Use:   `create {--server-id <id> | --server-hostname <hostname>} --plan <backup_plan_slug> --region <region_slug> [-p <project_id>] [--ssh-key <plain_ssh_key>]`,
 		Short: "Create a backup storage.",
 		Long:  "Create a backup storage for specified server.",
-		Example: `  # Create backup storage with 100GB space in EU-Nord-1 location for server with hostname "delicate-zebra":
-  cherryctl backup create --server-hostname delicate-zebra --plan backup_100 --region eu_nord_1 --project-id 123`,
+		Example: `  # Create backup storage with 100GB of space in the LT-Siauliai location for the server with hostname "delicate-zebra":
+  cherryctl backup create --server-hostname delicate-zebra --plan backup_100 --region LT-Siauliai --project-id 123`,
 
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cmd.SilenceUsage = true

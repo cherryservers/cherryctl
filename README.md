@@ -141,7 +141,7 @@ every time. This can be useful when, for example, you want to deploy all infrast
 
 If you want to change the default value for a `--region` flag, open `.config.yaml` file and add the corresponding
 key-value pair at the end of the file. For isntance, in the following example we have changed the default region to
-eu_nord_1:
+LT-Siauliai:
 
 ```yaml
 [ ... ]
