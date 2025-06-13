@@ -145,7 +145,7 @@ eu_nord_1:
 
 ```yaml
 [ ... ]
-region: eu_nord_1
+region: LT-Siauliai
 ```
 
 ## Documentation
