@@ -66,7 +66,7 @@ func (c *Client) Create() *cobra.Command {
 	backupCreateCmd.Flags().StringVarP(&serverHostname, "server-hostname", "", "", "The Hostname of a server.")
 	backupCreateCmd.Flags().StringVarP(&region, "region", "", "", "Slug of the region.")
 	backupCreateCmd.Flags().StringVarP(&backupPlan, "plan", "", "", "Backup storage plan slug.")
-	backupCreateCmd.Flags().StringVarP(&sshKey, "ssh-key", "", "", "Plain SSH key will be stored in backup service.")
+	backupCreateCmd.Flags().StringVarP(&sshKey, "ssh-key", "", "", "Plain SSH key that will be stored in backup service.")
 
 	backupCreateCmd.MarkFlagRequired("region")
 	backupCreateCmd.MarkFlagRequired("plan")

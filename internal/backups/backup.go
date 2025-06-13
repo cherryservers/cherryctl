@@ -18,7 +18,7 @@ func (c *Client) NewCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     `backup`,
 		Aliases: []string{"backups"},
-		Short:   "Server backup operations. For more information on backups check Product Docs: https://docs.cherryservers.com/knowledge/backup-storage",
+		Short:   "Server backup operations. For more information on backups, check the Product Docs: https://docs.cherryservers.com/knowledge/backup-storage",
 		Long:    "Server backup storage operations: plans, get, list, create, update, methods, update-method, method-whitelist and remove.",
 
 		PersistentPreRun: func(cmd *cobra.Command, args []string) {
