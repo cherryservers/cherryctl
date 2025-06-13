@@ -156,18 +156,19 @@ The full CLI documentation can be found [here](docs/cherryctl.md).
 
 ### List Plans
 
-You may list all plans that are available on Cherry Servers stock by using the following command:
+You may list all the plans that are available on Cherry Servers stock by using the following command:
 
 ```sh
 cherryctl plan list
 ```
 
-`cherryctl` allows you to order services with hourly and spot billing cycles only. In case you wish to get a fixed term
+`cherryctl` only allows you to order services with hourly and spot billing cycles. If you wish to get a fixed term
 plan, use the Client Portal instead.
 
 ### List Plan Images
 
-Every plan may have a different set of available images. Use a selected plan slug obtained from `cherryctl plan list`
+Every plan may have a different set of available images. Use a selected plan slug obtained from the
+`cherryctl plan list`
 command to get a list of available images for that plan:
 
 ```sh
@@ -184,8 +185,7 @@ cherryctl region list
 
 ### Deploy a New Server
 
-As you now have all required information, feel free to order a new server plan with your selected image in your
-preferred region:
+Provision a new server:
 
 ```sh
 cherryctl server create --plan [plan_slug] --image [os_slug] --region [region_slug] --hostname [hostname]
@@ -201,8 +201,8 @@ cherryctl server list
 
 ### Get Information About Existing Server
 
-If you want to check a single server, you may use the following command. You may specify a `-o json` flag in case you
-want to change the output to json.
+If you want to inspect a single server, you may use the following command. You may specify a `-o json` or `-o yaml` flag
+if you want to change the output format.
 
 ```sh
 cherryctl server get -o json [server_ID]
