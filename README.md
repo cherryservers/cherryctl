@@ -20,7 +20,7 @@ cherryctl
     * [Install binary from Release Download](#install-binary-from-release-download)
 * [Shell Completion](#shell-completion)
 * [Authentication](#authentication)
-    * [Working With Multiple User Profiles](#working-with-multiple-user-profiles)
+    * [Working With Multiple Contexts](#working-with-multiple-contexts)
 * [Configuring Default Values](#configuring-default-values)
 * [Documentation](#documentation)
 * [Examples](#examples)
@@ -105,22 +105,24 @@ Project ID []: 123456
 Writing configuration to: /Users/username/.config/cherry/default.yaml
 ```
 
-The Cherry Servers authentication token can be stored in the `$CHERRY_AUTH_TOKEN` environment variable, as well as in
-JSON or YAML configuration files. The configuration file path can be overridden with the `--config` flag. The default
-configuration file is stored in whatever your OS-specific default directory for user configuration data is.
+This will create the `cherryctl` directory with a default context in your default OS user configuration directory. If
+you wish to store this context in a
+different location, you can pass a custom path with the `--config` option or by setting the `CHERRY_CONFIG` environment
+variable. You can also override the API token on a case-by-case basis by setting the `CHERRY_AUTH_TOKEN` environment
+variable, but a context is still required.
 
-### Working With Multiple User Profiles
+### Working With Multiple Contexts
 
-A user profile is a collection of settings specific to a certain user that is stored in a configuration file. It
-consists of at least an API token, a Team ID and a Project ID, yet you may add many additional configuration options.
+A context is a collection of settings specific to a certain user that is stored in a configuration file. It
+consists of at least an API token, a Team ID and a Project ID, but you may add many additional configuration options.
 
-You may work with multiple user profiles at the same time, since `cherryctl` allows you to switch between them by using
-a `--context` option.
+You may work with multiple contexts at the same time, since `cherryctl` allows you to switch between them by using
+the `--context` option. You can also switch between context directories, with the `--config` option.
 
 By default, the `--context` option has a value `default`. To create a new context, run
 `cherryctl init --context <new_context_name>`. You will be prompted for a Token, a Team ID and a Project ID which will
 be associated with the new context. You will be able to add any other options by editing the newly generated
-configuration file.
+context file.
 
 To use a non-default context name to any `cherryctl` command:
 
@@ -132,15 +134,11 @@ cherryctl servers list --context <new_context_name>
 
 ## Configuring Default Values
 
-The `cherryctl` configuration file is used to store your API authentication token as well as the default command flags
-settings. If you find yourself using certain flags frequently, you can set their default values to avoid typing them
+If you find yourself using certain flags frequently, you can set their default values to avoid typing them
 every time. This can be useful when, for example, you want to deploy all infrastructure in the same region.
 
-`cherryctl` saves its configuration in `${HOME}/cherry/default.yaml`. The `${HOME}/cherry/` directory and the
-`config.yaml` file will be created once you run `cherryctl init`.
-
-If you want to change the default value for a `--region` flag, open `.config.yaml` file and add the corresponding
-key-value pair at the end of the file. For isntance, in the following example we have changed the default region to
+If you want to change the default value for a `--region` flag, open your context file and add the corresponding
+key-value pair at the end of the file. For instance, in the following example we have changed the default region to
 LT-Siauliai:
 
 ```yaml
