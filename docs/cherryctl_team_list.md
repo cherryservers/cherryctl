@@ -36,5 +36,5 @@ cherryctl team list [flags]
 
 ### SEE ALSO
 
-* [cherryctl team](cherryctl_team.md)	 - Team operations. For more information on Teams check Product Docs: https://docs.cherryservers.com/knowledge/product-docs#teams
+* [cherryctl team](cherryctl_team.md)	 - Team operations. For more information on Teams, check the Product Docs: https://docs.cherryservers.com/knowledge/product-docs#teams
 

@@ -18,7 +18,7 @@ func (c *Client) NewCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     `ip`,
 		Aliases: []string{"ips", "ip-address", "ip-addresses"},
-		Short:   "IP address operations. For more information on IP addresses check Product Docs: https://docs.cherryservers.com/knowledge/product-docs#ip-addressing",
+		Short:   "IP address operations. For more information on IP addresses, check out the Product Docs: https://docs.cherryservers.com/knowledge/product-docs#ip-addressing",
 		Long:    "IP address operations: get, list, create, update, assign, unassign and delete.",
 
 		PersistentPreRun: func(cmd *cobra.Command, args []string) {

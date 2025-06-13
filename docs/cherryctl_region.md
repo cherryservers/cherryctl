@@ -1,6 +1,6 @@
 ## cherryctl region
 
-Region operations. For more information on Networking check Product Docs: https://docs.cherryservers.com/knowledge/product-docs#network
+Region operations. For more information on Networking, check the Product Docs: https://docs.cherryservers.com/knowledge/product-docs#network
 
 ### Synopsis
 

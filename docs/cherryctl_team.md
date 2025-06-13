@@ -1,6 +1,6 @@
 ## cherryctl team
 
-Team operations. For more information on Teams check Product Docs: https://docs.cherryservers.com/knowledge/product-docs#teams
+Team operations. For more information on Teams, check the Product Docs: https://docs.cherryservers.com/knowledge/product-docs#teams
 
 ### Synopsis
 

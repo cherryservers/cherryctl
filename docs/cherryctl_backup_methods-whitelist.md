@@ -36,5 +36,5 @@ cherryctl backup methods-whitelist <backup_ID> [flags]
 
 ### SEE ALSO
 
-* [cherryctl backup](cherryctl_backup.md)	 - Server backup operations. For more information on backups check Product Docs: https://docs.cherryservers.com/knowledge/backup-storage
+* [cherryctl backup](cherryctl_backup.md)	 - Server backup operations. For more information on backups, check the Product Docs: https://docs.cherryservers.com/knowledge/backup-storage
 

@@ -40,5 +40,5 @@ cherryctl server update ID [--name <server_name>] [--hostname <hostname>] [--tag
 
 ### SEE ALSO
 
-* [cherryctl server](cherryctl_server.md)	 - Server operations. For more information on server types check Product Docs: https://docs.cherryservers.com/knowledge/product-docs#compute
+* [cherryctl server](cherryctl_server.md)	 - Server operations. For more information on server types, check the Product Docs: https://docs.cherryservers.com/knowledge/product-docs#compute
 

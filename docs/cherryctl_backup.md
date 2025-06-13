@@ -1,6 +1,6 @@
 ## cherryctl backup
 
-Server backup operations. For more information on backups check Product Docs: https://docs.cherryservers.com/knowledge/backup-storage
+Server backup operations. For more information on backups, check the Product Docs: https://docs.cherryservers.com/knowledge/backup-storage
 
 ### Synopsis
 

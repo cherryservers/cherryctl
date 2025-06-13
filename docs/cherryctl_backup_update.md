@@ -25,7 +25,7 @@ cherryctl backup update <backup_ID> [--password <plain_text>] [--ssh-key <plain_
 ```
   -h, --help              help for update
       --password string   Backup storage user password.
-      --ssh-key string    Plain SSH key which will be stored in backup service.
+      --ssh-key string    Plain SSH key which will be stored in the backup service.
 ```
 
 ### Options inherited from parent commands
@@ -41,5 +41,5 @@ cherryctl backup update <backup_ID> [--password <plain_text>] [--ssh-key <plain_
 
 ### SEE ALSO
 
-* [cherryctl backup](cherryctl_backup.md)	 - Server backup operations. For more information on backups check Product Docs: https://docs.cherryservers.com/knowledge/backup-storage
+* [cherryctl backup](cherryctl_backup.md)	 - Server backup operations. For more information on backups, check the Product Docs: https://docs.cherryservers.com/knowledge/backup-storage
 

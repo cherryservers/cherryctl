@@ -32,8 +32,8 @@ func (c *Client) Create() *cobra.Command {
 		Use:   `create -p <project_id> --plan <plan_slug> --region <region_slug> [--hostname <hostname>] [--image <image_slug>] [--ssh-keys <ssh_key_ids>] [--ip-addresses <ip_addresses_ids>] [--os-partition-size <size>] [--userdata-file <filepath>] [--tags] [--spot-instance] [--storage-id <storage_id>]`,
 		Short: "Create a server.",
 		Long:  "Create a server in specified project.",
-		Example: `  # Provisions a E5-1620v4 server in EU-Nord-1 location running on a Ubuntu 20.04:
-  cherryctl server create -p <project_id> --plan e5_1620v4 --hostname staging-server-1 --image ubuntu_20_04 --region eu_nord_1`,
+		Example: `  # Provisions a E5-1620v4 server in the LT-Siauliai location running on Ubuntu 24.04:
+  cherryctl server create -p <project_id> --plan e5_1620v4 --hostname staging-server-1 --image ubuntu_24_04 --region LT-Siauliai`,
 
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cmd.SilenceUsage = true

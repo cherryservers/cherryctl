@@ -1,6 +1,6 @@
 ## cherryctl storage
 
-Storage operations. For more information on Elastic Block Storage check Product Docs: https://docs.cherryservers.com/knowledge/elastic-block-storage/
+Storage operations. For more information on Elastic Block Storage, check the Product Docs: https://docs.cherryservers.com/knowledge/elastic-block-storage/
 
 ### Synopsis
 

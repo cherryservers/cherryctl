@@ -1,6 +1,6 @@
 ## cherryctl server
 
-Server operations. For more information on server types check Product Docs: https://docs.cherryservers.com/knowledge/product-docs#compute
+Server operations. For more information on server types, check the Product Docs: https://docs.cherryservers.com/knowledge/product-docs#compute
 
 ### Synopsis
 

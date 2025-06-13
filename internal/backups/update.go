@@ -53,7 +53,7 @@ func (c *Client) Update() *cobra.Command {
 	}
 
 	backupUpdateCmd.Flags().StringVarP(&password, "password", "", "", "Backup storage user password.")
-	backupUpdateCmd.Flags().StringVarP(&sshKey, "ssh-key", "", "", "Plain SSH key which will be stored in backup service.")
+	backupUpdateCmd.Flags().StringVarP(&sshKey, "ssh-key", "", "", "Plain SSH key which will be stored in the backup service.")
 
 	return backupUpdateCmd
 }

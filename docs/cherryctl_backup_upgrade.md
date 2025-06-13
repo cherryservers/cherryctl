@@ -4,7 +4,7 @@ Upgrade a backup storage plan.
 
 ### Synopsis
 
-Upgrade a backup storage plan to increase it's storage size. ATTENTION! Upgrade can be done once per backup plan.
+Upgrade a backup storage plan to increase it's storage size. ATTENTION! Upgrade can only be done once per backup plan.
 
 ```
 cherryctl backup upgrade <backup_ID> --plan <backup_plan_slug> [flags]
@@ -37,5 +37,5 @@ cherryctl backup upgrade <backup_ID> --plan <backup_plan_slug> [flags]
 
 ### SEE ALSO
 
-* [cherryctl backup](cherryctl_backup.md)	 - Server backup operations. For more information on backups check Product Docs: https://docs.cherryservers.com/knowledge/backup-storage
+* [cherryctl backup](cherryctl_backup.md)	 - Server backup operations. For more information on backups, check the Product Docs: https://docs.cherryservers.com/knowledge/backup-storage
 

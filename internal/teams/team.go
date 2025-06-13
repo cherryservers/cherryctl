@@ -17,7 +17,7 @@ func (c *Client) NewCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     `team`,
 		Aliases: []string{"teams", "organization", "organizations"},
-		Short:   "Team operations. For more information on Teams check Product Docs: https://docs.cherryservers.com/knowledge/product-docs#teams",
+		Short:   "Team operations. For more information on Teams, check the Product Docs: https://docs.cherryservers.com/knowledge/product-docs#teams",
 		Long:    "Team operations: get, list.",
 
 		PersistentPreRun: func(cmd *cobra.Command, args []string) {

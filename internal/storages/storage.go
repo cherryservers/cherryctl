@@ -18,7 +18,7 @@ func (c *Client) NewCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     `storage`,
 		Aliases: []string{"storages", "volume", "volumes"},
-		Short:   "Storage operations. For more information on Elastic Block Storage check Product Docs: https://docs.cherryservers.com/knowledge/elastic-block-storage/",
+		Short:   "Storage operations. For more information on Elastic Block Storage, check the Product Docs: https://docs.cherryservers.com/knowledge/elastic-block-storage/",
 		Long:    "Storage operations: create, get, list, delete, attach and detach.",
 
 		PersistentPreRun: func(cmd *cobra.Command, args []string) {

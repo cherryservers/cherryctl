@@ -13,8 +13,8 @@ cherryctl backup create {--server-id <id> | --server-hostname <hostname>} --plan
 ### Examples
 
 ```
-  # Create backup storage with 100GB space in EU-Nord-1 location for server with hostname "delicate-zebra":
-  cherryctl backup create --server-hostname delicate-zebra --plan backup_100 --region eu_nord_1 --project-id 123
+  # Create backup storage with 100GB of space in the LT-Siauliai location for the server with hostname "delicate-zebra":
+  cherryctl backup create --server-hostname delicate-zebra --plan backup_100 --region LT-Siauliai --project-id 123
 ```
 
 ### Options
@@ -26,7 +26,7 @@ cherryctl backup create {--server-id <id> | --server-hostname <hostname>} --plan
       --region string            Slug of the region.
       --server-hostname string   The Hostname of a server.
   -s, --server-id int            The server's ID.
-      --ssh-key string           Plain SSH key will be stored in backup service.
+      --ssh-key string           Plain SSH key that will be stored in backup service.
 ```
 
 ### Options inherited from parent commands
@@ -42,5 +42,5 @@ cherryctl backup create {--server-id <id> | --server-hostname <hostname>} --plan
 
 ### SEE ALSO
 
-* [cherryctl backup](cherryctl_backup.md)	 - Server backup operations. For more information on backups check Product Docs: https://docs.cherryservers.com/knowledge/backup-storage
+* [cherryctl backup](cherryctl_backup.md)	 - Server backup operations. For more information on backups, check the Product Docs: https://docs.cherryservers.com/knowledge/backup-storage
 

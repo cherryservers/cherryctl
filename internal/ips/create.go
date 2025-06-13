@@ -27,8 +27,8 @@ func (c *Client) Create() *cobra.Command {
 		Use:   `create -p <project_id> --region <region_slug> [--target-hostname <hostname> | --target-id <server_id> | --target-ip-id <ip_uuid>] [--ptr-record <ptr>] [--a-record <a>] [--tags <tags>]`,
 		Short: "Create floating IP address.",
 		Long:  "Create floating IP address in specified project.",
-		Example: `  # Create a floating IP address in EU-Nord-1 location:
-  cherryctl ip create -p <project_id> --region eu_nord_1`,
+		Example: `  # Create a floating IP address in the LT-Siauliai location:
+  cherryctl ip create -p <project_id> --region LT-Siauliai`,
 
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cmd.SilenceUsage = true

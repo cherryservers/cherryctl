@@ -1,6 +1,6 @@
 ## cherryctl docs
 
-Generate a local verion of the CLI documentation.
+Generate a local version of the CLI documentation.
 
 ### Synopsis
 

@@ -17,7 +17,7 @@ func (c *Client) NewCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     `server`,
 		Aliases: []string{"servers", "device", "devices"},
-		Short:   "Server operations. For more information on server types check Product Docs: https://docs.cherryservers.com/knowledge/product-docs#compute",
+		Short:   "Server operations. For more information on server types, check the Product Docs: https://docs.cherryservers.com/knowledge/product-docs#compute",
 		Long:    "Server operations: create, get, list, delete, start, stop, reboot, reinstall and reset-bmc-password.",
 
 		PersistentPreRun: func(cmd *cobra.Command, args []string) {

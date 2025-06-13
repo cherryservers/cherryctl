@@ -38,5 +38,5 @@ cherryctl ip list -p <project_id> [flags]
 
 ### SEE ALSO
 
-* [cherryctl ip](cherryctl_ip.md)	 - IP address operations. For more information on IP addresses check Product Docs: https://docs.cherryservers.com/knowledge/product-docs#ip-addressing
+* [cherryctl ip](cherryctl_ip.md)	 - IP address operations. For more information on IP addresses, check out the Product Docs: https://docs.cherryservers.com/knowledge/product-docs#ip-addressing
 

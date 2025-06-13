@@ -36,5 +36,5 @@ cherryctl region list [flags]
 
 ### SEE ALSO
 
-* [cherryctl region](cherryctl_region.md)	 - Region operations. For more information on Networking check Product Docs: https://docs.cherryservers.com/knowledge/product-docs#network
+* [cherryctl region](cherryctl_region.md)	 - Region operations. For more information on Networking, check the Product Docs: https://docs.cherryservers.com/knowledge/product-docs#network
 

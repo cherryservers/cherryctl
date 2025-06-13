@@ -4,7 +4,7 @@ Create a project.
 
 ### Synopsis
 
-Create a new project in a speficied team.
+Create a new project for the specified team.
 
 ```
 cherryctl project create -t <team_id> --name <project_name> [--bgp <bool>] [flags]
