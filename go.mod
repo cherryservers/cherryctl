@@ -1,6 +1,6 @@
 module github.com/cherryservers/cherryctl
 
-go 1.21
+go 1.24.4
 
 require (
 	github.com/cherryservers/cherrygo/v3 v3.5.0
