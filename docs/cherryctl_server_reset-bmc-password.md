@@ -1,29 +1,28 @@
-## cherryctl ssh-key update
+## cherryctl server reset-bmc-password
 
-Updates an SSH key.
+Reset server BMC password.
 
 ### Synopsis
 
-Updates an SSH key with either a new public key, a new label, or both.
+Reset BMC password for the specified server.
 
 ```
-cherryctl ssh-key update ID [--label <text>] [--key <public_key>] [flags]
+cherryctl server reset-bmc-password ID [flags]
 ```
 
 ### Examples
 
 ```
-  # Update team to change currency to EUR:
-  cherryctl ssh-key update 12345 --key AAAAB3N...user@domain.com
+  # Reset BMC password for the specified server:
+  cherryctl server reset-bmc-password 12345
+  # Retrieve the new password:
+  cherryctl server get 12345 -o json | jq .bmc
 ```
 
 ### Options
 
 ```
-  -h, --help             help for update
-      --key string       Public SSH key string.
-      --label string     Label of the SSH key.
-  -i, --ssh-key-id int   ID of the SSH key.
+  -h, --help   help for reset-bmc-password
 ```
 
 ### Options inherited from parent commands
@@ -39,5 +38,5 @@ cherryctl ssh-key update ID [--label <text>] [--key <public_key>] [flags]
 
 ### SEE ALSO
 
-* [cherryctl ssh-key](cherryctl_ssh-key.md)	 - Ssh-key operations.
+* [cherryctl server](cherryctl_server.md)	 - Server operations. For more information on server types, check the Product Docs: https://docs.cherryservers.com/knowledge/product-docs#compute
 

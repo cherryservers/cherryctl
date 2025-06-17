@@ -4,17 +4,17 @@ Create a server.
 
 ### Synopsis
 
-Create a server in speficied project.
+Create a server in specified project.
 
 ```
-cherryctl server create -p <project_id> --plan <plan_slug> --hostname --region <region_slug> [--image <image_slug>] [--ssh-keys <ssh_key_ids>] [--ip-addresses <ip_addresses_ids>] [--os-partition-size <size>] [--userdata-file <filepath>] [--tags] [--spot-instance] [flags]
+cherryctl server create -p <project_id> --plan <plan_slug> --region <region_slug> [--hostname <hostname>] [--image <image_slug>] [--ssh-keys <ssh_key_ids>] [--ip-addresses <ip_addresses_ids>] [--os-partition-size <size>] [--userdata-file <filepath>] [--tags] [--spot-instance] [--storage-id <storage_id>] [flags]
 ```
 
 ### Examples
 
 ```
-  # Provisions a E5-1620v4 server in EU-Nord-1 location running on a Ubuntu 20.04:
-  cherryctl server create -p <project_id> --plan e5_1620v4 -h staging-server-1 --image ubuntu_20_04 --region eu_nord_1
+  # Provisions a E5-1620v4 server in the LT-Siauliai location running on Ubuntu 24.04:
+  cherryctl server create -p <project_id> --plan e5_1620v4 --hostname staging-server-1 --image ubuntu_24_04 --region LT-Siauliai
 ```
 
 ### Options
@@ -30,6 +30,7 @@ cherryctl server create -p <project_id> --plan <plan_slug> --hostname --region <
       --region string           Slug of the region where server will be provisioned.
       --spot-instance           Provisions the server as a spot instance.
       --ssh-keys strings        Comma separated list of SSH key ID's to be embed in the Server.
+      --storage-id int          ID of the storage that will be attached to server.
       --tags strings            Tag or list of tags for the server: --tags="key=value,env=prod".
       --userdata-file string    Path to a userdata file for server initialization.
 ```
@@ -38,7 +39,7 @@ cherryctl server create -p <project_id> --plan <plan_slug> --hostname --region <
 
 ```
       --api-url string   Override default API endpoint (default "https://api.cherryservers.com/v1/")
-      --config string    Path to JSON or YAML configuration file
+      --config string    Path to configuration file directory. The CHERRY_CONFIG environment variable can be used as well.
       --context string   Specify a custom context name (default "default")
       --fields strings   Comma separated object field names to output in result. Fields can be used for list and get actions.
   -o, --output string    Output format (*table, json, yaml)
@@ -47,5 +48,5 @@ cherryctl server create -p <project_id> --plan <plan_slug> --hostname --region <
 
 ### SEE ALSO
 
-* [cherryctl server](cherryctl_server.md)	 - Server operations. For more information on server types check Product Docs: https://docs.cherryservers.com/knowledge/product-docs#compute
+* [cherryctl server](cherryctl_server.md)	 - Server operations. For more information on server types, check the Product Docs: https://docs.cherryservers.com/knowledge/product-docs#compute
 

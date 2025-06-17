@@ -20,8 +20,8 @@ func (c *Client) Create() *cobra.Command {
 		Use:   `create -p <project_id> --size <gigabytes> --region <region_slug> [--description <text>]`,
 		Short: "Create storage.",
 		Long:  "Create storage in speficied project.",
-		Example: `  # Create storage volume with 500GB space in EU-Nord-1 location:
-  cherryctl storage create -p 12345 --size 500 --region eu_nord_1`,
+		Example: `  # Create storage volume with 500GB of space in the LT-Siauliai location:
+  cherryctl storage create -p 12345 --size 500 --region LT-Siauliai`,
 
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cmd.SilenceUsage = true

@@ -21,7 +21,7 @@ func (c *Client) Update() *cobra.Command {
 		Use:   `update ID [--ptr-record <ptr>] [--a-record <a>] [--tags <tags>]`,
 		Args:  cobra.ExactArgs(1),
 		Short: "Update IP address.",
-		Long:  "Update tags, ptr record, a record or target server of a IP address.",
+		Long:  "Update tags, ptr record, a record or target server of an IP address.",
 		Example: `  # Updates a record and tags:
   cherryctl ip update 30c15082-a06e-4c43-bfc3-252616b46eba --a-record stage --tags="env=stage"`,
 

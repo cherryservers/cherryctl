@@ -30,7 +30,7 @@ cherryctl team create --name <team_name> --type <team_type> [--currency <currenc
 
 ```
       --api-url string   Override default API endpoint (default "https://api.cherryservers.com/v1/")
-      --config string    Path to JSON or YAML configuration file
+      --config string    Path to configuration file directory. The CHERRY_CONFIG environment variable can be used as well.
       --context string   Specify a custom context name (default "default")
       --fields strings   Comma separated object field names to output in result. Fields can be used for list and get actions.
   -o, --output string    Output format (*table, json, yaml)
@@ -39,5 +39,5 @@ cherryctl team create --name <team_name> --type <team_type> [--currency <currenc
 
 ### SEE ALSO
 
-* [cherryctl team](cherryctl_team.md)	 - Team operations. For more information on Teams check Product Docs: https://docs.cherryservers.com/knowledge/product-docs#teams
+* [cherryctl team](cherryctl_team.md)	 - Team operations. For more information on Teams, check the Product Docs: https://docs.cherryservers.com/knowledge/product-docs#teams
 

@@ -2,3 +2,4 @@
 /cherryctl
 .DS_Store
 builds
+.idea/

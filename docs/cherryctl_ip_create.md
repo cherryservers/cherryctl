@@ -4,7 +4,7 @@ Create floating IP address.
 
 ### Synopsis
 
-Create floating IP address in speficied project.
+Create floating IP address in specified project.
 
 ```
 cherryctl ip create -p <project_id> --region <region_slug> [--target-hostname <hostname> | --target-id <server_id> | --target-ip-id <ip_uuid>] [--ptr-record <ptr>] [--a-record <a>] [--tags <tags>] [flags]
@@ -13,8 +13,8 @@ cherryctl ip create -p <project_id> --region <region_slug> [--target-hostname <h
 ### Examples
 
 ```
-  # Create a floating IP address in EU-Nord-1 location:
-  cherryctl ip create -p <project_id> --region eu_nord_1
+  # Create a floating IP address in the LT-Siauliai location:
+  cherryctl ip create -p <project_id> --region LT-Siauliai
 ```
 
 ### Options
@@ -35,7 +35,7 @@ cherryctl ip create -p <project_id> --region <region_slug> [--target-hostname <h
 
 ```
       --api-url string   Override default API endpoint (default "https://api.cherryservers.com/v1/")
-      --config string    Path to JSON or YAML configuration file
+      --config string    Path to configuration file directory. The CHERRY_CONFIG environment variable can be used as well.
       --context string   Specify a custom context name (default "default")
       --fields strings   Comma separated object field names to output in result. Fields can be used for list and get actions.
   -o, --output string    Output format (*table, json, yaml)
@@ -44,5 +44,5 @@ cherryctl ip create -p <project_id> --region <region_slug> [--target-hostname <h
 
 ### SEE ALSO
 
-* [cherryctl ip](cherryctl_ip.md)	 - IP address operations. For more information on IP addresses check Product Docs: https://docs.cherryservers.com/knowledge/product-docs#ip-addressing
+* [cherryctl ip](cherryctl_ip.md)	 - IP address operations. For more information on IP addresses, check out the Product Docs: https://docs.cherryservers.com/knowledge/product-docs#ip-addressing
 

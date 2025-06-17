@@ -1,29 +1,26 @@
-## cherryctl ssh-key update
+## cherryctl server exit-rescue
 
-Updates an SSH key.
+Exit server rescue mode.
 
 ### Synopsis
 
-Updates an SSH key with either a new public key, a new label, or both.
+Put the specified server out of rescue mode.
 
 ```
-cherryctl ssh-key update ID [--label <text>] [--key <public_key>] [flags]
+cherryctl server exit-rescue ID [flags]
 ```
 
 ### Examples
 
 ```
-  # Update team to change currency to EUR:
-  cherryctl ssh-key update 12345 --key AAAAB3N...user@domain.com
+  # Put the specified server out of rescue mode:
+  cherryctl server exit-rescue 12345
 ```
 
 ### Options
 
 ```
-  -h, --help             help for update
-      --key string       Public SSH key string.
-      --label string     Label of the SSH key.
-  -i, --ssh-key-id int   ID of the SSH key.
+  -h, --help   help for exit-rescue
 ```
 
 ### Options inherited from parent commands
@@ -39,5 +36,5 @@ cherryctl ssh-key update ID [--label <text>] [--key <public_key>] [flags]
 
 ### SEE ALSO
 
-* [cherryctl ssh-key](cherryctl_ssh-key.md)	 - Ssh-key operations.
+* [cherryctl server](cherryctl_server.md)	 - Server operations. For more information on server types, check the Product Docs: https://docs.cherryservers.com/knowledge/product-docs#compute
 

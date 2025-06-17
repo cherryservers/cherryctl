@@ -73,6 +73,7 @@ func (c *Client) Update() *cobra.Command {
 	serverUpdateCmd.Flags().StringVarP(&hostname, "hostname", "", "", "Server hostname.")
 	serverUpdateCmd.Flags().BoolVarP(&bgp, "bgp", "b", false, "True to enable BGP in a server.")
 	serverUpdateCmd.Flags().StringSliceVarP(&tags, "tags", "", []string{}, `Tag or list of tags for the server: --tags="key=value,env=prod".`)
+	serverUpdateCmd.Flags().StringVarP(&name, "name", "", "", "Server name.")
 
 	return serverUpdateCmd
 }

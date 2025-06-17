@@ -16,7 +16,7 @@ func (c *Client) Get() *cobra.Command {
 		Short: "Retrieves region details.",
 		Long:  "Retrieves the details of the specified region.",
 		Example: `  # Gets the details of the specified region:
-  cherryctl region get eu_nord_1`,
+  cherryctl region get LT-Siauliai`,
 
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cmd.SilenceUsage = true

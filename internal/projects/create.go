@@ -18,9 +18,9 @@ func (c *Client) Create() *cobra.Command {
 	projectCreateCmd := &cobra.Command{
 		Use:   `create -t <team_id> --name <project_name> [--bgp <bool>]`,
 		Short: "Create a project.",
-		Long:  "Create a new project in a speficied team.",
-		Example: `  # To create a new project with BGP enabled:
-  cherryctl project create -t 12345 --name "Project with BGP" --bgp true`,
+		Long:  "Create a new project for the specified team.",
+		Example: `  # To create a new project with BGP support enabled:
+  cherryctl project create -t 12345 --name "Project with BGP" --bgp`,
 
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cmd.SilenceUsage = true
@@ -43,7 +43,7 @@ func (c *Client) Create() *cobra.Command {
 	}
 
 	projectCreateCmd.Flags().IntVarP(&teamID, "team-id", "t", 0, "The teams's ID.")
-	projectCreateCmd.Flags().BoolVarP(&bgp, "bgp", "b", false, "True to enable BGP in a project.")
+	projectCreateCmd.Flags().BoolVarP(&bgp, "bgp", "b", false, "Enable BGP support.")
 	projectCreateCmd.Flags().StringVarP(&name, "name", "", "", "Project name.")
 
 	projectCreateCmd.MarkFlagRequired("team-id")

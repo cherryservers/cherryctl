@@ -30,7 +30,7 @@ cherryctl storage attach ID {--server-id <id> | --server-hostname <hostname>} [-
 
 ```
       --api-url string   Override default API endpoint (default "https://api.cherryservers.com/v1/")
-      --config string    Path to JSON or YAML configuration file
+      --config string    Path to configuration file directory. The CHERRY_CONFIG environment variable can be used as well.
       --context string   Specify a custom context name (default "default")
       --fields strings   Comma separated object field names to output in result. Fields can be used for list and get actions.
   -o, --output string    Output format (*table, json, yaml)
@@ -39,5 +39,5 @@ cherryctl storage attach ID {--server-id <id> | --server-hostname <hostname>} [-
 
 ### SEE ALSO
 
-* [cherryctl storage](cherryctl_storage.md)	 - Storage operations. For more information on Elastic Block Storage check Product Docs: https://docs.cherryservers.com/knowledge/elastic-block-storage/
+* [cherryctl storage](cherryctl_storage.md)	 - Storage operations. For more information on Elastic Block Storage, check the Product Docs: https://docs.cherryservers.com/knowledge/elastic-block-storage/
 

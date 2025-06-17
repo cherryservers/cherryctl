@@ -4,7 +4,7 @@ Create a project.
 
 ### Synopsis
 
-Create a new project in a speficied team.
+Create a new project for the specified team.
 
 ```
 cherryctl project create -t <team_id> --name <project_name> [--bgp <bool>] [flags]
@@ -13,14 +13,14 @@ cherryctl project create -t <team_id> --name <project_name> [--bgp <bool>] [flag
 ### Examples
 
 ```
-  # To create a new project with BGP enabled:
-  cherryctl project create -t 12345 --name "Project with BGP" --bgp true
+  # To create a new project with BGP support enabled:
+  cherryctl project create -t 12345 --name "Project with BGP" --bgp
 ```
 
 ### Options
 
 ```
-  -b, --bgp           True to enable BGP in a project.
+  -b, --bgp           Enable BGP support.
   -h, --help          help for create
       --name string   Project name.
   -t, --team-id int   The teams's ID.
@@ -30,7 +30,7 @@ cherryctl project create -t <team_id> --name <project_name> [--bgp <bool>] [flag
 
 ```
       --api-url string   Override default API endpoint (default "https://api.cherryservers.com/v1/")
-      --config string    Path to JSON or YAML configuration file
+      --config string    Path to configuration file directory. The CHERRY_CONFIG environment variable can be used as well.
       --context string   Specify a custom context name (default "default")
       --fields strings   Comma separated object field names to output in result. Fields can be used for list and get actions.
   -o, --output string    Output format (*table, json, yaml)

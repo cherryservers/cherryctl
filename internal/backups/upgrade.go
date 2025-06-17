@@ -18,7 +18,7 @@ func (c *Client) Upgrade() *cobra.Command {
 		Use:   `upgrade <backup_ID> --plan <backup_plan_slug>`,
 		Args:  cobra.ExactArgs(1),
 		Short: "Upgrade a backup storage plan.",
-		Long:  "Upgrade a backup storage plan to increase it's storage size. ATTENTION! Upgrade can be done once per backup plan.",
+		Long:  "Upgrade a backup storage plan to increase it's storage size. ATTENTION! Upgrade can only be done once per backup plan.",
 		Example: `  # Upgrade backup storage size to 1000 gigabytes:
   cherryctl backup upgrade 12345 --plan backup_1000`,
 

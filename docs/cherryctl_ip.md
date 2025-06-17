@@ -1,10 +1,10 @@
 ## cherryctl ip
 
-IP address operations. For more information on IP addresses check Product Docs: https://docs.cherryservers.com/knowledge/product-docs#ip-addressing
+IP address operations. For more information on IP addresses, check out the Product Docs: https://docs.cherryservers.com/knowledge/product-docs#ip-addressing
 
 ### Synopsis
 
-IP address operations: get, list, create, update, assign, unassign and remove.
+IP address operations: get, list, create, update, assign, unassign and delete.
 
 ### Options
 
@@ -16,7 +16,7 @@ IP address operations: get, list, create, update, assign, unassign and remove.
 
 ```
       --api-url string   Override default API endpoint (default "https://api.cherryservers.com/v1/")
-      --config string    Path to JSON or YAML configuration file
+      --config string    Path to configuration file directory. The CHERRY_CONFIG environment variable can be used as well.
       --context string   Specify a custom context name (default "default")
       --fields strings   Comma separated object field names to output in result. Fields can be used for list and get actions.
   -o, --output string    Output format (*table, json, yaml)

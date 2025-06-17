@@ -23,8 +23,8 @@ func (c *Client) Create() *cobra.Command {
 		Use:   `create {--server-id <id> | --server-hostname <hostname>} --plan <backup_plan_slug> --region <region_slug> [-p <project_id>] [--ssh-key <plain_ssh_key>]`,
 		Short: "Create a backup storage.",
 		Long:  "Create a backup storage for specified server.",
-		Example: `  # Create backup storage with 100GB space in EU-Nord-1 location for server with hostname "delicate-zebra":
-  cherryctl backup create --server-hostname delicate-zebra --plan backup_100 --region eu_nord_1 --project-id 123`,
+		Example: `  # Create backup storage with 100GB of space in the LT-Siauliai location for the server with hostname "delicate-zebra":
+  cherryctl backup create --server-hostname delicate-zebra --plan backup_100 --region LT-Siauliai --project-id 123`,
 
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cmd.SilenceUsage = true
@@ -66,7 +66,7 @@ func (c *Client) Create() *cobra.Command {
 	backupCreateCmd.Flags().StringVarP(&serverHostname, "server-hostname", "", "", "The Hostname of a server.")
 	backupCreateCmd.Flags().StringVarP(&region, "region", "", "", "Slug of the region.")
 	backupCreateCmd.Flags().StringVarP(&backupPlan, "plan", "", "", "Backup storage plan slug.")
-	backupCreateCmd.Flags().StringVarP(&sshKey, "ssh-key", "", "", "Plain SSH key will be stored in backup service.")
+	backupCreateCmd.Flags().StringVarP(&sshKey, "ssh-key", "", "", "Plain SSH key that will be stored in backup service.")
 
 	backupCreateCmd.MarkFlagRequired("region")
 	backupCreateCmd.MarkFlagRequired("plan")

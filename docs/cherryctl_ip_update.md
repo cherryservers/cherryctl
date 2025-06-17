@@ -4,7 +4,7 @@ Update IP address.
 
 ### Synopsis
 
-Update tags, ptr record, a record or target server of a IP address.
+Update tags, ptr record, a record or target server of an IP address.
 
 ```
 cherryctl ip update ID [--ptr-record <ptr>] [--a-record <a>] [--tags <tags>] [flags]
@@ -30,7 +30,7 @@ cherryctl ip update ID [--ptr-record <ptr>] [--a-record <a>] [--tags <tags>] [fl
 
 ```
       --api-url string   Override default API endpoint (default "https://api.cherryservers.com/v1/")
-      --config string    Path to JSON or YAML configuration file
+      --config string    Path to configuration file directory. The CHERRY_CONFIG environment variable can be used as well.
       --context string   Specify a custom context name (default "default")
       --fields strings   Comma separated object field names to output in result. Fields can be used for list and get actions.
   -o, --output string    Output format (*table, json, yaml)
@@ -39,5 +39,5 @@ cherryctl ip update ID [--ptr-record <ptr>] [--a-record <a>] [--tags <tags>] [fl
 
 ### SEE ALSO
 
-* [cherryctl ip](cherryctl_ip.md)	 - IP address operations. For more information on IP addresses check Product Docs: https://docs.cherryservers.com/knowledge/product-docs#ip-addressing
+* [cherryctl ip](cherryctl_ip.md)	 - IP address operations. For more information on IP addresses, check out the Product Docs: https://docs.cherryservers.com/knowledge/product-docs#ip-addressing
 

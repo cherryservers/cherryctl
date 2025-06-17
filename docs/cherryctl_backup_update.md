@@ -25,14 +25,14 @@ cherryctl backup update <backup_ID> [--password <plain_text>] [--ssh-key <plain_
 ```
   -h, --help              help for update
       --password string   Backup storage user password.
-      --ssh-key string    Plain SSH key which will be stored in backup service.
+      --ssh-key string    Plain SSH key which will be stored in the backup service.
 ```
 
 ### Options inherited from parent commands
 
 ```
       --api-url string   Override default API endpoint (default "https://api.cherryservers.com/v1/")
-      --config string    Path to JSON or YAML configuration file
+      --config string    Path to configuration file directory. The CHERRY_CONFIG environment variable can be used as well.
       --context string   Specify a custom context name (default "default")
       --fields strings   Comma separated object field names to output in result. Fields can be used for list and get actions.
   -o, --output string    Output format (*table, json, yaml)
@@ -41,5 +41,5 @@ cherryctl backup update <backup_ID> [--password <plain_text>] [--ssh-key <plain_
 
 ### SEE ALSO
 
-* [cherryctl backup](cherryctl_backup.md)	 - Server backup operations. For more information on backups check Product Docs: https://docs.cherryservers.com/knowledge/backup-storage
+* [cherryctl backup](cherryctl_backup.md)	 - Server backup operations. For more information on backups, check the Product Docs: https://docs.cherryservers.com/knowledge/backup-storage
 

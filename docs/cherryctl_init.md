@@ -4,7 +4,12 @@ Configuration file initialization.
 
 ### Synopsis
 
-Init will prompt for account settings and store the values as defaults in a configuration file that may be shared with other Cherry Servers tools. This file is typically stored in $HOME/.config/cherry/config.yaml. Any Cherry CLI command line argument can be specified in the config file. Be careful not to define options that you do not intend to use as defaults. The configuration file path can be changed with the CHERRY_CONFIG environment variable or --config option.
+Init will prompt for account settings and store the values as defaults in a configuration file.
+This file is stored in the default user configuration directory (platform dependent), unless otherwise specified by the --config flag.
+The --context flag can be used to change the default config file name.
+Any Cherry CLI command line argument can be specified in the config file.
+Be careful not to define options that you do not intend to use as defaults.
+The configuration directory path can be changed with the CHERRY_CONFIG environment variable or --config option.
 
 ```
 cherryctl init
@@ -30,7 +35,7 @@ cherryctl init
 
 ```
       --api-url string   Override default API endpoint (default "https://api.cherryservers.com/v1/")
-      --config string    Path to JSON or YAML configuration file
+      --config string    Path to configuration file directory. The CHERRY_CONFIG environment variable can be used as well.
       --context string   Specify a custom context name (default "default")
       --fields strings   Comma separated object field names to output in result. Fields can be used for list and get actions.
   -o, --output string    Output format (*table, json, yaml)
