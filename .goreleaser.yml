@@ -20,6 +20,14 @@ builds:
   goarch:
     - amd64
     - arm64
+  # Override for Linux amd64 to enable shadow stack support
+  overrides:
+    - goos: linux
+      goarch: amd64
+      env:
+        - CGO_ENABLED=1
+        - CGO_CFLAGS=-fcf-protection=full
+        - CGO_LDFLAGS=-Wl,-z,shstk -Wl,-z,ibt -Wl,-z,cet-report=error
 
 archives:
 - format: binary
