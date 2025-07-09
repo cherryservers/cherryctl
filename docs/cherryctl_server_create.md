@@ -7,7 +7,7 @@ Create a server.
 Create a server in specified project.
 
 ```
-cherryctl server create -p <project_id> --plan <plan_slug> --region <region_slug> [--hostname <hostname>] [--image <image_slug>] [--ssh-keys <ssh_key_ids>] [--ip-addresses <ip_addresses_ids>] [--os-partition-size <size>] [--userdata-file <filepath>] [--tags] [--spot-instance] [--storage-id <storage_id>] [flags]
+cherryctl server create -p <project_id> --plan <plan_slug> --region <region_slug> [--hostname <hostname>] [--image <image_slug>] [--ssh-keys <ssh_key_ids>] [--ip-addresses <ip_addresses_ids>] [--os-partition-size <size>] [--userdata-file <filepath>] [--tags] [--spot-instance] [--storage-id <storage_id>] [--cycle <cycle-slug>] [flags]
 ```
 
 ### Examples
@@ -20,6 +20,7 @@ cherryctl server create -p <project_id> --plan <plan_slug> --region <region_slug
 ### Options
 
 ```
+      --cycle string            Server billing cycle slug. Default is 'hourly'.
   -h, --help                    help for create
       --hostname string         Server hostname.
       --image string            Operating system slug for the server.

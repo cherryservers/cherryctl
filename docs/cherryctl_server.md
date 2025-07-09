@@ -4,7 +4,7 @@ Server operations. For more information on server types, check the Product Docs:
 
 ### Synopsis
 
-Server operations: create, get, list, delete, start, stop, reboot, reinstall and reset-bmc-password.
+Server operations: create, get, list, delete, start, stop, reboot, reinstall, reset-bmc-password and list-cycles.
 
 ### Options
 
@@ -32,6 +32,7 @@ Server operations: create, get, list, delete, start, stop, reboot, reinstall and
 * [cherryctl server exit-rescue](cherryctl_server_exit-rescue.md)	 - Exit server rescue mode.
 * [cherryctl server get](cherryctl_server_get.md)	 - Retrieves server details.
 * [cherryctl server list](cherryctl_server_list.md)	 - Retrieves server list.
+* [cherryctl server list-cycles](cherryctl_server_list-cycles.md)	 - Retrieves server billing cycle list.
 * [cherryctl server reboot](cherryctl_server_reboot.md)	 - Reboot a server.
 * [cherryctl server reinstall](cherryctl_server_reinstall.md)	 - Reinstall a server.
 * [cherryctl server reset-bmc-password](cherryctl_server_reset-bmc-password.md)	 - Reset server BMC password.
