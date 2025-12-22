@@ -26,11 +26,12 @@ func (c *Client) Create() *cobra.Command {
 		spotInstance    bool
 		ipAddresses     []string
 		storageID       int
-		cycle string
+		cycle           string
+		discount        string
 	)
 
 	createServerCmd := &cobra.Command{
-		Use:   `create -p <project_id> --plan <plan_slug> --region <region_slug> [--hostname <hostname>] [--image <image_slug>] [--ssh-keys <ssh_key_ids>] [--ip-addresses <ip_addresses_ids>] [--os-partition-size <size>] [--userdata-file <filepath>] [--tags] [--spot-instance] [--storage-id <storage_id>] [--cycle <cycle-slug>]`,
+		Use:   `create -p <project_id> --plan <plan_slug> --region <region_slug> [--hostname <hostname>] [--image <image_slug>] [--ssh-keys <ssh_key_ids>] [--ip-addresses <ip_addresses_ids>] [--os-partition-size <size>] [--userdata-file <filepath>] [--tags] [--spot-instance] [--storage-id <storage_id>] [--cycle <cycle-slug>] [--discount <discount_code>]`,
 		Short: "Create a server.",
 		Long:  "Create a server in specified project.",
 		Example: `  # Provisions a E5-1620v4 server in the LT-Siauliai location running on Ubuntu 24.04:
@@ -72,7 +73,8 @@ func (c *Client) Create() *cobra.Command {
 				UserData:        userdata,
 				Tags:            &tagsArr,
 				StorageID:       storageID,
-				Cycle: cycle,
+				Cycle:           cycle,
+				DiscountCode:    discount,
 			}
 
 			s, _, err := c.Service.Create(request)
@@ -101,6 +103,7 @@ func (c *Client) Create() *cobra.Command {
 	createServerCmd.Flags().StringSliceVarP(&ipAddresses, "ip-addresses", "", []string{}, "Comma separated list of IP addresses ID's to be embed in the Server.")
 	createServerCmd.Flags().IntVarP(&storageID, "storage-id", "", 0, "ID of the storage that will be attached to server.")
 	createServerCmd.Flags().StringVarP(&cycle, "cycle", "", "", "Server billing cycle slug. Default is 'hourly'.")
+	createServerCmd.Flags().StringVarP(&discount, "discount", "", "", "Server discount code.")
 
 	_ = createServerCmd.MarkFlagRequired("project-id")
 	_ = createServerCmd.MarkFlagRequired("plan")
