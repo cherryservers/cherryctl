@@ -3,6 +3,7 @@ package utils
 import (
 	"bytes"
 	"fmt"
+	"os"
 	"strings"
 
 	"github.com/cherryservers/cherrygo/v3"
@@ -55,4 +56,14 @@ func FormatStringTags(tags *map[string]string) string {
 	}
 
 	return buffer.String()
+}
+
+// ReadOptionalFile is identical to os.ReadFile, except that if 'path'
+// is empty, it returns a nil slice, with no error.
+func ReadOptionalFile(path string) ([]byte, error) {
+	if path == "" {
+		return nil, nil
+	}
+
+	return os.ReadFile(path)
 }
