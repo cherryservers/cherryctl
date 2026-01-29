@@ -2,10 +2,12 @@ package servers
 
 import (
 	"encoding/base64"
+	"fmt"
 	"io/ioutil"
 	"strconv"
 	"strings"
 
+	"github.com/cherryservers/cherryctl/internal/utils"
 	"github.com/cherryservers/cherrygo/v3"
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
@@ -28,10 +30,11 @@ func (c *Client) Create() *cobra.Command {
 		storageID       int
 		cycle           string
 		discount        string
+		ipxePath        string
 	)
 
 	createServerCmd := &cobra.Command{
-		Use:   `create -p <project_id> --plan <plan_slug> --region <region_slug> [--hostname <hostname>] [--image <image_slug>] [--ssh-keys <ssh_key_ids>] [--ip-addresses <ip_addresses_ids>] [--os-partition-size <size>] [--userdata-file <filepath>] [--tags] [--spot-instance] [--storage-id <storage_id>] [--cycle <cycle-slug>] [--discount <discount_code>]`,
+		Use:   `create -p <project_id> --plan <plan_slug> --region <region_slug> [--hostname <hostname>] [--image <image_slug>] [--ssh-keys <ssh_key_ids>] [--ip-addresses <ip_addresses_ids>] [--os-partition-size <size>] [--userdata-file <filepath>] [--tags] [--spot-instance] [--storage-id <storage_id>] [--cycle <cycle-slug>] [--discount <discount_code>] [--ipxe-file <filepath>]`,
 		Short: "Create a server.",
 		Long:  "Create a server in specified project.",
 		Example: `  # Provisions a E5-1620v4 server in the LT-Siauliai location running on Ubuntu 24.04:
@@ -47,6 +50,11 @@ func (c *Client) Create() *cobra.Command {
 					return errors.Wrap(readErr, "Could not read userdata-file")
 				}
 				userdata = base64.StdEncoding.EncodeToString(userdataRaw)
+			}
+
+			ipxeRaw, err := utils.ReadOptionalFile(ipxePath)
+			if err != nil {
+				return fmt.Errorf("failed to read ipxe file: %w", err)
 			}
 
 			for _, kv := range tags {
@@ -75,6 +83,7 @@ func (c *Client) Create() *cobra.Command {
 				StorageID:       storageID,
 				Cycle:           cycle,
 				DiscountCode:    discount,
+				IPXE:            base64.StdEncoding.EncodeToString(ipxeRaw),
 			}
 
 			s, _, err := c.Service.Create(request)
@@ -104,6 +113,7 @@ func (c *Client) Create() *cobra.Command {
 	createServerCmd.Flags().IntVarP(&storageID, "storage-id", "", 0, "ID of the storage that will be attached to server.")
 	createServerCmd.Flags().StringVarP(&cycle, "cycle", "", "", "Server billing cycle slug. Default is 'hourly'.")
 	createServerCmd.Flags().StringVarP(&discount, "discount", "", "", "Server discount code.")
+	createServerCmd.Flags().StringVar(&ipxePath, "ipxe-file", "", "Path to a file containing an iPXE template.")
 
 	_ = createServerCmd.MarkFlagRequired("project-id")
 	_ = createServerCmd.MarkFlagRequired("plan")

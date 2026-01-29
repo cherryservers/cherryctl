@@ -7,7 +7,7 @@ Create a server.
 Create a server in specified project.
 
 ```
-cherryctl server create -p <project_id> --plan <plan_slug> --region <region_slug> [--hostname <hostname>] [--image <image_slug>] [--ssh-keys <ssh_key_ids>] [--ip-addresses <ip_addresses_ids>] [--os-partition-size <size>] [--userdata-file <filepath>] [--tags] [--spot-instance] [--storage-id <storage_id>] [--cycle <cycle-slug>] [--discount <discount_code>] [flags]
+cherryctl server create -p <project_id> --plan <plan_slug> --region <region_slug> [--hostname <hostname>] [--image <image_slug>] [--ssh-keys <ssh_key_ids>] [--ip-addresses <ip_addresses_ids>] [--os-partition-size <size>] [--userdata-file <filepath>] [--tags] [--spot-instance] [--storage-id <storage_id>] [--cycle <cycle-slug>] [--discount <discount_code>] [--ipxe-file <filepath>] [flags]
 ```
 
 ### Examples
@@ -26,6 +26,7 @@ cherryctl server create -p <project_id> --plan <plan_slug> --region <region_slug
       --hostname string         Server hostname.
       --image string            Operating system slug for the server.
       --ip-addresses strings    Comma separated list of IP addresses ID's to be embed in the Server.
+      --ipxe-file string        Path to a file containing an iPXE template.
       --os-partition-size int   OS partition size in GB.
       --plan string             Slug of the plan.
   -p, --project-id int          The project's ID.

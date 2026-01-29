@@ -7,7 +7,7 @@ Reinstall a server.
 Reinstall the specified server.
 
 ```
-cherryctl server reinstall ID --hostname <hostname> --image <image_slug> --password <password> [--ssh-keys <ssh_key_ids>] [--os-partition-size <size>] [--userdata-file <filepath>] [flags]
+cherryctl server reinstall ID --hostname <hostname> --image <image_slug> --password <password> [--ssh-keys <ssh_key_ids>] [--os-partition-size <size>] [--userdata-file <filepath>] [--ipxe-file <filepath>] [flags]
 ```
 
 ### Examples
@@ -23,6 +23,7 @@ cherryctl server reinstall ID --hostname <hostname> --image <image_slug> --passw
   -h, --help                    help for reinstall
       --hostname string         Hostname.
       --image string            Operating system slug for the server.
+      --ipxe-file string        Path to a file containing an iPXE template.
       --os-partition-size int   OS partition size in GB.
       --password string         Server password.
       --ssh-keys strings        Comma separated list of SSH key IDs to be embed in the Server.
