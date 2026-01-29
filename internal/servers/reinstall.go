@@ -3,7 +3,6 @@ package servers
 import (
 	"encoding/base64"
 	"fmt"
-	"os"
 	"strconv"
 
 	"github.com/cherryservers/cherryctl/internal/utils"
@@ -18,8 +17,7 @@ func (c *Client) Reinstall() *cobra.Command {
 		image           string
 		password        string
 		sshKeys         []string
-		userDataFile    string
-		userdata        string
+		userDataPath    string
 		osPartitionSize int
 		ipxePath        string
 	)
@@ -35,12 +33,9 @@ func (c *Client) Reinstall() *cobra.Command {
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cmd.SilenceUsage = true
 
-			if userDataFile != "" {
-				userdataRaw, readErr := os.ReadFile(userDataFile)
-				if readErr != nil {
-					return errors.Wrap(readErr, "Could not read userdata-file")
-				}
-				userdata = base64.StdEncoding.EncodeToString(userdataRaw)
+			userDataRaw, err := utils.ReadOptionalFile(userDataPath)
+			if err != nil {
+				return fmt.Errorf("failed to read user-data file: %w", err)
 			}
 
 			ipxeRaw, err := utils.ReadOptionalFile(ipxePath)
@@ -53,7 +48,7 @@ func (c *Client) Reinstall() *cobra.Command {
 				Hostname:        hostname,
 				Password:        password,
 				SSHKeys:         sshKeys,
-				UserData:        userdata,
+				UserData:        base64.StdEncoding.EncodeToString(userDataRaw),
 				OSPartitionSize: osPartitionSize,
 				IPXE:            base64.StdEncoding.EncodeToString(ipxeRaw),
 			}
@@ -78,7 +73,7 @@ func (c *Client) Reinstall() *cobra.Command {
 	reinstallServerCmd.Flags().StringVarP(&password, "password", "", "", "Server password.")
 	reinstallServerCmd.Flags().StringSliceVarP(&sshKeys, "ssh-keys", "", []string{}, "Comma separated list of SSH key IDs to be embed in the Server.")
 	reinstallServerCmd.Flags().IntVarP(&osPartitionSize, "os-partition-size", "", 0, "OS partition size in GB.")
-	reinstallServerCmd.Flags().StringVarP(&userDataFile, "userdata-file", "", "", "Path to a userdata file for server initialization.")
+	reinstallServerCmd.Flags().StringVarP(&userDataPath, "userdata-file", "", "", "Path to a userdata file for server initialization.")
 	reinstallServerCmd.Flags().StringVar(&ipxePath, "ipxe-file", "", "Path to a file containing an iPXE template.")
 
 	_ = reinstallServerCmd.MarkFlagRequired("hostname")

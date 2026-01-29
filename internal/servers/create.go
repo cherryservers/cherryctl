@@ -3,7 +3,6 @@ package servers
 import (
 	"encoding/base64"
 	"fmt"
-	"io/ioutil"
 	"strconv"
 	"strings"
 
@@ -22,8 +21,7 @@ func (c *Client) Create() *cobra.Command {
 		osPartitionSize int
 		region          string
 		plan            string
-		userDataFile    string
-		userdata        string
+		userDataPath    string
 		tags            []string
 		spotInstance    bool
 		ipAddresses     []string
@@ -44,12 +42,9 @@ func (c *Client) Create() *cobra.Command {
 			cmd.SilenceUsage = true
 			tagsArr := make(map[string]string)
 
-			if userDataFile != "" {
-				userdataRaw, readErr := ioutil.ReadFile(userDataFile)
-				if readErr != nil {
-					return errors.Wrap(readErr, "Could not read userdata-file")
-				}
-				userdata = base64.StdEncoding.EncodeToString(userdataRaw)
+			userDataRaw, err := utils.ReadOptionalFile(userDataPath)
+			if err != nil {
+				return fmt.Errorf("failed to read user-data file: %w", err)
 			}
 
 			ipxeRaw, err := utils.ReadOptionalFile(ipxePath)
@@ -78,7 +73,7 @@ func (c *Client) Create() *cobra.Command {
 				SSHKeys:         sshKeys,
 				SpotInstance:    spotInstance,
 				OSPartitionSize: osPartitionSize,
-				UserData:        userdata,
+				UserData:        base64.StdEncoding.EncodeToString(userDataRaw),
 				Tags:            &tagsArr,
 				StorageID:       storageID,
 				Cycle:           cycle,
@@ -106,7 +101,7 @@ func (c *Client) Create() *cobra.Command {
 	createServerCmd.Flags().StringSliceVarP(&sshKeys, "ssh-keys", "", []string{}, "Comma separated list of SSH key ID's to be embed in the Server.")
 	createServerCmd.Flags().IntVarP(&osPartitionSize, "os-partition-size", "", 0, "OS partition size in GB.")
 	createServerCmd.Flags().StringVarP(&region, "region", "", "", "Slug of the region where server will be provisioned.")
-	createServerCmd.Flags().StringVarP(&userDataFile, "userdata-file", "", "", "Path to a userdata file for server initialization.")
+	createServerCmd.Flags().StringVarP(&userDataPath, "userdata-file", "", "", "Path to a userdata file for server initialization.")
 	createServerCmd.Flags().BoolVarP(&spotInstance, "spot-instance", "", false, "Provisions the server as a spot instance.")
 	createServerCmd.Flags().StringSliceVarP(&tags, "tags", "", []string{}, `Tag or list of tags for the server: --tags="key=value,env=prod".`)
 	createServerCmd.Flags().StringSliceVarP(&ipAddresses, "ip-addresses", "", []string{}, "Comma separated list of IP addresses ID's to be embed in the Server.")
