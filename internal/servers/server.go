@@ -45,6 +45,7 @@ func (c *Client) NewCommand() *cobra.Command {
 		c.Delete(),
 		c.ResetBMC(),
 		c.ListCycles(),
+		c.Upgrade(),
 	)
 
 	return cmd
