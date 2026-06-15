@@ -20,7 +20,7 @@ cherryctl init
 ```
   # Example config:
   --
-  token: foo
+  api-key: foo
   team-id: 123
   project-id: 123
 ```

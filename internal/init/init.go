@@ -29,7 +29,7 @@ func NewClient(s Servicer) *Client {
 }
 
 type configFormat struct {
-	Token     string `yaml:"token,omitempty"`
+	APIKey    string `yaml:"api-key,omitempty"`
 	ProjectID int    `yaml:"project-id,omitempty"`
 	TeamID    int    `yaml:"team-id,omitempty"`
 }
@@ -37,8 +37,6 @@ type configFormat struct {
 func (c *Client) NewCommand() *cobra.Command {
 	// initCmd represents a command that, when run, generates a
 	// set of initironment variables, for use in shell initironments
-	// v := c.tokener.Config()
-	// projectId := v.GetString("project-id")
 	initCmd := &cobra.Command{
 		Use:   `init`,
 		Short: "Configuration file initialization.",
@@ -51,7 +49,7 @@ The configuration directory path can be changed with the CHERRY_CONFIG environme
 
 		Example: `  # Example config:
   --
-  token: foo
+  api-key: foo
   team-id: 123
   project-id: 123`,
 
@@ -82,11 +80,11 @@ The configuration directory path can be changed with the CHERRY_CONFIG environme
 				return err
 			}
 
-			token, err := c.readAPIToken()
+			apiKey, err := c.readAPIKey()
 			if err != nil {
 				return err
 			}
-			if err = c.validateToken(cmd); err != nil {
+			if err = c.validateAPIKey(cmd); err != nil {
 				return err
 			}
 
@@ -102,7 +100,7 @@ The configuration directory path can be changed with the CHERRY_CONFIG environme
 				return err
 			}
 
-			b, err := formatConfig(userProj, userTeam, token)
+			b, err := formatConfig(userProj, userTeam, apiKey)
 			if err != nil {
 				return err
 			}
@@ -119,26 +117,26 @@ The configuration directory path can be changed with the CHERRY_CONFIG environme
 	return initCmd
 }
 
-func (c *Client) readAPIToken() (string, error) {
-	fmt.Print("Cherry Servers API Tokens can be obtained through the portal at http://portal.cherryservers.com/.\n\n")
-	fmt.Print("Token (hidden): ")
+func (c *Client) readAPIKey() (string, error) {
+	fmt.Print("Cherry Servers API Keys can be obtained through the portal at https://portal.cherryservers.com/settings/api-keys.\n\n")
+	fmt.Print("API key (hidden): ")
 	b, err := term.ReadPassword(int(syscall.Stdin))
 	if err != nil {
 		return string(b), err
 	}
 	fmt.Println()
-	token := string(b)
-	c.Servicer.SetToken(token)
+	apiKey := string(b)
+	c.Servicer.SetToken(apiKey)
 
-	return token, nil
+	return apiKey, nil
 }
 
-func (c *Client) validateToken(cmd *cobra.Command) error {
+func (c *Client) validateAPIKey(cmd *cobra.Command) error {
 	cherryClient := c.Servicer.API(cmd)
 	c.UserService = cherryClient.Users
 	_, _, err := c.UserService.CurrentUser(nil)
 	if err != nil {
-		return errors.Wrap(err, "Invalid authentication token")
+		return errors.Wrap(err, "Invalid API key")
 	}
 	return nil
 }
@@ -191,10 +189,10 @@ func (c *Client) readUserProject(cherryClient *cherrygo.Client, userTeam string)
 	return userProj, nil
 }
 
-func formatConfig(userProj, userTeam, token string) ([]byte, error) {
+func formatConfig(userProj, userTeam, apiKey string) ([]byte, error) {
 	userProjInt, _ := strconv.Atoi(userProj)
 	userTeamInt, _ := strconv.Atoi(userTeam)
-	f := configFormat{ProjectID: userProjInt, TeamID: userTeamInt, Token: token}
+	f := configFormat{ProjectID: userProjInt, TeamID: userTeamInt, APIKey: apiKey}
 	b, err := yaml.Marshal(f)
 
 	if err != nil {
