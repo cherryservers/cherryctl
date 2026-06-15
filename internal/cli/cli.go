@@ -102,10 +102,20 @@ func (c *Client) NewCommand() *cobra.Command {
 			c.Config(cmd)
 		},
 	}
+	rootCmd.PersistentFlags().String("api-key", "", "API key. Can be created at https://portal.cherryservers.com/settings/api-keys.")
+
+	// Flags deprecated in favor of `api-key`, see https://github.com/cherryservers/cherryctl/issues/73.
 	rootCmd.PersistentFlags().String("token", "", "API Token (CHERRY_AUTH_TOKEN)")
 	rootCmd.PersistentFlags().String("auth-token", "", "API Token (Alias)")
-	authtoken := rootCmd.PersistentFlags().Lookup("auth-token")
-	authtoken.Hidden = true
+
+	// Would be nice to add a mutual exclusivity constraint as well,
+	// but that breaks existing setups such as:
+	//
+	// `token` is defined in a config file AND `CHERRY_AUTH_TOKEN` is set.
+	// 
+	// This will result in an error, because viper merges config sources.
+	rootCmd.PersistentFlags().MarkDeprecated("token", "use '--api-key' instead.")
+	rootCmd.PersistentFlags().MarkDeprecated("auth-token", "use '--api-key' instead.")
 
 	rootCmd.PersistentFlags().StringVar(&c.configPath, "config", "", "Path to configuration file directory. The CHERRY_CONFIG environment variable can be used as well.")
 	rootCmd.PersistentFlags().StringVar(&c.context, "context", DefaultContext, "Specify a custom context name")
@@ -166,11 +176,17 @@ func (c *Client) Config(cmd *cobra.Command) *viper.Viper {
 			bindFlags(cmd, v)
 		}
 
+		// api-key is the canonical flag, with the other two being deprecated,
+		// so it should beat them.
 		flagToken := cmd.Flag("token").Value.String()
 		envToken := cmd.Flag("auth-token").Value.String()
+		apiKey := cmd.Flag("api-key").Value.String()
 		c.cherryToken = flagToken
 		if envToken != "" {
 			c.cherryToken = envToken
+		}
+		if apiKey != "" {
+			c.cherryToken = apiKey
 		}
 
 		return c.viper
