@@ -61,6 +61,11 @@ func TestTokenConfigHierarchy(t *testing.T) {
 		apiKeyVar = "CHERRY_API_KEY"
 	)
 
+	// If no config directory is set, cherryctl will try to fallback
+	// to some default directory, potentially interfering with test results.
+	defaultConfig := tempFileWithContent(t, "default.yaml", "")
+	t.Setenv("CHERRY_CONFIG", filepath.Dir(defaultConfig.Name()))
+
 	t.Run("set via env var", func(t *testing.T) {
 		testTokenConfigHierarchy(t, func(_ *cmd.Cli) {
 			t.Setenv(tokenVar, "abc")
