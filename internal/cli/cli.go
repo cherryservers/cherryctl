@@ -33,15 +33,15 @@ type Client struct {
 	configPath   string
 	context      string
 	outputFormat string
-	cherryToken  string
+	apiKey  string
 	apiURL       string
 	Version      string
 	rootCmd      *cobra.Command
 	viper        *viper.Viper
 }
 
-func (c *Client) SetToken(token string) {
-	c.cherryToken = token
+func (c *Client) SetAPIKey(apiKey string) {
+	c.apiKey = apiKey
 }
 
 func NewClient(version string) *Client {
@@ -49,12 +49,12 @@ func NewClient(version string) *Client {
 }
 
 func (c *Client) API(cmd *cobra.Command) *cherrygo.Client {
-	if c.cherryToken == "" {
-		log.Fatal("Cherry Servers API authentication token not provided. Please set the 'CHERRY_AUTH_TOKEN' environment variable or create a configuration file using 'cherryctl init'.")
+	if c.apiKey == "" {
+		log.Fatal("Cherry Servers API key not provided. Please set the 'CHERRY_API_KEY' environment variable or create a configuration file using 'cherryctl init'.")
 	}
 
 	if c.apiClient == nil {
-		args := []cherrygo.ClientOpt{cherrygo.WithAuthToken(c.cherryToken), cherrygo.WithUserAgent("cherry-cli/" + c.Version)}
+		args := []cherrygo.ClientOpt{cherrygo.WithAuthToken(c.apiKey), cherrygo.WithUserAgent("cherry-cli/" + c.Version)}
 
 		if c.apiURL != "" {
 			args = append(args, cherrygo.WithURL(c.apiURL))
@@ -178,12 +178,12 @@ func (c *Client) Config(cmd *cobra.Command) *viper.Viper {
 		flagToken := cmd.Flag("token").Value.String()
 		envToken := cmd.Flag("auth-token").Value.String()
 		apiKey := cmd.Flag("api-key").Value.String()
-		c.cherryToken = flagToken
+		c.apiKey = flagToken
 		if envToken != "" {
-			c.cherryToken = envToken
+			c.apiKey = envToken
 		}
 		if apiKey != "" {
-			c.cherryToken = apiKey
+			c.apiKey = apiKey
 		}
 
 		return c.viper

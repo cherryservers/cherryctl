@@ -126,7 +126,7 @@ func (c *Client) readAPIKey() (string, error) {
 	}
 	fmt.Println()
 	apiKey := string(b)
-	c.Servicer.SetToken(apiKey)
+	c.Servicer.SetAPIKey(apiKey)
 
 	return apiKey, nil
 }
@@ -219,7 +219,7 @@ func (c *Client) checkAndCreateConfigDir(configDir string) error {
 
 type Servicer interface {
 	API(*cobra.Command) *cherrygo.Client
-	SetToken(string)
+	SetAPIKey(string)
 }
 
 var _ Servicer = (*cli.Client)(nil)
