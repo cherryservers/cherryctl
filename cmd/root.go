@@ -4,8 +4,6 @@ Copyright © 2022 Cherry Severs <support@cherryservers.com>
 package cmd
 
 import (
-	"os"
-
 	"github.com/cherryservers/cherryctl/internal/backups"
 	root "github.com/cherryservers/cherryctl/internal/cli"
 	"github.com/cherryservers/cherryctl/internal/docs"
@@ -24,14 +22,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var (
-	Version string = "dev"
-)
-
-const (
-	apiTokenEnvVar = "CHERRY_AUTH_TOKEN"
-	apiURL         = "https://api.cherryservers.com/v1/"
-)
+const version = "dev"
 
 type Cli struct {
 	MainCmd  *cobra.Command
@@ -43,7 +34,7 @@ func NewCli() *Cli {
 		Outputer: &outputs.Standard{},
 	}
 
-	rootClient := root.NewClient(os.Getenv(apiTokenEnvVar), apiURL, Version)
+	rootClient := root.NewClient(version)
 	rootCmd := rootClient.NewCommand()
 	rootCmd.DisableSuggestions = false
 	cli.MainCmd = rootCmd

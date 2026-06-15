@@ -22,6 +22,7 @@ const (
 	DefaultConfigDirName = "cherryctl"
 	OldDefaultContext    = "cherry"
 	OldConfigPathSuffix  = "/.config/cherry"
+	DefaultBaseURL       = "https://api.cherryservers.com/v1/"
 )
 
 type Client struct {
@@ -43,12 +44,8 @@ func (c *Client) SetToken(token string) {
 	c.cherryToken = token
 }
 
-func NewClient(cherryToken, apiURL, Version string) *Client {
-	return &Client{
-		cherryToken: cherryToken,
-		apiURL:      apiURL,
-		Version:     Version,
-	}
+func NewClient(version string) *Client {
+	return &Client{Version: version}
 }
 
 func (c *Client) API(cmd *cobra.Command) *cherrygo.Client {
@@ -112,14 +109,14 @@ func (c *Client) NewCommand() *cobra.Command {
 	// but that breaks existing setups such as:
 	//
 	// `token` is defined in a config file AND `CHERRY_AUTH_TOKEN` is set.
-	// 
+	//
 	// This will result in an error, because viper merges config sources.
 	rootCmd.PersistentFlags().MarkDeprecated("token", "use '--api-key' instead.")
 	rootCmd.PersistentFlags().MarkDeprecated("auth-token", "use '--api-key' instead.")
 
 	rootCmd.PersistentFlags().StringVar(&c.configPath, "config", "", "Path to configuration file directory. The CHERRY_CONFIG environment variable can be used as well.")
 	rootCmd.PersistentFlags().StringVar(&c.context, "context", DefaultContext, "Specify a custom context name")
-	rootCmd.PersistentFlags().StringVar(&c.apiURL, "api-url", c.apiURL, "Override default API endpoint")
+	rootCmd.PersistentFlags().StringVar(&c.apiURL, "api-url", DefaultBaseURL, "Override default API endpoint")
 	rootCmd.PersistentFlags().StringVarP(&c.outputFormat, "output", "o", "", "Output format (*table, json, yaml)")
 	c.fields = rootCmd.PersistentFlags().StringSlice("fields", nil, "Comma separated object field names to output in result. Fields can be used for list and get actions.")
 
