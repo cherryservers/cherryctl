@@ -66,7 +66,7 @@ func (c *Command) list() *cobra.Command {
 	}
 
 	planGetCmd.Flags().StringVarP(&regionID, "region", "r", "", "The Slug or ID of region.")
-	planGetCmd.Flags().StringSliceVarP(&types, "type", "", []string{}, `Comma separated list of available plan types (baremetal,virtual,vps)`)
+	planGetCmd.Flags().StringSliceVarP(&types, "type", "", []string{}, "Comma separated list of available plan types.")
 	planGetCmd.Flags().IntVarP(&teamID, "team-id", "t", 0, "The team's ID. Return plans prices based on team billing details.")
 
 	planGetCmd.MarkFlagRequired("team-id")
