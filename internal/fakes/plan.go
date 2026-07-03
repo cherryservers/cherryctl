@@ -38,10 +38,10 @@ func (s *PlanService) Plan() cherrygo.Plan {
 	}
 	regions := []cherrygo.AvailableRegions{
 		{
-			Region:   &cherrygo.Region{Slug: "test-slug"},
+			Region:   &cherrygo.Region{ID:1, Slug: "test-region"},
 			StockQty: 1,
 			SpotQty:  2,
 		},
 	}
-	return cherrygo.Plan{ID: 1, Slug: "test-slug", Pricing: pricing, AvailableRegions: regions}
+	return cherrygo.Plan{ID: 1, Slug: "test-plan", Pricing: pricing, AvailableRegions: regions}
 }
