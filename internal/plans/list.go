@@ -14,7 +14,7 @@ func (c *Command) list() *cobra.Command {
 	var teamID int
 	var types []string
 	planGetCmd := &cobra.Command{
-		Use:     `list -t <team_id> [--region-id <region_slug>] [--type <type>]`,
+		Use:     `list -t <team_id> [--region <region_slug>] [--type <type>]`,
 		Aliases: []string{"get"},
 		Short:   "Retrieves a list of server plans.",
 		Long:    "Retrieves a list of server plans with their corresponding hourly rates and stock volumes.",
