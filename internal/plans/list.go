@@ -8,7 +8,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func (c *Client) List() *cobra.Command {
+func (c *Command) list() *cobra.Command {
 	var regionID string
 	var teamID int
 	var types []string
@@ -22,7 +22,7 @@ func (c *Client) List() *cobra.Command {
 
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cmd.SilenceUsage = true
-			options := c.Servicer.GetOptions()
+			options := c.GetOpts()
 
 			if len(types) > 0 {
 				options.Type = types
@@ -32,7 +32,7 @@ func (c *Client) List() *cobra.Command {
 				options.QueryParams = map[string]string{"region": regionID}
 			}
 
-			plans, _, err := c.Service.List(teamID, options)
+			plans, _, err := c.Client().List(teamID, options)
 			if err != nil {
 				return errors.Wrap(err, "Could not list plans")
 			}
@@ -57,7 +57,7 @@ func (c *Client) List() *cobra.Command {
 			}
 			header := []string{"Plan Slug", "Region Slug", "Stock Hourly", "Hourly Price", "Stock Spot", "Spot Price"}
 
-			return c.Out.Output(plans, header, &data)
+			return c.Outputer().Output(plans, header, &data)
 		},
 	}
 
