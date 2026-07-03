@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strconv"
 
+	"github.com/cherryservers/cherrygo/v3"
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 )
@@ -23,6 +24,9 @@ func (c *Command) list() *cobra.Command {
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cmd.SilenceUsage = true
 			options := c.GetOpts()
+			if options == nil {
+				options = &cherrygo.GetOptions{}
+			}
 
 			if len(types) > 0 {
 				options.Type = types

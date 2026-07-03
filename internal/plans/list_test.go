@@ -12,10 +12,11 @@ import (
 type fakeDeps struct {
 	svc *fakes.PlanService
 	out *fakes.Outputer
+	opts *cherrygo.GetOptions
 }
 
-func (td fakeDeps) GetOpts() *cherrygo.GetOptions {
-	return &cherrygo.GetOptions{}
+func (fd fakeDeps) GetOpts() *cherrygo.GetOptions {
+	return fd.opts 
 }
 
 func (fd fakeDeps) Client() cherrygo.PlansService {
@@ -30,6 +31,7 @@ func TestList(t *testing.T) {
 	cases := []struct {
 		title            string
 		args             []string
+		getOpts *cherrygo.GetOptions
 		wantClientParams []any
 	}{
 		{
@@ -61,6 +63,7 @@ func TestList(t *testing.T) {
 			dep := fakeDeps{
 				svc: &fakeSvc,
 				out: &fakeOut,
+				opts: tc.getOpts,
 			}
 
 			c := Command{
