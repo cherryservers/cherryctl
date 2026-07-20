@@ -2,7 +2,7 @@ package servers
 
 import (
 	"fmt"
-	"github.com/cherryservers/cherrygo/v3"
+	"github.com/cherryservers/cherrygo/v4"
 	"strconv"
 
 	"github.com/pkg/errors"
@@ -22,13 +22,14 @@ func (c *Client) EnterRescue() *cobra.Command {
 
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cmd.SilenceUsage = true
+			ctx := cmd.Context()
 
 			request := &cherrygo.RescueServerFields{
 				Password: password,
 			}
 
 			if serverID, err := strconv.Atoi(args[0]); err == nil {
-				_, _, err := c.Service.EnterRescueMode(serverID, request)
+				_, _, err := c.Service.EnterRescueMode(ctx, serverID, request)
 				if err != nil {
 					return errors.Wrap(err, "Couldn't put server in rescue mode.")
 				}

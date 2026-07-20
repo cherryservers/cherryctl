@@ -5,7 +5,7 @@ import (
 	"strconv"
 
 	"github.com/cherryservers/cherryctl/internal/utils"
-	"github.com/cherryservers/cherrygo/v3"
+	"github.com/cherryservers/cherrygo/v4"
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 )
@@ -28,27 +28,27 @@ func (c *Client) Create() *cobra.Command {
 
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cmd.SilenceUsage = true
+			ctx := cmd.Context()
 
 			if serverHostname == "" && serverID == 0 {
 				return fmt.Errorf("either server-id or server-hostname should be set")
 			}
 
 			request := &cherrygo.CreateBackup{
-				ServerID:       serverID,
 				BackupPlanSlug: backupPlan,
 				RegionSlug:     region,
 				SSHKey:         sshKey,
 			}
 
 			if serverHostname != "" {
-				srvID, err := utils.ServerHostnameToID(serverHostname, projectID, c.ServerService)
+				srvID, err := utils.ServerHostnameToID(ctx, serverHostname, projectID, c.ServerService)
 				if err != nil {
 					return errors.Wrap(err, "Could not get a Server")
 				}
-				request.ServerID = srvID
+				serverID = srvID
 			}
 
-			o, _, err := c.Service.Create(request)
+			o, _, err := c.Service.Create(ctx, serverID, request)
 			if err != nil {
 				return errors.Wrap(err, "Could not create a backup storage")
 			}

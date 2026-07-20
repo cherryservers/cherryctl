@@ -20,6 +20,8 @@ func (c *Client) Get() *cobra.Command {
 
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cmd.SilenceUsage = true
+			ctx := cmd.Context()
+
 			if len(args) > 0 {
 				prID, err := strconv.Atoi(args[0])
 				if err == nil {
@@ -31,14 +33,14 @@ func (c *Client) Get() *cobra.Command {
 				return fmt.Errorf("project-id should be set %v\t", projectID)
 			}
 
-			o, _, err := c.Service.Get(projectID, c.Servicer.GetOptions())
+			o, _, err := c.Service.Get(ctx, projectID, c.Servicer.GetOptions())
 			if err != nil {
 				return errors.Wrap(err, "Could not get project")
 			}
 
 			header := []string{"ID", "Name", "BGP enabled", "BGP ASN"}
 			data := make([][]string, 1)
-			data[0] = []string{strconv.Itoa(o.ID), o.Name, utils.BoolToYesNo(o.Bgp.Enabled), strconv.Itoa(o.Bgp.LocalASN)}
+			data[0] = []string{strconv.Itoa(o.ID), o.Name, utils.BoolToYesNo(o.BGP.Enabled), strconv.Itoa(o.BGP.LocalASN)}
 
 			return c.Out.Output(o, header, &data)
 		},

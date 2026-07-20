@@ -2,11 +2,12 @@ package utils
 
 import (
 	"bytes"
+	"context"
 	"fmt"
 	"os"
 	"strings"
 
-	"github.com/cherryservers/cherrygo/v3"
+	"github.com/cherryservers/cherrygo/v4"
 	"github.com/google/uuid"
 	"github.com/pkg/errors"
 )
@@ -19,12 +20,12 @@ func BoolToYesNo(b bool) string {
 	return "no"
 }
 
-func ServerHostnameToID(hostname string, projectID int, ServerService cherrygo.ServersService) (int, error) {
+func ServerHostnameToID(ctx context.Context, hostname string, projectID int, ServerService cherrygo.ServersService) (int, error) {
 	if projectID == 0 {
 		return 0, fmt.Errorf("Project ID must be set")
 	}
 
-	serversList, err := serverList(projectID, ServerService)
+	serversList, err := serverList(ctx, projectID, ServerService)
 	for _, s := range serversList {
 		if strings.EqualFold(hostname, s.Hostname) {
 			return s.ID, err
@@ -34,11 +35,11 @@ func ServerHostnameToID(hostname string, projectID int, ServerService cherrygo.S
 	return 0, errors.Wrap(err, fmt.Sprintf("Could not find server with `%s` hostname", hostname))
 }
 
-func serverList(projectID int, ServerService cherrygo.ServersService) ([]cherrygo.Server, error) {
+func serverList(ctx context.Context, projectID int, ServerService cherrygo.ServersService) ([]cherrygo.Server, error) {
 	getOptions := cherrygo.GetOptions{
 		Fields: []string{"id", "name", "hostname"},
 	}
-	serverList, _, err := ServerService.List(projectID, &getOptions)
+	serverList, _, err := ServerService.List(ctx, projectID, &getOptions)
 
 	return serverList, err
 }

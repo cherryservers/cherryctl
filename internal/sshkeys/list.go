@@ -1,7 +1,7 @@
 package sshkeys
 
 import (
-	"github.com/cherryservers/cherrygo/v3"
+	"github.com/cherryservers/cherrygo/v4"
 	"strconv"
 
 	"github.com/pkg/errors"
@@ -18,15 +18,17 @@ func (c *Client) List() *cobra.Command {
   cherryctl ssh-key list`,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cmd.SilenceUsage = true
+			ctx := cmd.Context()
+
 			getOptions := c.Servicer.GetOptions()
 			getOptions.Fields = []string{"ssh_key", "email"}
 
 			var sshKeys []cherrygo.SSHKey
 			err := error(nil)
 			if projectID != 0 {
-				sshKeys, _, err = c.ProjectsService.ListSSHKeys(projectID, getOptions)
+				sshKeys, _, err = c.ProjectsService.ListSSHKeys(ctx, projectID, getOptions)
 			} else {
-				sshKeys, _, err = c.Service.List(getOptions)
+				sshKeys, _, err = c.Service.List(ctx, getOptions)
 			}
 
 			if err != nil {

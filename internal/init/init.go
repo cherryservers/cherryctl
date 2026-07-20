@@ -1,8 +1,8 @@
 package init
 
 import (
+	"context"
 	"fmt"
-	"github.com/cherryservers/cherryctl/internal/cli"
 	"os"
 	"path/filepath"
 	"strconv"
@@ -10,7 +10,9 @@ import (
 	"syscall"
 	"text/tabwriter"
 
-	"github.com/cherryservers/cherrygo/v3"
+	"github.com/cherryservers/cherryctl/internal/cli"
+
+	"github.com/cherryservers/cherrygo/v4"
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 	"golang.org/x/term"
@@ -90,12 +92,12 @@ The configuration directory path can be changed with the CHERRY_CONFIG environme
 
 			cherryClient := c.Servicer.API(cmd)
 
-			userTeam, err := c.readUserTeam(cherryClient)
+			userTeam, err := c.readUserTeam(cmd.Context(), cherryClient)
 			if err != nil {
 				return err
 			}
 
-			userProj, err := c.readUserProject(cherryClient, userTeam)
+			userProj, err := c.readUserProject(cmd.Context(), cherryClient, userTeam)
 			if err != nil {
 				return err
 			}
@@ -134,15 +136,15 @@ func (c *Client) readAPIKey() (string, error) {
 func (c *Client) validateAPIKey(cmd *cobra.Command) error {
 	cherryClient := c.Servicer.API(cmd)
 	c.UserService = cherryClient.Users
-	_, _, err := c.UserService.CurrentUser(nil)
+	_, _, err := c.UserService.CurrentUser(cmd.Context(), nil)
 	if err != nil {
 		return errors.Wrap(err, "Invalid API key")
 	}
 	return nil
 }
 
-func (c *Client) readUserTeam(cherryClient *cherrygo.Client) (string, error) {
-	teams, _, err := cherryClient.Teams.List(&cherrygo.GetOptions{})
+func (c *Client) readUserTeam(ctx context.Context, cherryClient *cherrygo.Client) (string, error) {
+	teams, _, err := cherryClient.Teams.List(ctx, &cherrygo.GetOptions{})
 	if err != nil {
 		return "", errors.Wrap(err, "Failed to get team list")
 	}
@@ -165,9 +167,9 @@ func (c *Client) readUserTeam(cherryClient *cherrygo.Client) (string, error) {
 	return userTeam, nil
 }
 
-func (c *Client) readUserProject(cherryClient *cherrygo.Client, userTeam string) (string, error) {
+func (c *Client) readUserProject(ctx context.Context, cherryClient *cherrygo.Client, userTeam string) (string, error) {
 	teamID, _ := strconv.Atoi(userTeam)
-	projects, _, err := cherryClient.Projects.List(teamID, &cherrygo.GetOptions{})
+	projects, _, err := cherryClient.Projects.List(ctx, teamID, &cherrygo.GetOptions{})
 	if err != nil {
 		return "", errors.Wrap(err, "Failed to get project list")
 	}

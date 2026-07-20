@@ -19,7 +19,9 @@ func (c *Client) List() *cobra.Command {
 
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cmd.SilenceUsage = true
-			images, _, err := c.Service.List(plan, c.Servicer.GetOptions())
+			ctx := cmd.Context()
+
+			images, _, err := c.Service.List(ctx, plan, c.Servicer.GetOptions())
 			if err != nil {
 				return errors.Wrap(err, "Could not list images")
 			}

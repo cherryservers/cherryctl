@@ -26,6 +26,7 @@ func (c *Client) Get() *cobra.Command {
 
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cmd.SilenceUsage = true
+			ctx := cmd.Context()
 
 			if srvID, err := strconv.Atoi(args[0]); err == nil {
 				serverID = srvID
@@ -33,14 +34,14 @@ func (c *Client) Get() *cobra.Command {
 				if projectID == 0 {
 					return errors.Wrap(err, "server get by hostname requires project-id argument.")
 				}
-				srvID, err := utils.ServerHostnameToID(args[0], projectID, c.Service)
+				srvID, err := utils.ServerHostnameToID(ctx, args[0], projectID, c.Service)
 				if err != nil {
 					return errors.Wrap(err, "Server with hostname %s was not found")
 				}
 				serverID = srvID
 			}
 
-			s, _, err := c.Service.Get(serverID, c.Servicer.GetOptions())
+			s, _, err := c.Service.Get(ctx, serverID, c.Servicer.GetOptions())
 			if err != nil {
 				return errors.Wrap(err, "Could not get a Server")
 			}

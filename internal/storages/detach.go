@@ -22,11 +22,13 @@ func (c *Client) Detach() *cobra.Command {
 
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cmd.SilenceUsage = true
+			ctx := cmd.Context()
+
 			if storID, err := strconv.Atoi(args[0]); err == nil {
 				storageID = storID
 			}
 
-			_, err := c.Service.Detach(storageID)
+			_, err := c.Service.Detach(ctx, storageID)
 			if err != nil {
 				return errors.Wrap(err, "Could not detach storage from a server")
 			}

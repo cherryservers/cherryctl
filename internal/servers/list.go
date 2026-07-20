@@ -21,6 +21,7 @@ func (c *Client) List() *cobra.Command {
 		cherryctl server list -p 12345`,
 
 		RunE: func(cmd *cobra.Command, args []string) error {
+			ctx := cmd.Context()
 			if projectID == 0 {
 				return fmt.Errorf("project-id should be set %v\t", projectID)
 			}
@@ -32,7 +33,7 @@ func (c *Client) List() *cobra.Command {
 			}
 
 			cmd.SilenceUsage = true
-			servers, _, err := c.Service.List(projectID, options)
+			servers, _, err := c.Service.List(ctx, projectID, options)
 			if err != nil {
 				return errors.Wrap(err, "Could not list servers")
 			}

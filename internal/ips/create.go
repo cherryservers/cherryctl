@@ -5,7 +5,7 @@ import (
 	"strings"
 
 	"github.com/cherryservers/cherryctl/internal/utils"
-	"github.com/cherryservers/cherrygo/v3"
+	"github.com/cherryservers/cherrygo/v4"
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 )
@@ -32,6 +32,8 @@ func (c *Client) Create() *cobra.Command {
 
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cmd.SilenceUsage = true
+			ctx := cmd.Context()
+
 			tagsArr := make(map[string]string)
 
 			for _, kv := range tags {
@@ -46,7 +48,7 @@ func (c *Client) Create() *cobra.Command {
 			}
 
 			if targetHostname != "" {
-				srvID, err := utils.ServerHostnameToID(targetHostname, projectID, c.ServerService)
+				srvID, err := utils.ServerHostnameToID(ctx, targetHostname, projectID, c.ServerService)
 				if err != nil {
 					return errors.Wrap(err, "Could not find a target by hostname")
 				}
@@ -59,21 +61,21 @@ func (c *Client) Create() *cobra.Command {
 
 			request := &cherrygo.CreateIPAddress{
 				Region:     region,
-				PtrRecord:  ptrRecord,
+				PTRRecord:  ptrRecord,
 				ARecord:    aRecord,
 				TargetedTo: target,
 				RoutedTo:   route,
 				Tags:       &tagsArr,
 			}
 
-			i, _, err := c.Service.Create(projectID, request)
+			i, _, err := c.Service.Create(ctx, projectID, request)
 			if err != nil {
 				return errors.Wrap(err, "Could not create IP address")
 			}
 
 			header := []string{"ID", "Address", "Cidr", "Type", "Region", "PTR record", "A record", "Tags"}
 			data := make([][]string, 1)
-			data[0] = []string{i.ID, i.Address, i.Cidr, i.Type, i.Region.Name, i.PtrRecord, i.ARecord, utils.FormatStringTags(i.Tags)}
+			data[0] = []string{i.ID, i.Address, i.CIDR, i.Type, i.Region.Name, i.PTRRecord, i.ARecord, utils.FormatStringTags(i.Tags)}
 
 			return c.Out.Output(i, header, &data)
 		},

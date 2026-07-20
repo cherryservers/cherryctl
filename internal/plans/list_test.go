@@ -6,7 +6,7 @@ import (
 
 	"github.com/cherryservers/cherryctl/internal/fakes"
 	"github.com/cherryservers/cherryctl/internal/outputs"
-	"github.com/cherryservers/cherrygo/v3"
+	"github.com/cherryservers/cherrygo/v4"
 )
 
 type fakeDeps struct {

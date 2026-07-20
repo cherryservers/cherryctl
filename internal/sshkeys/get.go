@@ -18,12 +18,14 @@ func (c *Client) Get() *cobra.Command {
   cherryctl ssh-key get 12345`,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cmd.SilenceUsage = true
+			ctx := cmd.Context()
+
 			if sshID, err := strconv.Atoi(args[0]); err == nil {
 				sshKeyID = sshID
 			}
 			getOptions := c.Servicer.GetOptions()
 			getOptions.Fields = []string{"ssh_key", "email"}
-			o, _, err := c.Service.Get(sshKeyID, getOptions)
+			o, _, err := c.Service.Get(ctx, sshKeyID, getOptions)
 			if err != nil {
 				return errors.Wrap(err, "Could not get ssh-key")
 			}

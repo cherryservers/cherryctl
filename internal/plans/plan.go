@@ -2,7 +2,7 @@ package plans
 
 import (
 	"github.com/cherryservers/cherryctl/internal/outputs"
-	"github.com/cherryservers/cherrygo/v3"
+	"github.com/cherryservers/cherrygo/v4"
 	"github.com/spf13/cobra"
 )
 

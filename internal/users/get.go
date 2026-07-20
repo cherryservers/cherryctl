@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/cherryservers/cherrygo/v3"
+	"github.com/cherryservers/cherrygo/v4"
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 )
@@ -22,6 +22,8 @@ func (c *Client) Get() *cobra.Command {
 		cherryctl user get 123`,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cmd.SilenceUsage = true
+			ctx := cmd.Context()
+
 			var user cherrygo.User
 			var err error
 			if len(args) > 0 {
@@ -31,12 +33,12 @@ func (c *Client) Get() *cobra.Command {
 				}
 			}
 			if userID == 0 {
-				user, _, err = c.Service.CurrentUser(c.Servicer.GetOptions())
+				user, _, err = c.Service.CurrentUser(ctx, c.Servicer.GetOptions())
 				if err != nil {
 					return errors.Wrap(err, "Could not get current User")
 				}
 			} else {
-				user, _, err = c.Service.Get(userID, c.Servicer.GetOptions())
+				user, _, err = c.Service.Get(ctx, userID, c.Servicer.GetOptions())
 				if err != nil {
 					return errors.Wrap(err, "Could not get Users")
 				}

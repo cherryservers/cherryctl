@@ -18,6 +18,8 @@ func (c *Client) List() *cobra.Command {
 
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cmd.SilenceUsage = true
+			ctx := cmd.Context()
+
 			getOptions := c.Servicer.GetOptions()
 			getOptions.Fields = []string{"ip", "region", "hostname"}
 
@@ -25,14 +27,14 @@ func (c *Client) List() *cobra.Command {
 				getOptions.Type = types
 			}
 
-			ips, _, err := c.Service.List(projectID, getOptions)
+			ips, _, err := c.Service.List(ctx, projectID, getOptions)
 			if err != nil {
 				return errors.Wrap(err, "Could not list servers")
 			}
 			data := make([][]string, len(ips))
 
 			for i, ip := range ips {
-				data[i] = []string{ip.ID, ip.Address, ip.Cidr, ip.Type, ip.TargetedTo.Hostname, ip.Region.Name, ip.PtrRecord, ip.ARecord, utils.FormatStringTags(ip.Tags)}
+				data[i] = []string{ip.ID, ip.Address, ip.CIDR, ip.Type, ip.TargetedTo.Hostname, ip.Region.Name, ip.PTRRecord, ip.ARecord, utils.FormatStringTags(ip.Tags)}
 			}
 			header := []string{"ID", "Address", "Cidr", "Type", "Target", "Region", "PTR record", "A record", "Tags"}
 

@@ -5,7 +5,7 @@ import (
 	"strconv"
 
 	"github.com/cherryservers/cherryctl/internal/utils"
-	"github.com/cherryservers/cherrygo/v3"
+	"github.com/cherryservers/cherrygo/v4"
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 )
@@ -27,6 +27,8 @@ func (c *Client) Attach() *cobra.Command {
 
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cmd.SilenceUsage = true
+			ctx := cmd.Context()
+
 			if storID, err := strconv.Atoi(args[0]); err == nil {
 				storageID = storID
 			}
@@ -36,7 +38,7 @@ func (c *Client) Attach() *cobra.Command {
 			}
 
 			request := &cherrygo.AttachTo{
-				StorageID: storageID,
+				AttachTo: serverID,
 			}
 
 			if serverHostname != "" {
@@ -44,14 +46,14 @@ func (c *Client) Attach() *cobra.Command {
 					fmt.Println("--project-id argument is required with --server-hostname.")
 					return nil
 				}
-				srvID, err := utils.ServerHostnameToID(serverHostname, projectID, c.ServerService)
+				srvID, err := utils.ServerHostnameToID(ctx, serverHostname, projectID, c.ServerService)
 				if err != nil {
 					return errors.Wrap(err, "Could not get a Server")
 				}
 				request.AttachTo = srvID
 			}
 
-			resp, _, err := c.Service.Attach(request)
+			resp, _, err := c.Service.Attach(ctx, storageID, request)
 			if err != nil {
 				return errors.Wrap(err, "Could not atach storage to a server")
 			}

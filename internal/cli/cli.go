@@ -10,7 +10,7 @@ import (
 	"strings"
 
 	"github.com/cherryservers/cherryctl/internal/outputs"
-	"github.com/cherryservers/cherrygo/v3"
+	"github.com/cherryservers/cherrygo/v4"
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
@@ -54,7 +54,7 @@ func (c *Client) API(cmd *cobra.Command) *cherrygo.Client {
 	}
 
 	if c.apiClient == nil {
-		args := []cherrygo.ClientOpt{cherrygo.WithAuthToken(c.apiKey), cherrygo.WithUserAgent("cherry-cli/" + c.Version)}
+		args := []cherrygo.ClientOpt{cherrygo.WithAPIKey(c.apiKey), cherrygo.WithUserAgent("cherry-cli/" + c.Version)}
 
 		if c.apiURL != "" {
 			args = append(args, cherrygo.WithURL(c.apiURL))

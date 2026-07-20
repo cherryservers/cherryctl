@@ -19,8 +19,9 @@ func (c *Client) Plans() *cobra.Command {
 
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cmd.SilenceUsage = true
+			ctx := cmd.Context()
 
-			plans, _, err := c.Service.ListPlans(c.Servicer.GetOptions())
+			plans, _, err := c.Service.ListPlans(ctx, c.Servicer.GetOptions())
 			if err != nil {
 				return errors.Wrap(err, "Could not get backup storage plan list")
 			}

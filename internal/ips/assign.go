@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/cherryservers/cherryctl/internal/utils"
-	"github.com/cherryservers/cherrygo/v3"
+	"github.com/cherryservers/cherrygo/v4"
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 )
@@ -28,6 +28,8 @@ func (c *Client) Assign() *cobra.Command {
 
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cmd.SilenceUsage = true
+			ctx := cmd.Context()
+
 			request := &cherrygo.AssignIPAddress{}
 
 			if utils.IsValidUUID(args[0]) {
@@ -38,13 +40,13 @@ func (c *Client) Assign() *cobra.Command {
 			}
 
 			if targetIPID != "" && utils.IsValidUUID(targetIPID) {
-				request.IpID = targetIPID
+				request.RoutedTo = targetIPID
 			} else if targetHostname != "" {
 				if projectID == 0 {
 					fmt.Println("--project-id argument is required with --target-hostname.")
 					return nil
 				}
-				srvID, err := utils.ServerHostnameToID(targetHostname, projectID, c.ServerService)
+				srvID, err := utils.ServerHostnameToID(ctx, targetHostname, projectID, c.ServerService)
 				if err != nil {
 					return errors.Wrap(err, "Could not find a target by hostname")
 				}
@@ -53,18 +55,18 @@ func (c *Client) Assign() *cobra.Command {
 				request.ServerID = targetID
 			}
 
-			if request.ServerID == 0 && request.IpID == "" {
+			if request.ServerID == 0 && request.RoutedTo == "" {
 				return errors.New("Could not find a target")
 			}
 
-			i, _, err := c.Service.Assign(ipID, request)
+			i, _, err := c.Service.Assign(ctx, ipID, request)
 			if err != nil {
 				return errors.Wrap(err, "Could not assign IP address")
 			}
 
 			header := []string{"ID", "Address", "Cidr", "Type", "Region"}
 			data := make([][]string, 1)
-			data[0] = []string{i.ID, i.Address, i.Cidr, i.Type, i.Region.Name}
+			data[0] = []string{i.ID, i.Address, i.CIDR, i.Type, i.Region.Name}
 
 			return c.Out.Output(i, header, &data)
 		},

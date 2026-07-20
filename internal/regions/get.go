@@ -20,15 +20,17 @@ func (c *Client) Get() *cobra.Command {
 
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cmd.SilenceUsage = true
+			ctx := cmd.Context()
+
 			regionID = args[0]
-			o, _, err := c.Service.Get(regionID, c.Servicer.GetOptions())
+			o, _, err := c.Service.Get(ctx, regionID, c.Servicer.GetOptions())
 			if err != nil {
 				return errors.Wrap(err, "Could not get a region")
 			}
 
 			header := []string{"ID", "Slug", "Name", "BGP hosts", "BGP asn"}
 			data := make([][]string, 1)
-			data[0] = []string{strconv.Itoa(o.ID), o.Slug, o.Name, strings.Join(o.BGP.Hosts, ", "), strconv.Itoa(o.BGP.Asn)}
+			data[0] = []string{strconv.Itoa(o.ID), o.Slug, o.Name, strings.Join(o.BGP.Hosts, ", "), strconv.Itoa(o.BGP.ASN)}
 
 			return c.Out.Output(o, header, &data)
 		},

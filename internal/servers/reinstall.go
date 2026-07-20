@@ -6,7 +6,7 @@ import (
 	"strconv"
 
 	"github.com/cherryservers/cherryctl/internal/utils"
-	"github.com/cherryservers/cherrygo/v3"
+	"github.com/cherryservers/cherrygo/v4"
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 )
@@ -32,6 +32,7 @@ func (c *Client) Reinstall() *cobra.Command {
 
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cmd.SilenceUsage = true
+			ctx := cmd.Context()
 
 			userDataRaw, err := utils.ReadOptionalFile(userDataPath)
 			if err != nil {
@@ -54,7 +55,7 @@ func (c *Client) Reinstall() *cobra.Command {
 			}
 
 			if serverID, err := strconv.Atoi(args[0]); err == nil {
-				_, _, err := c.Service.Reinstall(serverID, request)
+				_, _, err := c.Service.Reinstall(ctx, serverID, request)
 				if err != nil {
 					return errors.Wrap(err, "Could not reinstall a Server.")
 				}

@@ -17,9 +17,10 @@ func (c *Client) ListCycles() *cobra.Command {
 
 		RunE: func(cmd *cobra.Command, args []string) error {
 			options := c.Servicer.GetOptions()
+			ctx := cmd.Context()
 
 			cmd.SilenceUsage = true
-			cycles, _, err := c.Service.ListCycles(options)
+			cycles, _, err := c.Service.ListCycles(ctx, options)
 			if err != nil {
 				return errors.Wrap(err, "Could not list server billing cycles.")
 			}

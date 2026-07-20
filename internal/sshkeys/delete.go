@@ -25,6 +25,8 @@ func (c *Client) Delete() *cobra.Command {
 
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cmd.SilenceUsage = true
+			ctx := cmd.Context()
+
 			if !force {
 				prompt := promptui.Prompt{
 					Label:     fmt.Sprintf("Are you sure you want to delete SSH key %d: ", sshKeyID),
@@ -36,7 +38,7 @@ func (c *Client) Delete() *cobra.Command {
 					return nil
 				}
 			}
-			_, _, err := c.Service.Delete(sshKeyID)
+			_, err := c.Service.Delete(ctx, sshKeyID)
 			if err != nil {
 				return errors.Wrap(err, "Could not delete SSH key")
 			}

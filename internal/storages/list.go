@@ -19,9 +19,11 @@ func (c *Client) List() *cobra.Command {
 
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cmd.SilenceUsage = true
+			ctx := cmd.Context()
+
 			getOptions := c.Servicer.GetOptions()
 			getOptions.Fields = []string{"storage", "region", "id", "hostname"}
-			storages, _, err := c.Service.List(projectID, getOptions)
+			storages, _, err := c.Service.List(ctx, projectID, getOptions)
 			if err != nil {
 				return errors.Wrap(err, "Could not get storage list")
 			}

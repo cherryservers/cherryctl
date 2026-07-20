@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/cherryservers/cherrygo/v3"
+	"github.com/cherryservers/cherrygo/v4"
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 )
@@ -29,17 +29,18 @@ func (c *Client) Update() *cobra.Command {
 
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cmd.SilenceUsage = true
+			ctx := cmd.Context()
+
 			if backID, err := strconv.Atoi(args[0]); err == nil {
 				backupID = backID
 			}
 			request := &cherrygo.UpdateBackupStorage{
-				BackupStorageID: backupID,
 				BackupPlanSlug:  plan,
 				Password:        password,
 				SSHKey:          sshKey,
 			}
 
-			o, _, err := c.Service.Update(request)
+			o, _, err := c.Service.Update(ctx, backupID, request)
 			if err != nil {
 				return errors.Wrap(err, "Could not update backup storage")
 			}

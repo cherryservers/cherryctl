@@ -22,13 +22,14 @@ func (c *Client) Upgrade() *cobra.Command {
 
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cmd.SilenceUsage = true
+			ctx := cmd.Context()
 
 			serverID, err := strconv.Atoi(args[0])
 			if err != nil {
 				return fmt.Errorf("failed to parse %q into server ID: %w", args[0], err)
 			}
 
-			_, _, err = c.Service.Upgrade(serverID, plan)
+			_, _, err = c.Service.Upgrade(ctx, serverID, plan)
 			if err != nil {
 				return fmt.Errorf("failed to upgrade server %d: %w", serverID, err)
 			}

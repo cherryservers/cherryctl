@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/cherryservers/cherrygo/v3"
+	"github.com/cherryservers/cherrygo/v4"
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 )
@@ -23,13 +23,15 @@ func (c *Client) Create() *cobra.Command {
 
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cmd.SilenceUsage = true
+			ctx := cmd.Context()
+
 			request := &cherrygo.CreateTeam{
 				Name:     name,
 				Type:     teamType,
 				Currency: currency,
 			}
 
-			o, _, err := c.Service.Create(request)
+			o, _, err := c.Service.Create(ctx, request)
 			if err != nil {
 				return errors.Wrap(err, "Could not create a Team")
 			}

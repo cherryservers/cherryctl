@@ -22,11 +22,13 @@ func (c *Client) Methods() *cobra.Command {
 
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cmd.SilenceUsage = true
+			ctx := cmd.Context()
+
 			if backID, err := strconv.Atoi(args[0]); err == nil {
 				backupID = backID
 			}
 
-			storage, _, err := c.Service.Get(backupID, nil)
+			storage, _, err := c.Service.Get(ctx, backupID, nil)
 			if err != nil {
 				return errors.Wrap(err, "Could not get a backup storage")
 			}

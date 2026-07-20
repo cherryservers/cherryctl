@@ -2,14 +2,14 @@ package ips
 
 import (
 	"github.com/cherryservers/cherryctl/internal/outputs"
-	"github.com/cherryservers/cherrygo/v3"
+	"github.com/cherryservers/cherrygo/v4"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
 
 type Client struct {
 	Servicer      Servicer
-	Service       cherrygo.IpAddressesService
+	Service       cherrygo.IPAddressesService
 	ServerService cherrygo.ServersService
 	Out           outputs.Outputer
 }

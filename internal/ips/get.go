@@ -20,6 +20,8 @@ func (c *Client) Get() *cobra.Command {
 
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cmd.SilenceUsage = true
+			ctx := cmd.Context()
+
 			if utils.IsValidUUID(args[0]) {
 				ipID = args[0]
 			} else {
@@ -29,14 +31,14 @@ func (c *Client) Get() *cobra.Command {
 
 			getOptions := c.Servicer.GetOptions()
 			getOptions.Fields = []string{"ip", "region", "hostname"}
-			i, _, err := c.Service.Get(ipID, getOptions)
+			i, _, err := c.Service.Get(ctx, ipID, getOptions)
 			if err != nil {
 				return errors.Wrap(err, "Could not get IP address")
 			}
 
 			header := []string{"ID", "Address", "Cidr", "Type", "Target", "Region", "PTR record", "A record", "Tags"}
 			data := make([][]string, 1)
-			data[0] = []string{i.ID, i.Address, i.Cidr, i.Type, i.TargetedTo.Hostname, i.Region.Name, i.PtrRecord, i.ARecord, utils.FormatStringTags(i.Tags)}
+			data[0] = []string{i.ID, i.Address, i.CIDR, i.Type, i.TargetedTo.Hostname, i.Region.Name, i.PTRRecord, i.ARecord, utils.FormatStringTags(i.Tags)}
 
 			return c.Out.Output(i, header, &data)
 		},
