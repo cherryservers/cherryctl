@@ -22,7 +22,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-const version = "dev"
+var Version string = "dev"
 
 type Cli struct {
 	MainCmd  *cobra.Command
@@ -34,7 +34,7 @@ func NewCli() *Cli {
 		Outputer: &outputs.Standard{},
 	}
 
-	rootClient := root.NewClient(version)
+	rootClient := root.NewClient(Version)
 	rootCmd := rootClient.NewCommand()
 	rootCmd.DisableSuggestions = false
 	cli.MainCmd = rootCmd
