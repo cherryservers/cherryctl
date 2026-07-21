@@ -57,7 +57,7 @@ func tempFileWithContent(t *testing.T, name, content string) *os.File {
 
 func TestAuthConfigHierarchy(t *testing.T) {
 	const (
-		tokenVar = "CHERRY_AUTH_TOKEN"
+		tokenVar  = "CHERRY_AUTH_TOKEN"
 		apiKeyVar = "CHERRY_API_KEY"
 	)
 

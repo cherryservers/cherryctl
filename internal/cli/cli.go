@@ -33,7 +33,7 @@ type Client struct {
 	configPath   string
 	context      string
 	outputFormat string
-	apiKey  string
+	apiKey       string
 	apiURL       string
 	Version      string
 	rootCmd      *cobra.Command
