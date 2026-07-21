@@ -35,9 +35,9 @@ func (c *Client) Update() *cobra.Command {
 				backupID = backID
 			}
 			request := &cherrygo.UpdateBackupStorage{
-				BackupPlanSlug:  plan,
-				Password:        password,
-				SSHKey:          sshKey,
+				BackupPlanSlug: plan,
+				Password:       password,
+				SSHKey:         sshKey,
 			}
 
 			o, _, err := c.Service.Update(ctx, backupID, request)

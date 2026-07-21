@@ -30,7 +30,7 @@ func (c *Client) Upgrade() *cobra.Command {
 				backupID = backID
 			}
 			request := &cherrygo.UpdateBackupStorage{
-				BackupPlanSlug:  plan,
+				BackupPlanSlug: plan,
 			}
 
 			o, _, err := c.Service.Update(ctx, backupID, request)
