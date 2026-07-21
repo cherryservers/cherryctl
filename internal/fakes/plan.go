@@ -38,7 +38,7 @@ func (s *PlanService) Plan() cherrygo.Plan {
 	}
 	regions := []cherrygo.AvailableRegions{
 		{
-			Region:   &cherrygo.Region{ID:1, Slug: "test-region"},
+			Region:   &cherrygo.Region{ID: 1, Slug: "test-region"},
 			StockQty: 1,
 			SpotQty:  2,
 		},
