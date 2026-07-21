@@ -35,3 +35,12 @@ jobs:
       run: make generate-docs
     - name: Detect Uncommitted Docs
       run: git diff --exit-code docs
+
+    - name: Check formatting
+      run: go fmt ./...
+    - name: Detect incorrect formatting
+      run: git diff --exit-code .
+
+    - name: Run tests
+      run: go test -race ./...
+
