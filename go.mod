@@ -3,7 +3,7 @@ module github.com/cherryservers/cherryctl
 go 1.25.0
 
 require (
-	github.com/cherryservers/cherrygo/v4 v4.0.0
+	github.com/cherryservers/cherrygo/v4 v4.1.0
 	github.com/google/uuid v1.6.0
 	github.com/manifoldco/promptui v0.9.0
 	github.com/olekukonko/tablewriter v0.0.5
