@@ -19,7 +19,7 @@ import (
 	"github.com/cherryservers/cherryctl/internal/storages"
 	"github.com/cherryservers/cherryctl/internal/teams"
 	"github.com/cherryservers/cherryctl/internal/users"
-	"github.com/cherryservers/cherrygo/v3"
+	"github.com/cherryservers/cherrygo/v4"
 	"github.com/spf13/cobra"
 )
 

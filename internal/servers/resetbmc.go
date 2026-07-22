@@ -20,8 +20,10 @@ func (c *Client) ResetBMC() *cobra.Command {
 
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cmd.SilenceUsage = true
+			ctx := cmd.Context()
+
 			if serverID, err := strconv.Atoi(args[0]); err == nil {
-				_, _, err := c.Service.ResetBMCPassword(serverID)
+				_, _, err := c.Service.ResetBMCPassword(ctx, serverID)
 				if err != nil {
 					return errors.Wrap(err, "Could not reset server BMC password")
 				}

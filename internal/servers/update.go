@@ -6,7 +6,7 @@ import (
 	"strings"
 
 	"github.com/cherryservers/cherryctl/internal/utils"
-	"github.com/cherryservers/cherrygo/v3"
+	"github.com/cherryservers/cherrygo/v4"
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 )
@@ -29,6 +29,7 @@ func (c *Client) Update() *cobra.Command {
 
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cmd.SilenceUsage = true
+			ctx := cmd.Context()
 
 			if srvID, err := strconv.Atoi(args[0]); err == nil {
 				serverID = srvID
@@ -53,11 +54,14 @@ func (c *Client) Update() *cobra.Command {
 			request := &cherrygo.UpdateServer{
 				Name:     name,
 				Hostname: hostname,
-				Bgp:      bgp,
 				Tags:     &tagsArr,
 			}
 
-			s, _, err := c.Service.Update(serverID, request)
+			if cmd.Flags().Changed("bgp") {
+				request.BGP = &bgp
+			}
+
+			s, _, err := c.Service.Update(ctx, serverID, request)
 			if err != nil {
 				return errors.Wrap(err, "Could not update server")
 			}

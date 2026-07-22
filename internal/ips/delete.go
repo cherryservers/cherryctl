@@ -27,6 +27,8 @@ func (c *Client) Delete() *cobra.Command {
 
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cmd.SilenceUsage = true
+			ctx := cmd.Context()
+
 			if utils.IsValidUUID(args[0]) {
 				ipID = args[0]
 			} else {
@@ -45,7 +47,7 @@ func (c *Client) Delete() *cobra.Command {
 					return nil
 				}
 			}
-			_, err := c.Service.Remove(ipID)
+			_, err := c.Service.Remove(ctx, ipID)
 			if err != nil {
 				return errors.Wrap(err, "Could not delete IP address")
 			}

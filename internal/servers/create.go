@@ -7,7 +7,7 @@ import (
 	"strings"
 
 	"github.com/cherryservers/cherryctl/internal/utils"
-	"github.com/cherryservers/cherrygo/v3"
+	"github.com/cherryservers/cherrygo/v4"
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 )
@@ -40,6 +40,8 @@ func (c *Client) Create() *cobra.Command {
 
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cmd.SilenceUsage = true
+			ctx := cmd.Context()
+
 			tagsArr := make(map[string]string)
 
 			userDataRaw, err := utils.ReadOptionalFile(userDataPath)
@@ -81,7 +83,7 @@ func (c *Client) Create() *cobra.Command {
 				IPXE:            base64.StdEncoding.EncodeToString(ipxeRaw),
 			}
 
-			s, _, err := c.Service.Create(request)
+			s, _, err := c.Service.Create(ctx, request)
 			if err != nil {
 				return errors.Wrap(err, "Could not provision a server")
 			}

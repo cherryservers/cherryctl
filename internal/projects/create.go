@@ -4,7 +4,7 @@ import (
 	"strconv"
 
 	"github.com/cherryservers/cherryctl/internal/utils"
-	"github.com/cherryservers/cherrygo/v3"
+	"github.com/cherryservers/cherrygo/v4"
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 )
@@ -24,19 +24,21 @@ func (c *Client) Create() *cobra.Command {
 
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cmd.SilenceUsage = true
+			ctx := cmd.Context()
+
 			request := &cherrygo.CreateProject{
 				Name: name,
-				Bgp:  bgp,
+				BGP:  bgp,
 			}
 
-			o, _, err := c.Service.Create(teamID, request)
+			o, _, err := c.Service.Create(ctx, teamID, request)
 			if err != nil {
 				return errors.Wrap(err, "Could not create project")
 			}
 
 			header := []string{"ID", "Name", "BGP enabled", "BGP ASN"}
 			data := make([][]string, 1)
-			data[0] = []string{strconv.Itoa(o.ID), o.Name, utils.BoolToYesNo(o.Bgp.Enabled), strconv.Itoa(o.Bgp.LocalASN)}
+			data[0] = []string{strconv.Itoa(o.ID), o.Name, utils.BoolToYesNo(o.BGP.Enabled), strconv.Itoa(o.BGP.LocalASN)}
 
 			return c.Out.Output(o, header, &data)
 		},

@@ -5,7 +5,7 @@ import (
 	"strings"
 
 	"github.com/cherryservers/cherryctl/internal/utils"
-	"github.com/cherryservers/cherrygo/v3"
+	"github.com/cherryservers/cherrygo/v4"
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 )
@@ -27,6 +27,8 @@ func (c *Client) Update() *cobra.Command {
 
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cmd.SilenceUsage = true
+			ctx := cmd.Context()
+
 			if utils.IsValidUUID(args[0]) {
 				ipID = args[0]
 			} else {
@@ -47,7 +49,7 @@ func (c *Client) Update() *cobra.Command {
 			}
 
 			request := &cherrygo.UpdateIPAddress{
-				PtrRecord: ptrRecord,
+				PTRRecord: ptrRecord,
 				ARecord:   aRecord,
 			}
 
@@ -55,14 +57,14 @@ func (c *Client) Update() *cobra.Command {
 				request.Tags = &tagsArr
 			}
 
-			i, _, err := c.Service.Update(ipID, request)
+			i, _, err := c.Service.Update(ctx, ipID, request)
 			if err != nil {
 				return errors.Wrap(err, "Could not update IP address")
 			}
 
 			header := []string{"ID", "Address", "Cidr", "Type", "Region", "PTR record", "A record", "Tags"}
 			data := make([][]string, 1)
-			data[0] = []string{i.ID, i.Address, i.Cidr, i.Type, i.Region.Name, i.PtrRecord, i.ARecord, utils.FormatStringTags(i.Tags)}
+			data[0] = []string{i.ID, i.Address, i.CIDR, i.Type, i.Region.Name, i.PTRRecord, i.ARecord, utils.FormatStringTags(i.Tags)}
 
 			return c.Out.Output(i, header, &data)
 		},

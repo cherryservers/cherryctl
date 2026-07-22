@@ -20,18 +20,20 @@ func (c *Client) List() *cobra.Command {
 
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cmd.SilenceUsage = true
+			ctx := cmd.Context()
+
 			if teamID == 0 {
 				return fmt.Errorf("team-id should be set %v\t", teamID)
 			}
 
-			projects, _, err := c.Service.List(teamID, c.Servicer.GetOptions())
+			projects, _, err := c.Service.List(ctx, teamID, c.Servicer.GetOptions())
 			if err != nil {
 				return errors.Wrap(err, "Could not get projects list")
 			}
 
 			data := make([][]string, len(projects))
 			for i, o := range projects {
-				data[i] = []string{strconv.Itoa(o.ID), o.Name, utils.BoolToYesNo(o.Bgp.Enabled), strconv.Itoa(o.Bgp.LocalASN)}
+				data[i] = []string{strconv.Itoa(o.ID), o.Name, utils.BoolToYesNo(o.BGP.Enabled), strconv.Itoa(o.BGP.LocalASN)}
 			}
 			header := []string{"ID", "Name", "BGP enabled", "BGP ASN"}
 

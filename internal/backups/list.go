@@ -19,7 +19,9 @@ func (c *Client) List() *cobra.Command {
 
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cmd.SilenceUsage = true
-			storages, _, err := c.Service.ListBackups(projectID, c.Servicer.GetOptions())
+			ctx := cmd.Context()
+
+			storages, _, err := c.Service.ListBackups(ctx, projectID, c.Servicer.GetOptions())
 			if err != nil {
 				return errors.Wrap(err, "Could not get backup storage list")
 			}

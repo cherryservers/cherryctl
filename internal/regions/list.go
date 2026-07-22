@@ -18,7 +18,9 @@ func (c *Client) List() *cobra.Command {
 
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cmd.SilenceUsage = true
-			list, _, err := c.Service.List(c.Servicer.GetOptions())
+			ctx := cmd.Context()
+
+			list, _, err := c.Service.List(ctx, c.Servicer.GetOptions())
 			if err != nil {
 				return errors.Wrap(err, "Could not get regions list")
 			}
@@ -27,7 +29,7 @@ func (c *Client) List() *cobra.Command {
 			header := []string{"ID", "Slug", "Name", "BGP hosts", "BGP asn"}
 
 			for i, o := range list {
-				data[i] = []string{strconv.Itoa(o.ID), o.Slug, o.Name, strings.Join(o.BGP.Hosts, ", "), strconv.Itoa(o.BGP.Asn)}
+				data[i] = []string{strconv.Itoa(o.ID), o.Slug, o.Name, strings.Join(o.BGP.Hosts, ", "), strconv.Itoa(o.BGP.ASN)}
 			}
 
 			return c.Out.Output(list, header, &data)

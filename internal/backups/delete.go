@@ -27,6 +27,8 @@ func (c *Client) Delete() *cobra.Command {
 
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cmd.SilenceUsage = true
+			ctx := cmd.Context()
+
 			if storID, err := strconv.Atoi(args[0]); err == nil {
 				storageID = storID
 			}
@@ -42,7 +44,7 @@ func (c *Client) Delete() *cobra.Command {
 				}
 			}
 
-			_, err := c.Service.Delete(storageID)
+			_, err := c.Service.Delete(ctx, storageID)
 			if err != nil {
 				return errors.Wrap(err, "Could not delete a backup storage")
 			}

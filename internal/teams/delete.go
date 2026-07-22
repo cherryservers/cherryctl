@@ -26,6 +26,8 @@ func (c *Client) Delete() *cobra.Command {
 
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cmd.SilenceUsage = true
+			ctx := cmd.Context()
+
 			if len(args) > 0 {
 				tID, err := strconv.Atoi(args[0])
 				if err == nil {
@@ -43,7 +45,7 @@ func (c *Client) Delete() *cobra.Command {
 					return nil
 				}
 			}
-			_, err := c.Service.Delete(teamID)
+			_, err := c.Service.Delete(ctx, teamID)
 			if err != nil {
 				return errors.Wrap(err, "Could not delete a Team")
 			}

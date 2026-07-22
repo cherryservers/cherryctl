@@ -19,6 +19,8 @@ func (c *Client) Get() *cobra.Command {
 
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cmd.SilenceUsage = true
+			ctx := cmd.Context()
+
 			if len(args) > 0 {
 				tID, err := strconv.Atoi(args[0])
 				if err == nil {
@@ -30,7 +32,7 @@ func (c *Client) Get() *cobra.Command {
 				return fmt.Errorf("team-id should be set %v\t", teamID)
 			}
 
-			o, _, err := c.Service.Get(teamID, c.Servicer.GetOptions())
+			o, _, err := c.Service.Get(ctx, teamID, c.Servicer.GetOptions())
 			if err != nil {
 				return errors.Wrap(err, "Could not get team")
 			}

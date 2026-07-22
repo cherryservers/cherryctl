@@ -5,7 +5,7 @@ import (
 	"strings"
 
 	"github.com/cherryservers/cherryctl/internal/utils"
-	"github.com/cherryservers/cherrygo/v3"
+	"github.com/cherryservers/cherrygo/v4"
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 )
@@ -29,26 +29,29 @@ func (c *Client) UpdateMethod() *cobra.Command {
 
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cmd.SilenceUsage = true
+			ctx := cmd.Context()
+
 			if backID, err := strconv.Atoi(args[0]); err == nil {
 				backupID = backID
 			}
 
-			request := &cherrygo.UpdateBackupMethod{
-				BackupStorageID:  backupID,
-				BackupMethodName: serviceName,
-			}
+			request := &cherrygo.UpdateBackupMethod{}
 
 			if len(ipWhitelist) == 0 || (len(ipWhitelist) > 0 && ipWhitelist[0] != "0") {
-				request.Whitelist = ipWhitelist
+				request.Whitelist = &ipWhitelist
 			}
 
+			var enabled *bool
 			if enable {
-				request.Enabled = true
+				enabled = new(bool)
+				*enabled = true
 			} else if disable {
-				request.Enabled = false
+				enabled = new(bool)
 			}
 
-			services, _, err := c.Service.UpdateBackupMethod(request)
+			request.Enabled = enabled
+
+			services, _, err := c.Service.UpdateBackupMethod(ctx, backupID, serviceName, request)
 			if err != nil {
 				return errors.Wrap(err, "Could not update backup storage access method")
 			}
@@ -69,6 +72,7 @@ func (c *Client) UpdateMethod() *cobra.Command {
 	backupUpdateCmd.Flags().BoolVarP(&disable, "disable", "d", false, "Disable method.")
 
 	backupUpdateCmd.MarkFlagRequired("method-name")
+	backupUpdateCmd.MarkFlagsMutuallyExclusive("enable", "disable")
 
 	return backupUpdateCmd
 }

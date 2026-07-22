@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/cherryservers/cherrygo/v3"
+	"github.com/cherryservers/cherrygo/v4"
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 )
@@ -23,6 +23,8 @@ func (c *Command) list() *cobra.Command {
 
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cmd.SilenceUsage = true
+			ctx := cmd.Context()
+
 			options := c.GetOpts()
 			if options == nil {
 				options = &cherrygo.GetOptions{}
@@ -36,7 +38,7 @@ func (c *Command) list() *cobra.Command {
 				options.QueryParams = map[string]string{"region": region}
 			}
 
-			plans, _, err := c.Client().List(teamID, options)
+			plans, _, err := c.Client().List(ctx, teamID, options)
 			if err != nil {
 				return errors.Wrap(err, "Could not list plans")
 			}

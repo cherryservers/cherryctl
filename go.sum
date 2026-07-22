@@ -1,5 +1,5 @@
-github.com/cherryservers/cherrygo/v3 v3.9.1 h1:2CjRjijh+k4Qf5L2CWTfArniT441K/mjeFKbymbOU7g=
-github.com/cherryservers/cherrygo/v3 v3.9.1/go.mod h1:g7NZMevwRv0oqKMWz2xkBZKPy/Lx5emKiF2fjIIXBGk=
+github.com/cherryservers/cherrygo/v4 v4.0.0 h1:EGQcXESCPz/h/UP8PmlmUhz+2CO4sXqZatJ4IqsDWmA=
+github.com/cherryservers/cherrygo/v4 v4.0.0/go.mod h1:ZJk3JYeFSqSPQ7HIkJa2rOdq0L2mI2Oy3iZwTbWnJgg=
 github.com/chzyer/logex v1.1.10/go.mod h1:+Ywpsq7O8HXn0nuIou7OrIPyXbp3wmkHB+jjWRnGsAI=
 github.com/chzyer/logex v1.2.1 h1:XHDu3E6q+gdHgsdTPH6ImJMIp436vR6MPtH8gP05QzM=
 github.com/chzyer/logex v1.2.1/go.mod h1:JLbx6lG2kDbNRFnfkgvh4eRJRPX1QCoOIWomwysCBrQ=

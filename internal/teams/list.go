@@ -19,7 +19,9 @@ func (c *Client) List() *cobra.Command {
 
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cmd.SilenceUsage = true
-			teams, _, err := c.Service.List(c.Servicer.GetOptions())
+			ctx := cmd.Context()
+
+			teams, _, err := c.Service.List(ctx, c.Servicer.GetOptions())
 			if err != nil {
 				return errors.Wrap(err, "Could not get teams list")
 			}
