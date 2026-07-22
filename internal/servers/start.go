@@ -22,7 +22,7 @@ func (c *Client) Start() *cobra.Command {
 			ctx := cmd.Context()
 
 			if serverID, err := strconv.Atoi(args[0]); err == nil {
-				_, _, err := c.Service.PowerOn(ctx, serverID)
+				_, _, err := c.Client().PowerOn(ctx, serverID)
 				if err != nil {
 					return errors.Wrap(err, "Could not start a Server")
 				}

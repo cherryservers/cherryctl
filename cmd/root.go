@@ -50,9 +50,22 @@ func NewCli() *Cli {
 	return cli
 }
 
+type sharedDeps struct {
+	out    outputs.Outputer
+	client *root.Client
+}
+
+func (d sharedDeps) GetOpts() *cherrygo.GetOptions {
+	return d.client.GetOptions()
+}
+
+func (d sharedDeps) Outputer() outputs.Outputer {
+	return d.out
+}
+
 type planDeps struct {
 	client *root.Client
-	out    outputs.Outputer
+	sharedDeps
 }
 
 func (d *planDeps) Client() cherrygo.PlansService {
@@ -61,27 +74,32 @@ func (d *planDeps) Client() cherrygo.PlansService {
 	return d.client.API(nil).Plans
 }
 
-func (d *planDeps) GetOpts() *cherrygo.GetOptions {
-	return d.client.GetOptions()
+type serverDeps struct {
+	client *root.Client
+	sharedDeps
 }
 
-func (d *planDeps) Outputer() outputs.Outputer {
-	return d.out
+func (d *serverDeps) Client() cherrygo.ServersService {
+	return d.client.API(nil).Servers
 }
 
 func (cli *Cli) RegisterCommands(client *root.Client) {
+	shared := sharedDeps{
+		out:    cli.Outputer,
+		client: client,
+	}
 	cli.MainCmd.AddCommand(
 		docs.NewCommand(),
 
 		initPck.NewClient(client).NewCommand(),
-		servers.NewClient(client, cli.Outputer).NewCommand(),
+		servers.NewClient(&serverDeps{client: client, sharedDeps: shared}).NewCommand(),
 		ips.NewClient(client, cli.Outputer).NewCommand(),
 		storages.NewClient(client, cli.Outputer).NewCommand(),
 		backups.NewClient(client, cli.Outputer).NewCommand(),
 		regions.NewClient(client, cli.Outputer).NewCommand(),
 		// We don't have the dependencies initialized yet, as that's done
 		// on pre-execution, so we need an injector interface.
-		plans.NewCommand(&planDeps{client: client, out: cli.Outputer}).CobraCommand(),
+		plans.NewCommand(&planDeps{client: client, sharedDeps: shared}).CobraCommand(),
 		projects.NewClient(client, cli.Outputer).NewCommand(),
 		teams.NewClient(client, cli.Outputer).NewCommand(),
 		sshkeys.NewClient(client, cli.Outputer).NewCommand(),

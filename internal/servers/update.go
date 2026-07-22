@@ -61,7 +61,7 @@ func (c *Client) Update() *cobra.Command {
 				request.BGP = &bgp
 			}
 
-			s, _, err := c.Service.Update(ctx, serverID, request)
+			s, _, err := c.Client().Update(ctx, serverID, request)
 			if err != nil {
 				return errors.Wrap(err, "Could not update server")
 			}
@@ -70,7 +70,7 @@ func (c *Client) Update() *cobra.Command {
 			data := make([][]string, 1)
 			data[0] = []string{strconv.Itoa(s.ID), s.Name, s.Hostname, s.Image, s.State, s.Region.Name, utils.FormatStringTags(&s.Tags)}
 
-			return c.Out.Output(s, header, &data)
+			return c.Outputer().Output(s, header, &data)
 		},
 	}
 

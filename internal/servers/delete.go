@@ -41,7 +41,7 @@ func (c *Client) Delete() *cobra.Command {
 			}
 
 			if serverID, err := strconv.Atoi(args[0]); err == nil {
-				_, err := c.Service.Delete(ctx, serverID)
+				_, err := c.Client().Delete(ctx, serverID)
 				if err != nil {
 					return errors.Wrap(err, "Could not delete Server")
 				}

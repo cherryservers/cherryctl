@@ -16,11 +16,11 @@ func (c *Client) ListCycles() *cobra.Command {
 		cherryctl server list-cycles`,
 
 		RunE: func(cmd *cobra.Command, args []string) error {
-			options := c.Servicer.GetOptions()
+			options := c.GetOpts()
 			ctx := cmd.Context()
 
 			cmd.SilenceUsage = true
-			cycles, _, err := c.Service.ListCycles(ctx, options)
+			cycles, _, err := c.Client().ListCycles(ctx, options)
 			if err != nil {
 				return errors.Wrap(err, "Could not list server billing cycles.")
 			}
@@ -31,7 +31,7 @@ func (c *Client) ListCycles() *cobra.Command {
 			}
 			header := []string{"ID", "Name", "Slug"}
 
-			return c.Out.Output(cycles, header, &data)
+			return c.Outputer().Output(cycles, header, &data)
 		},
 	}
 

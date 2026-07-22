@@ -55,7 +55,7 @@ func (c *Client) Reinstall() *cobra.Command {
 			}
 
 			if serverID, err := strconv.Atoi(args[0]); err == nil {
-				_, _, err := c.Service.Reinstall(ctx, serverID, request)
+				_, _, err := c.Client().Reinstall(ctx, serverID, request)
 				if err != nil {
 					return errors.Wrap(err, "Could not reinstall a Server.")
 				}
