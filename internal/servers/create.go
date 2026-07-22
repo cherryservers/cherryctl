@@ -29,10 +29,11 @@ func (c *Client) Create() *cobra.Command {
 		cycle           string
 		discount        string
 		ipxePath        string
+		enableIPv6      bool
 	)
 
 	createServerCmd := &cobra.Command{
-		Use:   `create -p <project_id> --plan <plan_slug> --region <region_slug> [--hostname <hostname>] [--image <image_slug>] [--ssh-keys <ssh_key_ids>] [--ip-addresses <ip_addresses_ids>] [--os-partition-size <size>] [--userdata-file <filepath>] [--tags] [--spot-instance] [--storage-id <storage_id>] [--cycle <cycle-slug>] [--discount <discount_code>] [--ipxe-file <filepath>]`,
+		Use:   `create -p <project_id> --plan <plan_slug> --region <region_slug> [--hostname <hostname>] [--image <image_slug>] [--ssh-keys <ssh_key_ids>] [--ip-addresses <ip_addresses_ids>] [--os-partition-size <size>] [--userdata-file <filepath>] [--tags] [--spot-instance] [--storage-id <storage_id>] [--cycle <cycle-slug>] [--discount <discount_code>] [--ipxe-file <filepath>] [--enable-ipv6]`,
 		Short: "Create a server.",
 		Long:  "Create a server in specified project.",
 		Example: `  # Provisions a E5-1620v4 server in the LT-Siauliai location running on Ubuntu 24.04:
@@ -81,6 +82,7 @@ func (c *Client) Create() *cobra.Command {
 				Cycle:           cycle,
 				DiscountCode:    discount,
 				IPXE:            base64.StdEncoding.EncodeToString(ipxeRaw),
+				ConfigureIPv6:   &enableIPv6,
 			}
 
 			s, _, err := c.Service.Create(ctx, request)
@@ -111,6 +113,7 @@ func (c *Client) Create() *cobra.Command {
 	createServerCmd.Flags().StringVarP(&cycle, "cycle", "", "", "Server billing cycle slug. Default is 'hourly'.")
 	createServerCmd.Flags().StringVarP(&discount, "discount", "", "", "Server discount code.")
 	createServerCmd.Flags().StringVar(&ipxePath, "ipxe-file", "", "Path to a file containing an iPXE template.")
+	createServerCmd.Flags().BoolVar(&enableIPv6, "enable-ipv6", false, "Enable IPv6 when supported; otherwise, continue without IPv6. See https://www.cherryservers.com/knowledge/docs/networking/ip-addressing/ipv6.")
 
 	_ = createServerCmd.MarkFlagRequired("project-id")
 	_ = createServerCmd.MarkFlagRequired("plan")

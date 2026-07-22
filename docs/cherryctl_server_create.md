@@ -7,7 +7,7 @@ Create a server.
 Create a server in specified project.
 
 ```
-cherryctl server create -p <project_id> --plan <plan_slug> --region <region_slug> [--hostname <hostname>] [--image <image_slug>] [--ssh-keys <ssh_key_ids>] [--ip-addresses <ip_addresses_ids>] [--os-partition-size <size>] [--userdata-file <filepath>] [--tags] [--spot-instance] [--storage-id <storage_id>] [--cycle <cycle-slug>] [--discount <discount_code>] [--ipxe-file <filepath>] [flags]
+cherryctl server create -p <project_id> --plan <plan_slug> --region <region_slug> [--hostname <hostname>] [--image <image_slug>] [--ssh-keys <ssh_key_ids>] [--ip-addresses <ip_addresses_ids>] [--os-partition-size <size>] [--userdata-file <filepath>] [--tags] [--spot-instance] [--storage-id <storage_id>] [--cycle <cycle-slug>] [--discount <discount_code>] [--ipxe-file <filepath>] [--enable-ipv6] [flags]
 ```
 
 ### Examples
@@ -22,6 +22,7 @@ cherryctl server create -p <project_id> --plan <plan_slug> --region <region_slug
 ```
       --cycle string            Server billing cycle slug. Default is 'hourly'.
       --discount string         Server discount code.
+      --enable-ipv6             Enable IPv6 when supported; otherwise, continue without IPv6. See https://www.cherryservers.com/knowledge/docs/networking/ip-addressing/ipv6.
   -h, --help                    help for create
       --hostname string         Server hostname.
       --image string            Operating system slug for the server.
