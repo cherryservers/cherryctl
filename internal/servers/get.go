@@ -36,7 +36,7 @@ func (c *Client) Get() *cobra.Command {
 				}
 				srvID, err := utils.ServerHostnameToID(ctx, args[0], projectID, c.Service)
 				if err != nil {
-					return errors.Wrap(err, "Server with hostname %s was not found")
+					return err
 				}
 				serverID = srvID
 			}
