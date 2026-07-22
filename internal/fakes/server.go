@@ -2,11 +2,15 @@ package fakes
 
 import (
 	"context"
+
 	"github.com/cherryservers/cherrygo/v4"
 )
 
+type ServerCreationFunc func(context.Context, *cherrygo.CreateServer) (cherrygo.Server, *cherrygo.Response, error)
+
 type ServerService struct {
-	Calls []CallRecord
+	Calls  []CallRecord
+	create ServerCreationFunc
 }
 
 // AllowBMCAccess implements [cherrygo.ServersService].
@@ -14,10 +18,14 @@ func (s *ServerService) AllowBMCAccess(ctx context.Context, serverID int, ip4 st
 	panic("unimplemented")
 }
 
+func (s *ServerService) SetCreate(f ServerCreationFunc) {
+	s.create = f
+}
+
 // Create implements [cherrygo.ServersService].
 func (s *ServerService) Create(ctx context.Context, request *cherrygo.CreateServer) (cherrygo.Server, *cherrygo.Response, error) {
 	s.Calls = append(s.Calls, CallRecord{method: "Create", params: []any{request}})
-	return cherrygo.Server{ID: 1}, nil, nil
+	return s.create(ctx, request)
 }
 
 // Delete implements [cherrygo.ServersService].
