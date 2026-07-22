@@ -26,14 +26,14 @@ func (c *Client) List() *cobra.Command {
 				return fmt.Errorf("project-id should be set %v\t", projectID)
 			}
 
-			options := c.Servicer.GetOptions()
+			options := c.GetOpts()
 
 			if search != "" {
 				options.QueryParams = map[string]string{"search": search}
 			}
 
 			cmd.SilenceUsage = true
-			servers, _, err := c.Service.List(ctx, projectID, options)
+			servers, _, err := c.Client().List(ctx, projectID, options)
 			if err != nil {
 				return errors.Wrap(err, "Could not list servers")
 			}
@@ -44,7 +44,7 @@ func (c *Client) List() *cobra.Command {
 			}
 			header := []string{"ID", "Name", "Hostname", "Image", "State", "Public IP", "Private IP", "Region", "Tags", "Spot"}
 
-			return c.Out.Output(servers, header, &data)
+			return c.Outputer().Output(servers, header, &data)
 		},
 	}
 

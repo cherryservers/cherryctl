@@ -4,13 +4,10 @@ import (
 	"github.com/cherryservers/cherryctl/internal/outputs"
 	"github.com/cherryservers/cherrygo/v4"
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 )
 
 type Client struct {
-	Servicer Servicer
-	Service  cherrygo.ServersService
-	Out      outputs.Outputer
+	Deps
 }
 
 func (c *Client) NewCommand() *cobra.Command {
@@ -19,16 +16,6 @@ func (c *Client) NewCommand() *cobra.Command {
 		Aliases: []string{"servers", "device", "devices"},
 		Short:   "Server operations. For more information on server types, check the Product Docs: https://docs.cherryservers.com/knowledge/product-docs#compute",
 		Long:    "Server operations: create, get, list, delete, start, stop, reboot, reinstall, reset-bmc-password and list-cycles.",
-
-		PersistentPreRun: func(cmd *cobra.Command, args []string) {
-			if root := cmd.Root(); root != nil {
-				if root.PersistentPreRun != nil {
-					root.PersistentPreRun(cmd, args)
-				}
-			}
-
-			c.Service = c.Servicer.API(cmd).Servers
-		},
 	}
 
 	cmd.AddCommand(
@@ -51,16 +38,15 @@ func (c *Client) NewCommand() *cobra.Command {
 	return cmd
 }
 
-type Servicer interface {
-	API(*cobra.Command) *cherrygo.Client
-	GetOptions() *cherrygo.GetOptions
-	Config(cmd *cobra.Command) *viper.Viper
+type Deps interface {
+	Client() cherrygo.ServersService
+	GetOpts() *cherrygo.GetOptions
+	Outputer() outputs.Outputer
 }
 
-func NewClient(s Servicer, out outputs.Outputer) *Client {
+func NewClient(dep Deps) *Client {
 	return &Client{
-		Servicer: s,
-		Out:      out,
+		Deps: dep,
 	}
 }
 

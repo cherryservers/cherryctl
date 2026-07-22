@@ -22,7 +22,7 @@ func (c *Client) ExitRescue() *cobra.Command {
 			ctx := cmd.Context()
 
 			if serverID, err := strconv.Atoi(args[0]); err == nil {
-				_, _, err := c.Service.ExitRescueMode(ctx, serverID)
+				_, _, err := c.Client().ExitRescueMode(ctx, serverID)
 				if err != nil {
 					return errors.Wrap(err, "Could not put server out of rescue mode.")
 				}

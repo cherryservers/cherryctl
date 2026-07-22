@@ -29,7 +29,7 @@ func (c *Client) EnterRescue() *cobra.Command {
 			}
 
 			if serverID, err := strconv.Atoi(args[0]); err == nil {
-				_, _, err := c.Service.EnterRescueMode(ctx, serverID, request)
+				_, _, err := c.Client().EnterRescueMode(ctx, serverID, request)
 				if err != nil {
 					return errors.Wrap(err, "Couldn't put server in rescue mode.")
 				}

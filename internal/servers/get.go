@@ -34,14 +34,14 @@ func (c *Client) Get() *cobra.Command {
 				if projectID == 0 {
 					return errors.Wrap(err, "server get by hostname requires project-id argument.")
 				}
-				srvID, err := utils.ServerHostnameToID(ctx, args[0], projectID, c.Service)
+				srvID, err := utils.ServerHostnameToID(ctx, args[0], projectID, c.Client())
 				if err != nil {
 					return errors.Wrap(err, "Server with hostname %s was not found")
 				}
 				serverID = srvID
 			}
 
-			s, _, err := c.Service.Get(ctx, serverID, c.Servicer.GetOptions())
+			s, _, err := c.Client().Get(ctx, serverID, c.GetOpts())
 			if err != nil {
 				return errors.Wrap(err, "Could not get a Server")
 			}
@@ -49,7 +49,7 @@ func (c *Client) Get() *cobra.Command {
 			data := make([][]string, 1)
 			data[0] = []string{strconv.Itoa(s.ID), s.Plan.Name, s.Hostname, s.Image, s.State, getServerIPByType(s, "primary-ip"), getServerIPByType(s, "private-ip"), s.Region.Name, utils.FormatStringTags(&s.Tags), utils.BoolToYesNo(s.SpotInstance)}
 
-			return c.Out.Output(s, header, &data)
+			return c.Outputer().Output(s, header, &data)
 		},
 	}
 

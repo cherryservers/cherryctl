@@ -85,7 +85,7 @@ func (c *Client) Create() *cobra.Command {
 				ConfigureIPv6:   &enableIPv6,
 			}
 
-			s, _, err := c.Service.Create(ctx, request)
+			s, _, err := c.Client().Create(ctx, request)
 			if err != nil {
 				return errors.Wrap(err, "Could not provision a server")
 			}
@@ -94,7 +94,7 @@ func (c *Client) Create() *cobra.Command {
 			data := make([][]string, 1)
 			data[0] = []string{strconv.Itoa(s.ID), s.Name, s.Hostname, s.Image, s.State, s.Region.Name}
 
-			return c.Out.Output(s, header, &data)
+			return c.Outputer().Output(s, header, &data)
 		},
 	}
 

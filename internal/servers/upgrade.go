@@ -29,7 +29,7 @@ func (c *Client) Upgrade() *cobra.Command {
 				return fmt.Errorf("failed to parse %q into server ID: %w", args[0], err)
 			}
 
-			_, _, err = c.Service.Upgrade(ctx, serverID, plan)
+			_, _, err = c.Client().Upgrade(ctx, serverID, plan)
 			if err != nil {
 				return fmt.Errorf("failed to upgrade server %d: %w", serverID, err)
 			}
