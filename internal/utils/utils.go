@@ -9,7 +9,6 @@ import (
 
 	"github.com/cherryservers/cherrygo/v4"
 	"github.com/google/uuid"
-	"github.com/pkg/errors"
 )
 
 func BoolToYesNo(b bool) string {
@@ -26,13 +25,16 @@ func ServerHostnameToID(ctx context.Context, hostname string, projectID int, Ser
 	}
 
 	serversList, err := serverList(ctx, projectID, ServerService)
+	if err != nil {
+		return 0, err
+	}
 	for _, s := range serversList {
 		if strings.EqualFold(hostname, s.Hostname) {
 			return s.ID, err
 		}
 	}
 
-	return 0, errors.Wrap(err, fmt.Sprintf("Could not find server with `%s` hostname", hostname))
+	return 0, fmt.Errorf("Could not find server with `%s` hostname", hostname)
 }
 
 func serverList(ctx context.Context, projectID int, ServerService cherrygo.ServersService) ([]cherrygo.Server, error) {
