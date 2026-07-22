@@ -48,7 +48,7 @@ func (c *Client) Delete() *cobra.Command {
 				return nil
 			}
 
-			fmt.Printf("Server with ID %s was not found", args[0])
+			fmt.Printf("Server with ID %s was not found.\n", args[0])
 			return nil
 		},
 	}
