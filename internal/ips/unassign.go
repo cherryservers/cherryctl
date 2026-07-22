@@ -28,7 +28,7 @@ func (c *Client) Unassign() *cobra.Command {
 			if utils.IsValidUUID(args[0]) {
 				ipID = args[0]
 			} else {
-				fmt.Println("IP address with ID %s was not found.", args[0])
+				fmt.Printf("IP address with ID %s was not found.\n", args[0])
 				return nil
 			}
 
