@@ -2,12 +2,13 @@ package servers
 
 import (
 	"fmt"
+	"strconv"
+
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
-	"strconv"
 )
 
-func (c *Client) ResetBMC() *cobra.Command {
+func (c *Command) ResetBMC() *cobra.Command {
 	resetServerBMCCmd := &cobra.Command{
 		Use:   `reset-bmc-password ID`,
 		Args:  cobra.ExactArgs(1),

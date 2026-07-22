@@ -92,7 +92,7 @@ func (cli *Cli) RegisterCommands(client *root.Client) {
 		docs.NewCommand(),
 
 		initPck.NewClient(client).NewCommand(),
-		servers.NewClient(&serverDeps{client: client, sharedDeps: shared}).NewCommand(),
+		servers.NewCommand(&serverDeps{client: client, sharedDeps: shared}).CobraCommand(),
 		ips.NewClient(client, cli.Outputer).NewCommand(),
 		storages.NewClient(client, cli.Outputer).NewCommand(),
 		backups.NewClient(client, cli.Outputer).NewCommand(),

@@ -2,14 +2,15 @@ package servers
 
 import (
 	"fmt"
-	"github.com/cherryservers/cherrygo/v4"
 	"strconv"
+
+	"github.com/cherryservers/cherrygo/v4"
 
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 )
 
-func (c *Client) EnterRescue() *cobra.Command {
+func (c *Command) EnterRescue() *cobra.Command {
 	var password string
 
 	enterRescueServerCmd := &cobra.Command{

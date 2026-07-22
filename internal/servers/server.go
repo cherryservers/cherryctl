@@ -6,11 +6,11 @@ import (
 	"github.com/spf13/cobra"
 )
 
-type Client struct {
+type Command struct {
 	Deps
 }
 
-func (c *Client) NewCommand() *cobra.Command {
+func (c *Command) CobraCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     `server`,
 		Aliases: []string{"servers", "device", "devices"},
@@ -44,8 +44,8 @@ type Deps interface {
 	Outputer() outputs.Outputer
 }
 
-func NewClient(dep Deps) *Client {
-	return &Client{
+func NewCommand(dep Deps) *Command {
+	return &Command{
 		Deps: dep,
 	}
 }

@@ -7,7 +7,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func (c *Client) ListCycles() *cobra.Command {
+func (c *Command) ListCycles() *cobra.Command {
 	serverListCmd := &cobra.Command{
 		Use:   `list-cycles`,
 		Short: "Retrieves server billing cycle list.",

@@ -8,7 +8,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func (c *Client) Start() *cobra.Command {
+func (c *Command) Start() *cobra.Command {
 	startServerCmd := &cobra.Command{
 		Use:   `start ID`,
 		Args:  cobra.ExactArgs(1),

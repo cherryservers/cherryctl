@@ -8,7 +8,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func (c *Client) Stop() *cobra.Command {
+func (c *Command) Stop() *cobra.Command {
 	stopServerCmd := &cobra.Command{
 		Use:   `stop ID`,
 		Args:  cobra.ExactArgs(1),
