@@ -19,6 +19,7 @@ import (
 	"github.com/cherryservers/cherryctl/internal/storages"
 	"github.com/cherryservers/cherryctl/internal/teams"
 	"github.com/cherryservers/cherryctl/internal/users"
+	"github.com/cherryservers/cherrygo/v3"
 	"github.com/spf13/cobra"
 )
 
@@ -49,6 +50,25 @@ func NewCli() *Cli {
 	return cli
 }
 
+type planDeps struct {
+	client *root.Client
+	out    outputs.Outputer
+}
+
+func (d *planDeps) Client() cherrygo.PlansService {
+	// The API method doesn't actually use the command for anything, so we can pass nil.
+	// Should refactor it out at some point.
+	return d.client.API(nil).Plans
+}
+
+func (d *planDeps) GetOpts() *cherrygo.GetOptions {
+	return d.client.GetOptions()
+}
+
+func (d *planDeps) Outputer() outputs.Outputer {
+	return d.out
+}
+
 func (cli *Cli) RegisterCommands(client *root.Client) {
 	cli.MainCmd.AddCommand(
 		docs.NewCommand(),
@@ -59,7 +79,9 @@ func (cli *Cli) RegisterCommands(client *root.Client) {
 		storages.NewClient(client, cli.Outputer).NewCommand(),
 		backups.NewClient(client, cli.Outputer).NewCommand(),
 		regions.NewClient(client, cli.Outputer).NewCommand(),
-		plans.NewClient(client, cli.Outputer).NewCommand(),
+		// We don't have the dependencies initialized yet, as that's done
+		// on pre-execution, so we need an injector interface.
+		plans.NewCommand(&planDeps{client: client, out: cli.Outputer}).CobraCommand(),
 		projects.NewClient(client, cli.Outputer).NewCommand(),
 		teams.NewClient(client, cli.Outputer).NewCommand(),
 		sshkeys.NewClient(client, cli.Outputer).NewCommand(),

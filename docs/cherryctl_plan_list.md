@@ -7,7 +7,7 @@ Retrieves a list of server plans.
 Retrieves a list of server plans with their corresponding hourly rates and stock volumes.
 
 ```
-cherryctl plan list -t <team_id> [--region-id <region_slug>] [--type <type>] [flags]
+cherryctl plan list -t <team_id> [--region <region_slug>] [--type <type>] [flags]
 ```
 
 ### Examples
@@ -23,7 +23,7 @@ cherryctl plan list -t <team_id> [--region-id <region_slug>] [--type <type>] [fl
   -h, --help            help for list
   -r, --region string   The Slug or ID of region.
   -t, --team-id int     The team's ID. Return plans prices based on team billing details.
-      --type strings    Comma separated list of available plan types (baremetal,virtual,vps)
+      --type strings    Comma separated list of available plan types.
 ```
 
 ### Options inherited from parent commands
