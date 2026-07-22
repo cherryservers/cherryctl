@@ -9,7 +9,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func (c *Client) List() *cobra.Command {
+func (c *Command) List() *cobra.Command {
 	var projectID int
 	var search string
 	serverListCmd := &cobra.Command{

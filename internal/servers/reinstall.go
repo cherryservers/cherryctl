@@ -11,7 +11,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func (c *Client) Reinstall() *cobra.Command {
+func (c *Command) Reinstall() *cobra.Command {
 	var (
 		hostname        string
 		image           string

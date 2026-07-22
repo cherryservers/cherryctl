@@ -12,7 +12,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func (c *Client) Create() *cobra.Command {
+func (c *Command) Create() *cobra.Command {
 	var (
 		projectID       int
 		hostname        string

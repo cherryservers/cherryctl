@@ -8,7 +8,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func (c *Client) Get() *cobra.Command {
+func (c *Command) Get() *cobra.Command {
 	var serverID int
 	var projectID int
 	serverGetCmd := &cobra.Command{

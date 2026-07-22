@@ -9,7 +9,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func (c *Client) Delete() *cobra.Command {
+func (c *Command) Delete() *cobra.Command {
 	var force bool
 	deleteServerCmd := &cobra.Command{
 		Use:   `delete ID [-f]`,

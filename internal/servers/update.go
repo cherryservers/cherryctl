@@ -11,7 +11,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func (c *Client) Update() *cobra.Command {
+func (c *Command) Update() *cobra.Command {
 	var (
 		serverID int
 		tags     []string

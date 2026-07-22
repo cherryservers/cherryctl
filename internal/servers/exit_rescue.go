@@ -8,7 +8,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func (c *Client) ExitRescue() *cobra.Command {
+func (c *Command) ExitRescue() *cobra.Command {
 	exitRescueServerCmd := &cobra.Command{
 		Use:   `exit-rescue ID`,
 		Args:  cobra.ExactArgs(1),

@@ -8,7 +8,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func (c *Client) Reboot() *cobra.Command {
+func (c *Command) Reboot() *cobra.Command {
 	rebootServerCmd := &cobra.Command{
 		Use:   `reboot ID`,
 		Args:  cobra.ExactArgs(1),

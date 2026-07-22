@@ -7,7 +7,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func (c *Client) Upgrade() *cobra.Command {
+func (c *Command) Upgrade() *cobra.Command {
 	var (
 		plan string
 	)
