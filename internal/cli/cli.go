@@ -22,6 +22,7 @@ const (
 	DefaultConfigDirName = "cherryctl"
 	OldDefaultContext    = "cherry"
 	OldConfigPathSuffix  = "/.config/cherry"
+	DefaultBaseURL       = "https://api.cherryservers.com/v1/"
 )
 
 type Client struct {
@@ -32,32 +33,28 @@ type Client struct {
 	configPath   string
 	context      string
 	outputFormat string
-	cherryToken  string
+	apiKey       string
 	apiURL       string
 	Version      string
 	rootCmd      *cobra.Command
 	viper        *viper.Viper
 }
 
-func (c *Client) SetToken(token string) {
-	c.cherryToken = token
+func (c *Client) SetAPIKey(apiKey string) {
+	c.apiKey = apiKey
 }
 
-func NewClient(cherryToken, apiURL, Version string) *Client {
-	return &Client{
-		cherryToken: cherryToken,
-		apiURL:      apiURL,
-		Version:     Version,
-	}
+func NewClient(version string) *Client {
+	return &Client{Version: version}
 }
 
 func (c *Client) API(cmd *cobra.Command) *cherrygo.Client {
-	if c.cherryToken == "" {
-		log.Fatal("Cherry Servers API authentication token not provided. Please set the 'CHERRY_AUTH_TOKEN' environment variable or create a configuration file using 'cherryctl init'.")
+	if c.apiKey == "" {
+		log.Fatal("Cherry Servers API key not provided. Please set the 'CHERRY_API_KEY' environment variable or create a configuration file using 'cherryctl init'.")
 	}
 
 	if c.apiClient == nil {
-		args := []cherrygo.ClientOpt{cherrygo.WithAuthToken(c.cherryToken), cherrygo.WithUserAgent("cherry-cli/" + c.Version)}
+		args := []cherrygo.ClientOpt{cherrygo.WithAuthToken(c.apiKey), cherrygo.WithUserAgent("cherry-cli/" + c.Version)}
 
 		if c.apiURL != "" {
 			args = append(args, cherrygo.WithURL(c.apiURL))
@@ -102,14 +99,24 @@ func (c *Client) NewCommand() *cobra.Command {
 			c.Config(cmd)
 		},
 	}
+	rootCmd.PersistentFlags().String("api-key", "", "API key. Can be created at https://portal.cherryservers.com/settings/api-keys.")
+
+	// Flags deprecated in favor of `api-key`, see https://github.com/cherryservers/cherryctl/issues/73.
 	rootCmd.PersistentFlags().String("token", "", "API Token (CHERRY_AUTH_TOKEN)")
 	rootCmd.PersistentFlags().String("auth-token", "", "API Token (Alias)")
-	authtoken := rootCmd.PersistentFlags().Lookup("auth-token")
-	authtoken.Hidden = true
+
+	// Would be nice to add a mutual exclusivity constraint as well,
+	// but that breaks existing setups such as:
+	//
+	// `token` is defined in a config file AND `CHERRY_AUTH_TOKEN` is set.
+	//
+	// This will result in an error, because viper merges config sources.
+	rootCmd.PersistentFlags().MarkDeprecated("token", "use '--api-key' instead.")
+	rootCmd.PersistentFlags().MarkDeprecated("auth-token", "use '--api-key' instead.")
 
 	rootCmd.PersistentFlags().StringVar(&c.configPath, "config", "", "Path to configuration file directory. The CHERRY_CONFIG environment variable can be used as well.")
 	rootCmd.PersistentFlags().StringVar(&c.context, "context", DefaultContext, "Specify a custom context name")
-	rootCmd.PersistentFlags().StringVar(&c.apiURL, "api-url", c.apiURL, "Override default API endpoint")
+	rootCmd.PersistentFlags().StringVar(&c.apiURL, "api-url", DefaultBaseURL, "Override default API endpoint")
 	rootCmd.PersistentFlags().StringVarP(&c.outputFormat, "output", "o", "", "Output format (*table, json, yaml)")
 	c.fields = rootCmd.PersistentFlags().StringSlice("fields", nil, "Comma separated object field names to output in result. Fields can be used for list and get actions.")
 
@@ -166,11 +173,17 @@ func (c *Client) Config(cmd *cobra.Command) *viper.Viper {
 			bindFlags(cmd, v)
 		}
 
+		// api-key is the canonical flag, with the other two being deprecated,
+		// so it should beat them.
 		flagToken := cmd.Flag("token").Value.String()
 		envToken := cmd.Flag("auth-token").Value.String()
-		c.cherryToken = flagToken
+		apiKey := cmd.Flag("api-key").Value.String()
+		c.apiKey = flagToken
 		if envToken != "" {
-			c.cherryToken = envToken
+			c.apiKey = envToken
+		}
+		if apiKey != "" {
+			c.apiKey = apiKey
 		}
 
 		return c.viper

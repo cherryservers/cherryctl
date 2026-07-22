@@ -11,19 +11,28 @@ cherryctl
 
 ## Table of Contents
 
-* [Introduction](#introduction)
-* [Requirements](#requirements)
-* [Supported Platforms](#supported-platforms)
-* [Installation](#installation)
-    * [Install via Homebrew](#use-homebrew-to-install-cherryctl)
-    * [Install binary from Source](#install-binary-from-source)
-    * [Install binary from Release Download](#install-binary-from-release-download)
-* [Shell Completion](#shell-completion)
-* [Authentication](#authentication)
-    * [Working With Multiple Contexts](#working-with-multiple-contexts)
-* [Configuring Default Values](#configuring-default-values)
-* [Documentation](#documentation)
-* [Examples](#examples)
+- [cherryctl](#cherryctl)
+  - [Table of Contents](#table-of-contents)
+  - [Introduction](#introduction)
+  - [Requirements](#requirements)
+  - [Supported Platforms](#supported-platforms)
+  - [Installation](#installation)
+    - [Install `cherryctl` Using Homebrew Package Manager](#install-cherryctl-using-homebrew-package-manager)
+    - [Install `cherryctl` from the AUR](#install-cherryctl-from-the-aur)
+    - [Install `cherryctl` from Source](#install-cherryctl-from-source)
+    - [Install a Specific `cherryctl` Release from Source](#install-a-specific-cherryctl-release-from-source)
+  - [Shell Auto-completion](#shell-auto-completion)
+  - [Authentication](#authentication)
+    - [Working With Multiple Contexts](#working-with-multiple-contexts)
+  - [Configuring Default Values](#configuring-default-values)
+  - [Documentation](#documentation)
+  - [Examples](#examples)
+    - [List Plans](#list-plans)
+    - [List Plan Images](#list-plan-images)
+    - [List Regions](#list-regions)
+    - [Deploy a New Server](#deploy-a-new-server)
+    - [List Your Servers](#list-your-servers)
+    - [Get Information About Existing Server](#get-information-about-existing-server)
 
 ## Introduction
 
@@ -32,7 +41,7 @@ with Cherry Servers platform from a command-line interface.
 
 ## Requirements
 
-* Cherry Servers authentication token.
+* Cherry Servers API key.
 * Cherry Servers CLI [binaries](https://github.com/cherryservers/cherryctl/releases).
 
 ## Supported Platforms
@@ -57,7 +66,7 @@ paru -S cherryctl
 
 ### Install `cherryctl` from Source
 
-If you have `go` 1.17 or later installed, you can build and install the latest development version with:
+If you have `go` 1.24.4 or later installed, you can build and install the latest development version with:
 
 ```sh
 go install github.com/cherryservers/cherryctl@latest
@@ -96,9 +105,9 @@ After installing Cherry Servers CLI, configure your account using `cherryctl ini
 
 ```sh
 $ cherryctl init
-Cherry Servers API Tokens can be obtained through the portal at https://portal.cherryservers.com/.
+Cherry Servers API Keys can be obtained through the portal at https://portal.cherryservers.com/settings/api-keys.
 
-Token (hidden): 
+API Key (hidden): 
 Team ID []: 12345
 Project ID []: 123456
 
@@ -108,19 +117,19 @@ Writing configuration to: /Users/username/.config/cherry/default.yaml
 This will create the `cherryctl` directory with a default context in your default OS user configuration directory. If
 you wish to store this context in a
 different location, you can pass a custom path with the `--config` option or by setting the `CHERRY_CONFIG` environment
-variable. You can also override the API token on a case-by-case basis by setting the `CHERRY_AUTH_TOKEN` environment
-variable, but a context is still required.
+variable. You can also override the API key on a case-by-case basis by setting the `CHERRY_API_KEY` environment
+variable, but a context file must still exist.
 
 ### Working With Multiple Contexts
 
 A context is a collection of settings specific to a certain user that is stored in a configuration file. It
-consists of at least an API token, a Team ID and a Project ID, but you may add many additional configuration options.
+consists of at least an API key, a Team ID and a Project ID, but you may add many additional configuration options.
 
 You may work with multiple contexts at the same time, since `cherryctl` allows you to switch between them by using
 the `--context` option. You can also switch between context directories, with the `--config` option.
 
 By default, the `--context` option has a value `default`. To create a new context, run
-`cherryctl init --context <new_context_name>`. You will be prompted for a Token, a Team ID and a Project ID which will
+`cherryctl init --context <new_context_name>`. You will be prompted for an API key, a Team ID and a Project ID which will
 be associated with the new context. You will be able to add any other options by editing the newly generated
 context file.
 

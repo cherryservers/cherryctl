@@ -1,6 +1,5 @@
 /*
 Copyright © 2022 Cherry Severs <support@cherryservers.com>
-
 */
 package main
 

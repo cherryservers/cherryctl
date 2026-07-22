@@ -1,0 +1,21 @@
+{
+  "id": 123456,
+  "first_name": "",
+  "last_name": "",
+  "email": "john.doe@cherryservers.com",
+  "email_verified": false,
+  "phone": "",
+  "security_phone_verified": false,
+  "state": "",
+  "city": "",
+  "country_iso_2": "LT",
+  "href": "/users/123456",
+  "security_phone": "",
+  "skype_username": "",
+  "linkedin_profile": "",
+  "address_1": "",
+  "address_2": "",
+  "date_of_birth": "",
+  "national_id_number": "",
+  "created": "2025-11-01T015:53:22+00:00"
+}
