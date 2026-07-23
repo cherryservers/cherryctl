@@ -64,7 +64,6 @@ func (d sharedDeps) Outputer() outputs.Outputer {
 }
 
 type planDeps struct {
-	client *root.Client
 	sharedDeps
 }
 
@@ -75,7 +74,6 @@ func (d *planDeps) Client() cherrygo.PlansService {
 }
 
 type serverDeps struct {
-	client *root.Client
 	sharedDeps
 }
 
@@ -92,14 +90,14 @@ func (cli *Cli) RegisterCommands(client *root.Client) {
 		docs.NewCommand(),
 
 		initPck.NewClient(client).NewCommand(),
-		servers.NewCommand(&serverDeps{client: client, sharedDeps: shared}).CobraCommand(),
+		servers.NewCommand(&serverDeps{sharedDeps: shared}).CobraCommand(),
 		ips.NewClient(client, cli.Outputer).NewCommand(),
 		storages.NewClient(client, cli.Outputer).NewCommand(),
 		backups.NewClient(client, cli.Outputer).NewCommand(),
 		regions.NewClient(client, cli.Outputer).NewCommand(),
 		// We don't have the dependencies initialized yet, as that's done
 		// on pre-execution, so we need an injector interface.
-		plans.NewCommand(&planDeps{client: client, sharedDeps: shared}).CobraCommand(),
+		plans.NewCommand(&planDeps{sharedDeps: shared}).CobraCommand(),
 		projects.NewClient(client, cli.Outputer).NewCommand(),
 		teams.NewClient(client, cli.Outputer).NewCommand(),
 		sshkeys.NewClient(client, cli.Outputer).NewCommand(),
