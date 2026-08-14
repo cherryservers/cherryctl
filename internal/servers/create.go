@@ -90,6 +90,10 @@ func (c *Command) Create() *cobra.Command {
 				return errors.Wrap(err, "Could not provision a server")
 			}
 
+			// The server.Image is field is deprecated, so it might be tempting to migrate to
+			// server.DeployedImage.Name. Unfortunately, as of this writing,
+			// that field isn't populated in the server creation response,
+			// so take that into account before any such changes.
 			header := []string{"ID", "Name", "Hostname", "Image", "State", "Region"}
 			data := make([][]string, 1)
 			data[0] = []string{strconv.Itoa(s.ID), s.Name, s.Hostname, s.Image, s.State, s.Region.Name}
