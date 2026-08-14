@@ -6,6 +6,7 @@ import (
 	"os"
 
 	"github.com/olekukonko/tablewriter"
+	"github.com/olekukonko/tablewriter/tw"
 	"gopkg.in/yaml.v2"
 )
 
@@ -51,12 +52,14 @@ func (o *Standard) Output(in interface{}, header []string, data *[][]string) err
 		return outputYAML(in)
 	} else {
 		table := tablewriter.NewWriter(os.Stdout)
-		table.SetAutoWrapText(false)
-		table.SetAlignment(tablewriter.ALIGN_LEFT)
-		table.SetHeader(header)
-		table.AppendBulk(*data)
-		table.Render()
-		return nil
+		table = table.Configure(func(cfg *tablewriter.Config) {
+			cfg.Row.Alignment.Global = tw.AlignLeft
+		})
+		table.Header(header)
+		if err := table.Bulk(*data); err != nil {
+			return err
+		}
+		return table.Render()
 	}
 }
 
