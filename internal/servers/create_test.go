@@ -122,6 +122,7 @@ func TestCreate(t *testing.T) {
 				ipxePath,
 				"--userdata-file",
 				userdataPath,
+				"--persist-ipxe",
 			},
 			wantReqBody: &cherrygo.CreateServer{
 				ProjectID:       1,
@@ -139,6 +140,7 @@ func TestCreate(t *testing.T) {
 				DiscountCode:    "test-discount",
 				ConfigureIPv6:   newTrue(),
 				IPXE:            "dGVzdC1pcHhl", // base64
+				PersistIPXE:     true,
 				UserData:        "dGVzdC11c2VyZGF0YQ==",
 			},
 		},
@@ -319,6 +321,22 @@ func TestCreateWithErrorsExpected(t *testing.T) {
 			},
 			createFn:        createOK,
 			wantMsg:         regexp.MustCompile(`^failed to read ipxe file: .+$`),
+			wantSvcCalls:    0,
+			wantOutputCalls: 0,
+		},
+		{
+			title: "persist-ipxe with no ipxe-file",
+			args: []string{
+				"--project-id",
+				"1",
+				"--region",
+				"test-region",
+				"--plan",
+				"test-plan",
+				"--persist-ipxe",
+			},
+			createFn:        createOK,
+			wantMsg:         regexp.MustCompile("^\"persist-ipxe\" requires \"ipxe-file\"$"),
 			wantSvcCalls:    0,
 			wantOutputCalls: 0,
 		},
