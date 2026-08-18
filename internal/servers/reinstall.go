@@ -63,8 +63,9 @@ func (c *Command) Reinstall() *cobra.Command {
 				return fmt.Errorf("failed to reinstall server %d: %w", serverID, err)
 			}
 
-			fmt.Println("Server", serverID, "reinstall has been started.")
-			return nil
+			_, err = fmt.Fprintln(cmd.OutOrStdout(),
+				"Server", serverID, "reinstall has been started.")
+			return err
 		},
 	}
 
