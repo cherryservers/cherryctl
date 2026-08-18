@@ -7,7 +7,6 @@ import (
 
 	"github.com/cherryservers/cherryctl/internal/utils"
 	"github.com/cherryservers/cherrygo/v4"
-	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 )
 
@@ -61,7 +60,7 @@ func (c *Command) Reinstall() *cobra.Command {
 
 			_, _, err = c.Client().Reinstall(ctx, serverID, request)
 			if err != nil {
-				return errors.Wrap(err, "Could not reinstall a Server.")
+				return fmt.Errorf("failed to reinstall server %d: %w", serverID, err)
 			}
 
 			fmt.Println("Server", serverID, "reinstall has been started.")
