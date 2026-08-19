@@ -49,7 +49,7 @@ func TestReinstall(t *testing.T) {
 			},
 		},
 		{
-			title: "all args",
+			title: "all args except ipxe",
 			args: []string{
 				"1",
 				"--image",
@@ -58,25 +58,64 @@ func TestReinstall(t *testing.T) {
 				"test-hostname",
 				"--password",
 				"test-password",
-				"--ipxe-file",
-				ipxePath,
 				"--ssh-keys",
 				"1,2",
 				"--userdata-file",
 				userdataPath,
 				"--os-partition-size",
 				"1",
-				"--persist-ipxe",
 			},
 			wantReqBody: &cherrygo.ReinstallServerFields{
 				Image:           "test-image",
 				Hostname:        "test-hostname",
 				Password:        "test-password",
-				IPXE:            "dGVzdC1pcHhl", // base64
 				SSHKeys:         []string{"1", "2"},
 				UserData:        "dGVzdC11c2VyZGF0YQ==",
 				OSPartitionSize: 1,
-				PersistIPXE:     true,
+			},
+		},
+		{
+			title: "ipxe no image",
+			args: []string{
+				"1",
+				"--hostname",
+				"test-hostname",
+				"--password",
+				"test-password",
+				"--persist-ipxe",
+				"--ipxe-file",
+				ipxePath,
+			},
+			wantReqBody: &cherrygo.ReinstallServerFields{
+				Image:       "custom_ipxe_install",
+				Hostname:    "test-hostname",
+				Password:    "test-password",
+				IPXE:        "dGVzdC1pcHhl", // base64
+				PersistIPXE: true,
+				SSHKeys:     []string{},
+			},
+		},
+		{
+			title: "ipxe with image custom_ipxe_install",
+			args: []string{
+				"1",
+				"--hostname",
+				"test-hostname",
+				"--password",
+				"test-password",
+				"--image",
+				"custom_ipxe_install",
+				"--persist-ipxe",
+				"--ipxe-file",
+				ipxePath,
+			},
+			wantReqBody: &cherrygo.ReinstallServerFields{
+				Image:       "custom_ipxe_install",
+				Hostname:    "test-hostname",
+				Password:    "test-password",
+				IPXE:        "dGVzdC1pcHhl", // base64
+				PersistIPXE: true,
+				SSHKeys:     []string{},
 			},
 		},
 	}
@@ -110,6 +149,13 @@ func TestReinstall(t *testing.T) {
 }
 
 func TestReinstallWithErrorsExpected(t *testing.T) {
+	tmpDir := t.TempDir()
+	ipxePath := filepath.Join(tmpDir, "ipxe")
+	err := os.WriteFile(ipxePath, []byte("test-ipxe"), 0644)
+	if err != nil {
+		t.Fatal(err.Error())
+	}
+
 	cases := []struct {
 		title        string
 		args         []string
@@ -215,6 +261,23 @@ func TestReinstallWithErrorsExpected(t *testing.T) {
 			},
 			reinstallFn:  reinstallOK,
 			wantMsg:      regexp.MustCompile("^\"persist-ipxe\" requires \"ipxe-file\"$"),
+			wantSvcCalls: 0,
+		},
+		{
+			title: "incompatible image with ipxe",
+			args: []string{
+				"1",
+				"--hostname",
+				"test-hostname",
+				"--image",
+				"test-image",
+				"--password",
+				"test-password",
+				"--ipxe-file",
+				ipxePath,
+			},
+			reinstallFn:  reinstallOK,
+			wantMsg:      regexp.MustCompile("image \"test-image\" is not compatible with iPXE: set image to \"custom_ipxe_install\" or leave it unset"),
 			wantSvcCalls: 0,
 		},
 		{
