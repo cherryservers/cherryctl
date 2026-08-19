@@ -19,10 +19,11 @@ func (c *Command) Reinstall() *cobra.Command {
 		userDataPath    string
 		osPartitionSize int
 		ipxePath        string
+		persistIPXE     bool
 	)
 
 	reinstallServerCmd := &cobra.Command{
-		Use:   `reinstall ID --hostname <hostname> --image <image_slug> --password <password> [--ssh-keys <ssh_key_ids>] [--os-partition-size <size>] [--userdata-file <filepath>] [--ipxe-file <filepath>]`,
+		Use:   `reinstall ID --hostname <hostname> --image <image_slug> --password <password> [--ssh-keys <ssh_key_ids>] [--os-partition-size <size>] [--userdata-file <filepath>] [--ipxe-file <filepath>] [--persist-ipxe]`,
 		Args:  cobra.ExactArgs(1),
 		Short: "Reinstall a server.",
 		Long:  "Reinstall the specified server.",
@@ -32,6 +33,10 @@ func (c *Command) Reinstall() *cobra.Command {
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cmd.SilenceUsage = true
 			ctx := cmd.Context()
+
+			if err := utils.RequireIfChanged(cmd, "persist-ipxe", "ipxe-file"); err != nil {
+				return err
+			}
 
 			userDataRaw, err := utils.ReadOptionalFile(userDataPath)
 			if err != nil {
@@ -51,6 +56,7 @@ func (c *Command) Reinstall() *cobra.Command {
 				UserData:        base64.StdEncoding.EncodeToString(userDataRaw),
 				OSPartitionSize: osPartitionSize,
 				IPXE:            base64.StdEncoding.EncodeToString(ipxeRaw),
+				PersistIPXE:     persistIPXE,
 			}
 
 			serverID, err := strconv.Atoi(args[0])
@@ -76,6 +82,7 @@ func (c *Command) Reinstall() *cobra.Command {
 	reinstallServerCmd.Flags().IntVarP(&osPartitionSize, "os-partition-size", "", 0, "OS partition size in GB.")
 	reinstallServerCmd.Flags().StringVarP(&userDataPath, "userdata-file", "", "", "Path to a userdata file for server initialization.")
 	reinstallServerCmd.Flags().StringVar(&ipxePath, "ipxe-file", "", "Path to a file containing an iPXE template.")
+	reinstallServerCmd.Flags().BoolVar(&persistIPXE, "persist-ipxe", false, "Enable persisting the universal iPXE image between server boots. See https://www.cherryservers.com/knowledge/docs/compute/configuration-management/ipxe#how-ipxe-works-with-cherry-servers.")
 
 	_ = reinstallServerCmd.MarkFlagRequired("hostname")
 	_ = reinstallServerCmd.MarkFlagRequired("image")
