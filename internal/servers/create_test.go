@@ -44,7 +44,7 @@ func TestCreate(t *testing.T) {
 			},
 		},
 		{
-			title: "all args",
+			title: "all args except ipxe",
 			args: []string{
 				"--project-id",
 				"1",
@@ -72,11 +72,8 @@ func TestCreate(t *testing.T) {
 				"--discount",
 				"test-discount",
 				"--enable-ipv6",
-				"--ipxe-file",
-				ipxePath,
 				"--userdata-file",
 				userdataPath,
-				"--persist-ipxe",
 			},
 			wantReqBody: &cherrygo.CreateServer{
 				ProjectID:       1,
@@ -93,9 +90,61 @@ func TestCreate(t *testing.T) {
 				Cycle:           "test-cycle",
 				DiscountCode:    "test-discount",
 				ConfigureIPv6:   newTrue(),
-				IPXE:            "dGVzdC1pcHhl", // base64
-				PersistIPXE:     true,
 				UserData:        "dGVzdC11c2VyZGF0YQ==",
+			},
+		},
+		{
+			title: "ipxe no image",
+			args: []string{
+				"--project-id",
+				"1",
+				"--region",
+				"test-region",
+				"--plan",
+				"test-plan",
+				"--persist-ipxe",
+				"--ipxe-file",
+				ipxePath,
+			},
+			wantReqBody: &cherrygo.CreateServer{
+				ProjectID:     1,
+				Region:        "test-region",
+				Plan:          "test-plan",
+				Image:         "custom_ipxe_install",
+				IPXE:          "dGVzdC1pcHhl", // base64
+				PersistIPXE:   true,
+				SSHKeys:       []string{},
+				IPAddresses:   []string{},
+				Tags:          &map[string]string{},
+				ConfigureIPv6: new(bool),
+			},
+		},
+		{
+			title: "ipxe with image custom_ipxe_install",
+			args: []string{
+				"--project-id",
+				"1",
+				"--region",
+				"test-region",
+				"--plan",
+				"test-plan",
+				"--persist-ipxe",
+				"--ipxe-file",
+				ipxePath,
+				"--image",
+				"custom_ipxe_install",
+			},
+			wantReqBody: &cherrygo.CreateServer{
+				ProjectID:     1,
+				Region:        "test-region",
+				Plan:          "test-plan",
+				Image:         "custom_ipxe_install",
+				IPXE:          "dGVzdC1pcHhl", // base64
+				PersistIPXE:   true,
+				SSHKeys:       []string{},
+				IPAddresses:   []string{},
+				Tags:          &map[string]string{},
+				ConfigureIPv6: new(bool),
 			},
 		},
 		{
@@ -211,6 +260,13 @@ func TestCreate(t *testing.T) {
 }
 
 func TestCreateWithErrorsExpected(t *testing.T) {
+	tmpDir := t.TempDir()
+	ipxePath := filepath.Join(tmpDir, "ipxe")
+	err := os.WriteFile(ipxePath, []byte("test-ipxe"), 0644)
+	if err != nil {
+		t.Fatal(err.Error())
+	}
+
 	cases := []struct {
 		title           string
 		args            []string
@@ -291,6 +347,25 @@ func TestCreateWithErrorsExpected(t *testing.T) {
 			},
 			createFn:        createOK,
 			wantMsg:         regexp.MustCompile("^\"persist-ipxe\" requires \"ipxe-file\"$"),
+			wantSvcCalls:    0,
+			wantOutputCalls: 0,
+		},
+		{
+			title: "incompatible image with ipxe-file error",
+			args: []string{
+				"--project-id",
+				"1",
+				"--region",
+				"test-region",
+				"--plan",
+				"test-plan",
+				"--image",
+				"test-image",
+				"--ipxe-file",
+				ipxePath,
+			},
+			createFn:        createOK,
+			wantMsg:         regexp.MustCompile("image \"test-image\" is not compatible with iPXE: set image to \"custom_ipxe_install\" or leave it unset"),
 			wantSvcCalls:    0,
 			wantOutputCalls: 0,
 		},
