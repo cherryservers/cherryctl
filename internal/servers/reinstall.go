@@ -7,7 +7,6 @@ import (
 
 	"github.com/cherryservers/cherryctl/internal/utils"
 	"github.com/cherryservers/cherrygo/v4"
-	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 )
 
@@ -54,18 +53,19 @@ func (c *Command) Reinstall() *cobra.Command {
 				IPXE:            base64.StdEncoding.EncodeToString(ipxeRaw),
 			}
 
-			if serverID, err := strconv.Atoi(args[0]); err == nil {
-				_, _, err := c.Client().Reinstall(ctx, serverID, request)
-				if err != nil {
-					return errors.Wrap(err, "Could not reinstall a Server.")
-				}
-
-				fmt.Println("Server", serverID, "reinstall has been started.")
-				return nil
+			serverID, err := strconv.Atoi(args[0])
+			if err != nil {
+				return fmt.Errorf("invalid server id %q: %w", args[0], err)
 			}
 
-			fmt.Printf("Server with ID %s was not found.\n", args[0])
-			return nil
+			_, _, err = c.Client().Reinstall(ctx, serverID, request)
+			if err != nil {
+				return fmt.Errorf("failed to reinstall server %d: %w", serverID, err)
+			}
+
+			_, err = fmt.Fprintln(cmd.OutOrStdout(),
+				"Server", serverID, "reinstall has been started.")
+			return err
 		},
 	}
 

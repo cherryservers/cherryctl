@@ -8,9 +8,12 @@ import (
 
 type ServerCreationFunc func(context.Context, *cherrygo.CreateServer) (cherrygo.Server, *cherrygo.Response, error)
 
+type ServerReinstallFunc func(context.Context, int, *cherrygo.ReinstallServerFields) (cherrygo.Server, *cherrygo.Response, error)
+
 type ServerService struct {
-	Calls  []CallRecord
-	create ServerCreationFunc
+	Calls     []CallRecord
+	create    ServerCreationFunc
+	reinstall ServerReinstallFunc
 }
 
 // AllowBMCAccess implements [cherrygo.ServersService].
@@ -20,6 +23,10 @@ func (s *ServerService) AllowBMCAccess(ctx context.Context, serverID int, ip4 st
 
 func (s *ServerService) SetCreate(f ServerCreationFunc) {
 	s.create = f
+}
+
+func (s *ServerService) SetReinstall(f ServerReinstallFunc) {
+	s.reinstall = f
 }
 
 // Create implements [cherrygo.ServersService].
@@ -85,7 +92,8 @@ func (s *ServerService) Reboot(ctx context.Context, serverID int) (cherrygo.Serv
 
 // Reinstall implements [cherrygo.ServersService].
 func (s *ServerService) Reinstall(ctx context.Context, serverID int, fields *cherrygo.ReinstallServerFields) (cherrygo.Server, *cherrygo.Response, error) {
-	panic("not implemented")
+	s.Calls = append(s.Calls, CallRecord{method: "Reinstall", params: []any{serverID, fields}})
+	return s.reinstall(ctx, serverID, fields)
 }
 
 // ResetBMCPassword implements [cherrygo.ServersService].
