@@ -7,6 +7,7 @@ import (
 
 	"github.com/cherryservers/cherryctl/internal/utils"
 	"github.com/cherryservers/cherrygo/v4"
+	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 )
 
@@ -23,7 +24,7 @@ func (c *Command) Reinstall() *cobra.Command {
 	)
 
 	reinstallServerCmd := &cobra.Command{
-		Use:   `reinstall ID --hostname <hostname> --image <image_slug> --password <password> [--ssh-keys <ssh_key_ids>] [--os-partition-size <size>] [--userdata-file <filepath>] [--ipxe-file <filepath>] [--persist-ipxe]`,
+		Use:   `reinstall ID --hostname <hostname> {--image <image_slug> | --ipxe-file <filepath>} --password <password> [--ssh-keys <ssh_key_ids>] [--os-partition-size <size>] [--userdata-file <filepath>] [--persist-ipxe]`,
 		Args:  cobra.ExactArgs(1),
 		Short: "Reinstall a server.",
 		Long:  "Reinstall the specified server.",
@@ -46,6 +47,18 @@ func (c *Command) Reinstall() *cobra.Command {
 			ipxeRaw, err := utils.ReadOptionalFile(ipxePath)
 			if err != nil {
 				return fmt.Errorf("failed to read ipxe file: %w", err)
+			}
+			if ipxeRaw != nil {
+				switch {
+				case !cmd.Flag("image").Changed:
+					image = ipxeImage
+				case image == ipxeImage:
+					break
+				default:
+					return fmt.Errorf("image %q is not compatible with iPXE: set image to %q or leave it unset", image, ipxeImage)
+				}
+			} else if !cmd.Flag("image").Changed {
+				return errors.New("required flag(s) \"image\" not set")
 			}
 
 			request := &cherrygo.ReinstallServerFields{
@@ -81,11 +94,10 @@ func (c *Command) Reinstall() *cobra.Command {
 	reinstallServerCmd.Flags().StringSliceVarP(&sshKeys, "ssh-keys", "", []string{}, "Comma separated list of SSH key IDs to be embed in the Server.")
 	reinstallServerCmd.Flags().IntVarP(&osPartitionSize, "os-partition-size", "", 0, "OS partition size in GB.")
 	reinstallServerCmd.Flags().StringVarP(&userDataPath, "userdata-file", "", "", "Path to a userdata file for server initialization.")
-	reinstallServerCmd.Flags().StringVar(&ipxePath, "ipxe-file", "", "Path to a file containing an iPXE template.")
+	reinstallServerCmd.Flags().StringVar(&ipxePath, "ipxe-file", "", "Path to an iPXE template. Selects the iPXE installation image automatically; incompatible with OS images.")
 	reinstallServerCmd.Flags().BoolVar(&persistIPXE, "persist-ipxe", false, "Enable persisting the universal iPXE image between server boots. See https://www.cherryservers.com/knowledge/docs/compute/configuration-management/ipxe#how-ipxe-works-with-cherry-servers.")
 
 	_ = reinstallServerCmd.MarkFlagRequired("hostname")
-	_ = reinstallServerCmd.MarkFlagRequired("image")
 	_ = reinstallServerCmd.MarkFlagRequired("password")
 
 	return reinstallServerCmd
