@@ -9,6 +9,7 @@ import (
 
 	"github.com/cherryservers/cherrygo/v4"
 	"github.com/google/uuid"
+	"github.com/spf13/cobra"
 )
 
 func BoolToYesNo(b bool) string {
@@ -69,4 +70,13 @@ func ReadOptionalFile(path string) ([]byte, error) {
 	}
 
 	return os.ReadFile(path)
+}
+
+// RequireIfChanged returns an error if the base flag has been changed by the user,
+// but the target has not.
+func RequireIfChanged(cmd *cobra.Command, base, target string) error {
+	if cmd.Flag(base).Changed && !cmd.Flag(target).Changed {
+		return fmt.Errorf("%q requires %q", base, target)
+	}
+	return nil
 }
