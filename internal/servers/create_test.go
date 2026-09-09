@@ -1,7 +1,6 @@
 package servers
 
 import (
-	"context"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -10,53 +9,8 @@ import (
 	"errors"
 
 	"github.com/cherryservers/cherryctl/internal/fakes"
-	"github.com/cherryservers/cherryctl/internal/outputs"
 	"github.com/cherryservers/cherrygo/v4"
-	"github.com/spf13/cobra"
 )
-
-type fakeDeps struct {
-	svc  *fakes.ServerService
-	out  *fakes.Outputer
-	opts *cherrygo.GetOptions
-}
-
-func (fd fakeDeps) GetOpts() *cherrygo.GetOptions {
-	return fd.opts
-}
-
-func (fd fakeDeps) Client() cherrygo.ServersService {
-	return fd.svc
-}
-
-func (fd fakeDeps) Outputer() outputs.Outputer {
-	return fd.out
-}
-
-func newTrue() *bool {
-	b := true
-	return &b
-}
-
-func setupCommand(t *testing.T, svc *fakes.ServerService, out *fakes.Outputer, args []string) *cobra.Command {
-	t.Helper()
-
-	dep := fakeDeps{svc: svc, out: out}
-	c := Command{Deps: dep}
-
-	cmd := c.Create()
-	cmd.SetArgs(args)
-	cmd.SilenceUsage = true
-	return cmd
-}
-
-func createOK(_ context.Context, _ *cherrygo.CreateServer) (cherrygo.Server, *cherrygo.Response, error) {
-	return cherrygo.Server{ID: 1}, nil, nil
-}
-
-func createErr(_ context.Context, _ *cherrygo.CreateServer) (cherrygo.Server, *cherrygo.Response, error) {
-	return cherrygo.Server{}, nil, errors.New("test-error")
-}
 
 func TestCreate(t *testing.T) {
 	tmpDir := t.TempDir()
@@ -232,7 +186,7 @@ func TestCreate(t *testing.T) {
 				fakeOut fakes.Outputer
 			)
 			fakeSvc.SetCreate(createOK)
-			cmd := setupCommand(t, &fakeSvc, &fakeOut, tc.args)
+			cmd := setupCobraCreateCommand(setupCommand(&fakeSvc, &fakeOut), tc.args)
 
 			err := cmd.Execute()
 			if err != nil {
@@ -367,7 +321,7 @@ func TestCreateWithErrorsExpected(t *testing.T) {
 			)
 			fakeSvc.SetCreate(tc.createFn)
 			fakeOut.Err = tc.outputErr
-			cmd := setupCommand(t, &fakeSvc, &fakeOut, tc.args)
+			cmd := setupCobraCreateCommand(setupCommand(&fakeSvc, &fakeOut), tc.args)
 
 			err := cmd.Execute()
 			if err == nil {
