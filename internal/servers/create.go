@@ -34,7 +34,7 @@ func (c *Command) Create() *cobra.Command {
 	)
 
 	createServerCmd := &cobra.Command{
-		Use:   `create -p <project_id> --plan <plan_slug> --region <region_slug> [--hostname <hostname>] [--image <image_slug>] [--ssh-keys <ssh_key_ids>] [--ip-addresses <ip_addresses_ids>] [--os-partition-size <size>] [--userdata-file <filepath>] [--tags] [--spot-instance] [--storage-id <storage_id>] [--cycle <cycle-slug>] [--discount <discount_code>] [--ipxe-file <filepath>] [--persist-ipxe] [--enable-ipv6]`,
+		Use:   `create -p <project_id> --plan <plan_slug> --region <region_slug> [--hostname <hostname>] [--image <image_slug> | --ipxe-file <filepath>] [--ssh-keys <ssh_key_ids>] [--ip-addresses <ip_addresses_ids>] [--os-partition-size <size>] [--userdata-file <filepath>] [--tags] [--spot-instance] [--storage-id <storage_id>] [--cycle <cycle-slug>] [--discount <discount_code>] [--persist-ipxe] [--enable-ipv6]`,
 		Short: "Create a server.",
 		Long:  "Create a server in specified project.",
 		Example: `  # Provisions a E5-1620v4 server in the LT-Siauliai location running on Ubuntu 24.04:
@@ -58,6 +58,16 @@ func (c *Command) Create() *cobra.Command {
 			ipxeRaw, err := utils.ReadOptionalFile(ipxePath)
 			if err != nil {
 				return fmt.Errorf("failed to read ipxe file: %w", err)
+			}
+			if ipxeRaw != nil {
+				switch {
+				case !cmd.Flag("image").Changed:
+					image = ipxeImage
+				case image == ipxeImage:
+					break
+				default:
+					return fmt.Errorf("image %q is not compatible with iPXE: set image to %q or leave it unset", image, ipxeImage)
+				}
 			}
 
 			for _, kv := range tags {
@@ -122,7 +132,7 @@ func (c *Command) Create() *cobra.Command {
 	createServerCmd.Flags().IntVarP(&storageID, "storage-id", "", 0, "ID of the storage that will be attached to server.")
 	createServerCmd.Flags().StringVarP(&cycle, "cycle", "", "", "Server billing cycle slug. Default is 'hourly'.")
 	createServerCmd.Flags().StringVarP(&discount, "discount", "", "", "Server discount code.")
-	createServerCmd.Flags().StringVar(&ipxePath, "ipxe-file", "", "Path to a file containing an iPXE template.")
+	createServerCmd.Flags().StringVar(&ipxePath, "ipxe-file", "", "Path to an iPXE template. Selects the iPXE installation image automatically; incompatible with OS images.")
 	createServerCmd.Flags().BoolVar(&persistIPXE, "persist-ipxe", false, "Enable persisting the universal iPXE image between server boots. See https://www.cherryservers.com/knowledge/docs/compute/configuration-management/ipxe#how-ipxe-works-with-cherry-servers.")
 	createServerCmd.Flags().BoolVar(&enableIPv6, "enable-ipv6", false, "Enable IPv6 when supported; otherwise, continue without IPv6. See https://www.cherryservers.com/knowledge/docs/networking/ip-addressing/ipv6.")
 
