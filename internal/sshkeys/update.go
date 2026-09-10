@@ -9,7 +9,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func (c *Client) Update() *cobra.Command {
+func (c *Command) Update() *cobra.Command {
 	var (
 		label     string
 		publicKey string
@@ -42,7 +42,7 @@ func (c *Client) Update() *cobra.Command {
 				request.Key = &publicKey
 			}
 
-			o, _, err := c.Service.Update(ctx, id, request)
+			o, _, err := c.Client().Update(ctx, id, request)
 			if err != nil {
 				return errors.Wrap(err, "Could not update SSH key")
 			}
@@ -51,7 +51,7 @@ func (c *Client) Update() *cobra.Command {
 			data := make([][]string, 1)
 			data[0] = []string{strconv.Itoa(o.ID), o.Label, o.Fingerprint, o.Created}
 
-			return c.Out.Output(o, header, &data)
+			return c.Outputer().Output(o, header, &data)
 		},
 	}
 
