@@ -1,6 +1,7 @@
 package sshkeys
 
 import (
+	"fmt"
 	"strconv"
 
 	"github.com/pkg/errors"
@@ -8,7 +9,6 @@ import (
 )
 
 func (c *Command) Get() *cobra.Command {
-	var sshKeyID int
 	sshGetCmd := &cobra.Command{
 		Use:   `get ID`,
 		Args:  cobra.ExactArgs(1),
@@ -20,15 +20,16 @@ func (c *Command) Get() *cobra.Command {
 			cmd.SilenceUsage = true
 			ctx := cmd.Context()
 
-			if sshID, err := strconv.Atoi(args[0]); err == nil {
-				sshKeyID = sshID
+			id, err := strconv.Atoi(args[0])
+			if err != nil {
+				return fmt.Errorf("invalid id: %w", err)
 			}
 			getOptions := c.GetOpts()
 			if len(getOptions.Fields) == 0 {
 				getOptions.Fields = []string{"ssh_key", "email"}
 			}
 
-			o, _, err := c.Client().Get(ctx, sshKeyID, getOptions)
+			o, _, err := c.Client().Get(ctx, id, getOptions)
 			if err != nil {
 				return errors.Wrap(err, "Could not get SSH key")
 			}
