@@ -22,7 +22,9 @@ func (c *Command) List() *cobra.Command {
 			ctx := cmd.Context()
 
 			getOptions := c.GetOpts()
-			getOptions.Fields = []string{"ssh_key", "email"}
+			if len(getOptions.Fields) == 0 {
+				getOptions.Fields = []string{"ssh_key", "email"}
+			}
 
 			var sshKeys []cherrygo.SSHKey
 			err := error(nil)
