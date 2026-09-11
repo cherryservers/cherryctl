@@ -10,11 +10,7 @@ import (
 var _ cherrygo.SSHKeysService = (*SSHKeyService)(nil)
 
 type SSHKeyService struct {
-	Calls []CallRecord
-
-	// Err is the error returned with every implemented method.
-	// Useful for faking client errors.
-	Err error
+	fakeService
 }
 
 // Create implements [cherrygo.SSHKeysService].
