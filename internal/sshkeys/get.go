@@ -24,7 +24,10 @@ func (c *Command) Get() *cobra.Command {
 				sshKeyID = sshID
 			}
 			getOptions := c.GetOpts()
-			getOptions.Fields = []string{"ssh_key", "email"}
+			if len(getOptions.Fields) == 0 {
+				getOptions.Fields = []string{"ssh_key", "email"}
+			}
+
 			o, _, err := c.Client().Get(ctx, sshKeyID, getOptions)
 			if err != nil {
 				return errors.Wrap(err, "Could not get SSH key")
