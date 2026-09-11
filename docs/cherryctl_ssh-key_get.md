@@ -1,10 +1,10 @@
 ## cherryctl ssh-key get
 
-Retrieves ssh-key details.
+Retrieves SSH key.
 
 ### Synopsis
 
-Retrieves the details of the specified ssh-key.
+Retrieves the specified SSH key.
 
 ```
 cherryctl ssh-key get ID [flags]
@@ -13,7 +13,7 @@ cherryctl ssh-key get ID [flags]
 ### Examples
 
 ```
-  # Gets the details of the specified ssh-key:
+  # Get SSH key:
   cherryctl ssh-key get 12345
 ```
 
