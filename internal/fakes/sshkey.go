@@ -33,8 +33,9 @@ func (s *SSHKeyService) Get(_ context.Context, _ int, _ *cherrygo.GetOptions) (c
 }
 
 // List implements [cherrygo.SSHKeysService].
-func (s *SSHKeyService) List(_ context.Context, _ *cherrygo.GetOptions) ([]cherrygo.SSHKey, *cherrygo.Response, error) {
-	return nil, nil, errors.New("not implemented")
+func (s *SSHKeyService) List(ctx context.Context, opts *cherrygo.GetOptions) ([]cherrygo.SSHKey, *cherrygo.Response, error) {
+	s.Calls = append(s.Calls, CallRecord{method: "List", params: []any{ctx, opts}})
+	return []cherrygo.SSHKey{SSHKey()}, nil, s.Err
 }
 
 // Update implements [cherrygo.SSHKeysService].

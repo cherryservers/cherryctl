@@ -11,13 +11,14 @@ import (
 )
 
 type fakeDeps struct {
-	svc *fakes.SSHKeyService
-	out *fakes.Outputer
+	svc        *fakes.SSHKeyService
+	projectSvc *fakes.ProjectsService
+	out        *fakes.Outputer
+	opts       *cherrygo.GetOptions
 }
 
 func (fd fakeDeps) GetOpts() *cherrygo.GetOptions {
-	// Not required for updates.
-	return nil
+	return fd.opts
 }
 
 func (fd fakeDeps) Client() cherrygo.SSHKeysService {
@@ -29,14 +30,15 @@ func (fd fakeDeps) Outputer() outputs.Outputer {
 }
 
 func (fd fakeDeps) ProjectClient() cherrygo.ProjectsService {
-	// Not required for updates.
-	return nil
+	return fd.projectSvc
 }
 
 func newFakeDeps() fakeDeps {
 	return fakeDeps{
-		svc: new(fakes.SSHKeyService),
-		out: new(fakes.Outputer),
+		svc:        new(fakes.SSHKeyService),
+		out:        new(fakes.Outputer),
+		projectSvc: new(fakes.ProjectsService),
+		opts:       new(cherrygo.GetOptions),
 	}
 }
 
