@@ -1,10 +1,10 @@
 ## cherryctl ssh-key list
 
-Retrieves ssh-keys.
+Retrieves SSH keys.
 
 ### Synopsis
 
-Retrieves ssh-keys. If the project ID is specified, will return all SSH keys assigned to a specific project.
+Retrieves SSH keys. If project ID is specified, will return all SSH keys assigned to a specific project.
 
 ```
 cherryctl ssh-key list [-p <project_id>] [flags]
@@ -13,7 +13,7 @@ cherryctl ssh-key list [-p <project_id>] [flags]
 ### Examples
 
 ```
-  # List of ssh-keys:
+  # List SSH keys:
   cherryctl ssh-key list
 ```
 
@@ -21,7 +21,7 @@ cherryctl ssh-key list [-p <project_id>] [flags]
 
 ```
   -h, --help             help for list
-  -p, --project-id int   The project's ID.
+  -p, --project-id int   Project to retrieve keys from.
 ```
 
 ### Options inherited from parent commands
