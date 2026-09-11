@@ -20,7 +20,7 @@ func (c *Command) Delete() *cobra.Command {
   >
   ✔ Are you sure you want to delete SSH key 12345: y
   		
-  # Deletes a server, skipping confirmation:
+  # Deletes an SSH key, skipping confirmation:
   cherryctl shh-key delete -f -i 12345`,
 
 		RunE: func(cmd *cobra.Command, args []string) error {
@@ -49,7 +49,7 @@ func (c *Command) Delete() *cobra.Command {
 	}
 
 	deleteSSHkeyCmd.Flags().IntVarP(&sshKeyID, "ssh-key-id", "i", 0, "ID of the SSH key.")
-	deleteSSHkeyCmd.Flags().BoolVarP(&force, "force", "f", false, "Skips confirmation for the SSH key deletion.")
+	deleteSSHkeyCmd.Flags().BoolVarP(&force, "force", "f", false, "Skip confirmation.")
 
 	_ = deleteSSHkeyCmd.MarkFlagRequired("ssh-key-id")
 

@@ -18,14 +18,14 @@ cherryctl ssh-key delete -i <ssh_key_id> [-f] [flags]
   >
   ✔ Are you sure you want to delete SSH key 12345: y
   		
-  # Deletes a server, skipping confirmation:
+  # Deletes an SSH key, skipping confirmation:
   cherryctl shh-key delete -f -i 12345
 ```
 
 ### Options
 
 ```
-  -f, --force            Skips confirmation for the SSH key deletion.
+  -f, --force            Skip confirmation.
   -h, --help             help for delete
   -i, --ssh-key-id int   ID of the SSH key.
 ```
