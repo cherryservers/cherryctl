@@ -3,7 +3,6 @@ package sshkeys
 import (
 	"fmt"
 
-	"github.com/manifoldco/promptui"
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 )
@@ -28,14 +27,11 @@ func (c *Command) Delete() *cobra.Command {
 			ctx := cmd.Context()
 
 			if !force {
-				prompt := promptui.Prompt{
-					Label:     fmt.Sprintf("Are you sure you want to delete SSH key %d: ", sshKeyID),
-					IsConfirm: true,
-				}
-
-				_, err := prompt.Run()
-				if err != nil {
-					return nil
+				ok, err := c.PromptConfirmation(
+					fmt.Sprintf("Are you sure you want to delete SSH key %d", sshKeyID),
+				)
+				if !ok || err != nil {
+					return err
 				}
 			}
 			_, err := c.Client().Delete(ctx, sshKeyID)
@@ -43,7 +39,7 @@ func (c *Command) Delete() *cobra.Command {
 				return errors.Wrap(err, "Could not delete SSH key")
 			}
 
-			fmt.Println("SSH key", sshKeyID, "successfully deleted.")
+			cmd.Println("SSH key", sshKeyID, "successfully deleted.")
 			return nil
 		},
 	}

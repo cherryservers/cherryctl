@@ -15,6 +15,7 @@ type fakeDeps struct {
 	projectSvc *fakes.ProjectsService
 	out        *fakes.Outputer
 	opts       *cherrygo.GetOptions
+	prompt     *fakes.Prompter
 }
 
 func (fd fakeDeps) GetOpts() *cherrygo.GetOptions {
@@ -33,12 +34,17 @@ func (fd fakeDeps) ProjectClient() cherrygo.ProjectsService {
 	return fd.projectSvc
 }
 
+func (fd fakeDeps) PromptConfirmation(msg string) (bool, error) {
+	return fd.prompt.PromptConfirmation(msg)
+}
+
 func newFakeDeps() fakeDeps {
 	return fakeDeps{
 		svc:        new(fakes.SSHKeyService),
 		out:        new(fakes.Outputer),
 		projectSvc: new(fakes.ProjectsService),
 		opts:       new(cherrygo.GetOptions),
+		prompt:     new(fakes.Prompter),
 	}
 }
 
