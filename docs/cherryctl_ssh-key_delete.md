@@ -7,27 +7,26 @@ Deletes an SSH key.
 Deletes an SSH key with a confirmation prompt. To skip the confirmation use --force. Does not remove the SSH key from existing servers.
 
 ```
-cherryctl ssh-key delete -i <ssh_key_id> [-f] [flags]
+cherryctl ssh-key delete ID [-f] [flags]
 ```
 
 ### Examples
 
 ```
   # Deletes an SSH key, with confirmation:
-  cherryctl shh-key delete -i 12345
+  cherryctl shh-key delete 12345
   >
   ✔ Are you sure you want to delete SSH key 12345: y
   		
   # Deletes an SSH key, skipping confirmation:
-  cherryctl shh-key delete -f -i 12345
+  cherryctl shh-key delete 12345 -f
 ```
 
 ### Options
 
 ```
-  -f, --force            Skip confirmation.
-  -h, --help             help for delete
-  -i, --ssh-key-id int   ID of the SSH key.
+  -f, --force   Skip confirmation.
+  -h, --help    help for delete
 ```
 
 ### Options inherited from parent commands
