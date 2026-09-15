@@ -28,7 +28,7 @@ Ssh-key operations: get, list, update, delete.
 * [cherryctl](cherryctl.md)	 - Cherry Servers Command Line Interface (CLI)
 * [cherryctl ssh-key create](cherryctl_ssh-key_create.md)	 - Adds an SSH key for the current user's account.
 * [cherryctl ssh-key delete](cherryctl_ssh-key_delete.md)	 - Deletes an SSH key.
-* [cherryctl ssh-key get](cherryctl_ssh-key_get.md)	 - Retrieves ssh-key details.
+* [cherryctl ssh-key get](cherryctl_ssh-key_get.md)	 - Retrieves SSH key.
 * [cherryctl ssh-key list](cherryctl_ssh-key_list.md)	 - Retrieves SSH keys.
 * [cherryctl ssh-key update](cherryctl_ssh-key_update.md)	 - Updates an SSH key.
 
