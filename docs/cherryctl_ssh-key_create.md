@@ -13,15 +13,15 @@ cherryctl ssh-key create --key <public_key> --label <label> [flags]
 ### Examples
 
 ```
-  # Adds a key labled "example-key" to the current user account.
-  cherryctl ssh-key create --key ssh-rsa AAAAB3N...user@domain.com --label example-key
+  # Adds a key labeled "example-key" to the current user account.
+  cherryctl ssh-key create --key 'ssh-rsa AAAAB3N...user@domain.com' --label example-key
 ```
 
 ### Options
 
 ```
   -h, --help           help for create
-      --key string     Public SSH key string.
+      --key string     Public SSH key.
       --label string   Label of the SSH key.
 ```
 
