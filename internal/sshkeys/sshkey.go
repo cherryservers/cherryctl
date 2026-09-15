@@ -34,6 +34,7 @@ type Deps interface {
 	ProjectClient() cherrygo.ProjectsService
 	GetOpts() *cherrygo.GetOptions
 	Outputer() outputs.Outputer
+	PromptConfirmation(msg string) (bool, error)
 }
 
 func NewCommand(dep Deps) *Command {
