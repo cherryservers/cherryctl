@@ -2,7 +2,6 @@ package fakes
 
 import (
 	"context"
-	"errors"
 
 	"github.com/cherryservers/cherrygo/v4"
 )
@@ -14,8 +13,9 @@ type SSHKeyService struct {
 }
 
 // Create implements [cherrygo.SSHKeysService].
-func (s *SSHKeyService) Create(_ context.Context, _ *cherrygo.CreateSSHKey) (cherrygo.SSHKey, *cherrygo.Response, error) {
-	return cherrygo.SSHKey{}, nil, errors.New("not implemented")
+func (s *SSHKeyService) Create(ctx context.Context, request *cherrygo.CreateSSHKey) (cherrygo.SSHKey, *cherrygo.Response, error) {
+	s.Calls = append(s.Calls, CallRecord{method: "Create", params: []any{ctx, request}})
+	return SSHKey(), nil, s.Err
 }
 
 // Delete implements [cherrygo.SSHKeysService].
