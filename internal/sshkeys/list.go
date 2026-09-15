@@ -13,16 +13,18 @@ func (c *Command) List() *cobra.Command {
 	var projectID int
 	sshListCmd := &cobra.Command{
 		Use:   `list [-p <project_id>]`,
-		Short: "Retrieves ssh-keys.",
-		Long:  "Retrieves ssh-keys. If the project ID is specified, will return all SSH keys assigned to a specific project.",
-		Example: `  # List of ssh-keys:
+		Short: "Retrieves SSH keys.",
+		Long:  "Retrieves SSH keys. If project ID is specified, will return all SSH keys assigned to a specific project.",
+		Example: `  # List SSH keys:
   cherryctl ssh-key list`,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cmd.SilenceUsage = true
 			ctx := cmd.Context()
 
 			getOptions := c.GetOpts()
-			getOptions.Fields = []string{"ssh_key", "email"}
+			if len(getOptions.Fields) == 0 {
+				getOptions.Fields = []string{"ssh_key", "email"}
+			}
 
 			var sshKeys []cherrygo.SSHKey
 			err := error(nil)
@@ -33,7 +35,7 @@ func (c *Command) List() *cobra.Command {
 			}
 
 			if err != nil {
-				return errors.Wrap(err, "Could not get ssh-keys list")
+				return errors.Wrap(err, "Could not get SSH key list")
 			}
 
 			data := make([][]string, len(sshKeys))
@@ -46,7 +48,7 @@ func (c *Command) List() *cobra.Command {
 		},
 	}
 
-	sshListCmd.Flags().IntVarP(&projectID, "project-id", "p", 0, "The project's ID.")
+	sshListCmd.Flags().IntVarP(&projectID, "project-id", "p", 0, "Project to retrieve keys from.")
 
 	return sshListCmd
 }
