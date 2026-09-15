@@ -8,7 +8,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func (c *Client) Create() *cobra.Command {
+func (c *Command) Create() *cobra.Command {
 	var (
 		label     string
 		publicKey string
@@ -29,7 +29,7 @@ func (c *Client) Create() *cobra.Command {
 				Key:   publicKey,
 			}
 
-			o, _, err := c.Service.Create(ctx, request)
+			o, _, err := c.Client().Create(ctx, request)
 			if err != nil {
 				return errors.Wrap(err, "Could not create SSH key")
 			}
@@ -38,7 +38,7 @@ func (c *Client) Create() *cobra.Command {
 			data := make([][]string, 1)
 			data[0] = []string{strconv.Itoa(o.ID), o.Label, o.Fingerprint, o.Created}
 
-			return c.Out.Output(o, header, &data)
+			return c.Outputer().Output(o, header, &data)
 		},
 	}
 

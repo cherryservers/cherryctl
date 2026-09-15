@@ -1,14 +1,15 @@
 package sshkeys
 
 import (
-	"github.com/cherryservers/cherrygo/v4"
 	"strconv"
+
+	"github.com/cherryservers/cherrygo/v4"
 
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 )
 
-func (c *Client) List() *cobra.Command {
+func (c *Command) List() *cobra.Command {
 	var projectID int
 	sshListCmd := &cobra.Command{
 		Use:   `list [-p <project_id>]`,
@@ -20,15 +21,15 @@ func (c *Client) List() *cobra.Command {
 			cmd.SilenceUsage = true
 			ctx := cmd.Context()
 
-			getOptions := c.Servicer.GetOptions()
+			getOptions := c.GetOpts()
 			getOptions.Fields = []string{"ssh_key", "email"}
 
 			var sshKeys []cherrygo.SSHKey
 			err := error(nil)
 			if projectID != 0 {
-				sshKeys, _, err = c.ProjectsService.ListSSHKeys(ctx, projectID, getOptions)
+				sshKeys, _, err = c.ProjectClient().ListSSHKeys(ctx, projectID, getOptions)
 			} else {
-				sshKeys, _, err = c.Service.List(ctx, getOptions)
+				sshKeys, _, err = c.Client().List(ctx, getOptions)
 			}
 
 			if err != nil {
@@ -41,7 +42,7 @@ func (c *Client) List() *cobra.Command {
 			}
 			header := []string{"ID", "Label", "User", "Fingerprint", "Created"}
 
-			return c.Out.Output(sshKeys, header, &data)
+			return c.Outputer().Output(sshKeys, header, &data)
 		},
 	}
 
