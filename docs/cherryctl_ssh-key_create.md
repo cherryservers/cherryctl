@@ -38,5 +38,5 @@ cherryctl ssh-key create --key <public_key> --label <label> [flags]
 
 ### SEE ALSO
 
-* [cherryctl ssh-key](cherryctl_ssh-key.md)	 - Ssh-key operations.
+* [cherryctl ssh-key](cherryctl_ssh-key.md)	 - SSH key operations.
 
