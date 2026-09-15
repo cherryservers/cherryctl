@@ -70,3 +70,7 @@ func ReadOptionalFile(path string) ([]byte, error) {
 
 	return os.ReadFile(path)
 }
+
+func ToPtr[T any](t T) *T {
+	return &t
+}

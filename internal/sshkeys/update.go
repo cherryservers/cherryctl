@@ -20,7 +20,7 @@ func (c *Command) Update() *cobra.Command {
 		Args:  cobra.ExactArgs(1),
 		Short: "Updates an SSH key.",
 		Long:  "Updates an SSH key with either a new public key, a new label, or both.",
-		Example: `  # Update team to change currency to EUR:
+		Example: `  # Update SSH key:
   cherryctl ssh-key update 12345 --key AAAAB3N...user@domain.com`,
 
 		RunE: func(cmd *cobra.Command, args []string) error {
