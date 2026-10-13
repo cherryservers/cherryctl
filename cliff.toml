@@ -25,17 +25,6 @@ body = """
 {% endfor %}
 
 {%- if github -%}
-{% set contributors = github.contributors | unique(attribute="username") %}
-{% if contributors | length != 0 %}
-  {% raw %}\n{% endraw -%}
-  ### Contributors
-{% endif %}\
-{% for contributor in contributors %}
-  * [@{{ contributor.username }}](https://github.com/{{ contributor.username }})
-{%- endfor -%}
-{%- endif -%}
-
-{%- if github -%}
 {% if github.contributors | filter(attribute="is_first_time", value=true) | length != 0 %}
   {% raw %}\n{% endraw -%}
   ### New Contributors
