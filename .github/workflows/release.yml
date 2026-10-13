@@ -21,6 +21,7 @@ jobs:
         fetch-depth: 0
 
     - name: Set up temp dir
+      id: set-up-temp-dir
       shell: bash
       run: |
         DIR=$(mktemp -d)
@@ -44,13 +45,13 @@ jobs:
       run: |
         $(go env GOPATH)/bin/go-licenses report "${{ github.workspace }}/" \
           --ignore="$(go list -m)" \
-          --template="${{ github.workspace }}/licenses.tpl" > "${{ steps.compile-third-party-licenses.outputs.dir }}/${{ steps.compile-third-party-licenses.outputs.file_name }}"
+          --template="${{ github.workspace }}/licenses.tpl" > "${{ steps.set-up-temp-dir.outputs.dir }}/${{ steps.set-up-temp-dir.outputs.file_name }}"
 
     - name: "Upload workflow third party licenses file"
       uses: "actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9" # v7.0.2
       with:
         name: "third_party_licenses-${{ github.ref_name }}"
-        path: "${{ steps.compile-third-party-licenses.outputs.dir }}/${{ steps.compile-third-party-licenses.outputs.file_name }}"
+        path: "${{ steps.set-up-temp-dir.outputs.dir }}/${{ steps.set-up-temp-dir.outputs.file_name }}"
         if-no-files-found: error
 
   build-binaries:
