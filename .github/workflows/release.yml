@@ -17,6 +17,19 @@ jobs:
               GOARCH: "amd64",
               TARGET: "linux-amd64-static",
               CGO_ENABLED: "0",
+              LD_FLAGS_TARGET: "",
+              MAIN_PATH: "./main_linux.go",
+              runner: ubuntu-latest
+            }
+          - {
+              GOOS: "linux",
+              GOARCH: "amd64",
+              TARGET: "linux-amd64-gnu",
+              CGO_ENABLED: "1",
+              # Shadow Stack Support
+              CGO_CFLAGS: "-fcf-protection=full",
+              CGO_LDFLAGS: "-Wl,-z,shstk -Wl,-z,ibt -Wl,-z,cet-report=error",
+              LD_FLAGS_TARGET: "",
               MAIN_PATH: "./main_linux.go",
               runner: ubuntu-latest
             }
@@ -25,6 +38,7 @@ jobs:
               GOARCH: "arm64",
               TARGET: "linux-arm64-static",
               CGO_ENABLED: "0",
+              LD_FLAGS_TARGET: "",
               MAIN_PATH: "./main_linux.go",
               runner: ubuntu-latest
             }
@@ -33,6 +47,7 @@ jobs:
               GOARCH: "amd64",
               TARGET: "windows-amd64",
               CGO_ENABLED: "0",
+              LD_FLAGS_TARGET: "",
               MAIN_PATH: "./main_windows.go",
               runner: ubuntu-latest
             }
@@ -41,6 +56,7 @@ jobs:
               GOARCH: "arm64",
               TARGET: "windows-arm64",
               CGO_ENABLED: "0",
+              LD_FLAGS_TARGET: "",
               MAIN_PATH: "./main_windows.go",
               runner: ubuntu-latest
             }
@@ -49,6 +65,7 @@ jobs:
               GOARCH: "amd64",
               TARGET: "darwin-amd64",
               CGO_ENABLED: "0",
+              LD_FLAGS_TARGET: "",
               MAIN_PATH: "./main_darwin.go",
               runner: ubuntu-latest
             }
@@ -57,6 +74,7 @@ jobs:
               GOARCH: "arm64",
               TARGET: "darwin-arm64",
               CGO_ENABLED: "0",
+              LD_FLAGS_TARGET: "",
               MAIN_PATH: "./main_darwin.go",
               runner: ubuntu-latest
             }
@@ -96,9 +114,16 @@ jobs:
       env:
         GOOS: ${{ matrix.GOOS }}
         GOARCH: ${{ matrix.GOARCH }}
+        LD_FLAGS_TARGET: ${{ matrix.LD_FLAGS_TARGET }}
+        MAIN_PATH: ${{ matrix.MAIN_PATH }}
         CGO_ENABLED: ${{ matrix.CGO_ENABLED }}
+        CGO_CFLAGS: ${{ matrix.CGO_CFLAGS }}
+        CGO_LDFLAGS: ${{ matrix.CGO_LDFLAGS }}
       run: |
-        go build -o "$DIR/$BINARY_NAME"
+        go build \
+          -ldflags "$LDFLAGS_COMMON $LD_FLAGS_TARGET" \
+          -o "$DIR/$BINARY_NAME" \
+          $MAIN_PATH
     - name: Gompile third party licenses
       shell: "bash"
       run: |
