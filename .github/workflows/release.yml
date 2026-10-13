@@ -157,6 +157,35 @@ jobs:
         if-no-files-found: error
         compression-level: 0
 
+  generate-release-notes:
+    if: github.ref_type == 'tag'
+    runs-on: "ubuntu-latest"
+    name: "Generate release notes"
+    permissions:
+        contents: "read"
+    env:
+      RELEASE_NOTES_FILE_NAME: "RELEASE_NOTES.md"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+      - name: "Install git-cliff"
+        shell: "bash"
+        run: | # v2.14.2
+          cargo install --git https://github.com/orhun/git-cliff.git --rev 5d996de8220d26c0cb8ff329d31791570cab262f git-cliff
+      - name: "Generate release notes"
+        shell: "bash"
+        run: |
+          DIR=$(mktemp -d)
+          git cliff --current --strip header --output "$DIR/$RELEASE_NOTES_FILE_NAME"
+      - name: "Upload workflow artifacts"
+        uses: "actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2"
+        with:
+          name: "release_notes-${{ github.ref_name }}"
+          path: "$DIR/$RELEASE_NOTES_FILE_NAME"
+          if-no-files-found: error
+
   publish-release:
     if: github.ref_type == 'tag'
     runs-on: "ubuntu-latest"
@@ -171,6 +200,7 @@ jobs:
       GITHUB_REF_NAME: ${{ github.ref_name }}
       SOURCE_NAME: "${{ github.event.repository.name }}"
       CHECKSUMS_FILE_PATH: ${{ github.event.repository.name }}-${{ github.ref_name }}.sha256sum # use repo name as binary name
+      RELEASE_NOTES_FILE_NAME: "RELEASE_NOTES.md"
       DIST_DIR: ${{ github.workspace }}/dist
     steps:
       - name: Checkout
@@ -181,16 +211,22 @@ jobs:
         shell: "bash"
         run: |
           go install github.com/anchore/syft/cmd/syft@b254e6d92f28c3868a755f62fb3ca8f26e9fee76
-
       - name: "mkdir dist dir"
         shell: "bash"
         run: |
           mkdir -p "$DIST_DIR"
-      - name: "Fetch worklow release artifacts"
+      - name: "Fetch worklow package artifacts"
         uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
           pattern: "release-*"
           path: ${{ env.DIST_DIR }}
+          merge-multiple: true
+
+      - name: "Fetch worklow release notes"
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          pattern: "release_notes-${{ github.ref_name }}"
+          path: ${{ github.workspace }}
           merge-multiple: true
 
       - name: Set up sigstore/cosign-installer
@@ -229,5 +265,5 @@ jobs:
           gh release create "$GITHUB_REF_NAME" $DIST_DIR/* \
             --repo "${GITHUB_REPOSITORY}" \
             --title "${GITHUB_REF_NAME}" \
-            --generate-notes \
+            --notes-file "${{ github.workspace }}/$RELEASE_NOTES_FILE_NAME \
             --verify-tag
