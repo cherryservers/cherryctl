@@ -169,6 +169,7 @@ jobs:
         CGO_LDFLAGS: ${{ matrix.CGO_LDFLAGS }}
       run: |
         go build \
+          -trimpath
           -ldflags "$LDFLAGS_COMMON $LD_FLAGS_TARGET" \
           -o "$DIR/$BINARY_NAME" \
           $MAIN_PATH
