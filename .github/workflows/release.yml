@@ -161,10 +161,10 @@ jobs:
     if: github.ref_type == 'tag'
     runs-on: "ubuntu-latest"
     name: "Generate release notes"
+    outputs:
+      release_notes_file_name: ${{ steps.generate-release-notes.prepare-files-and-dirs.file_name }}
     permissions:
         contents: "read"
-    env:
-      RELEASE_NOTES_FILE_NAME: "RELEASE_NOTES.md"
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -175,22 +175,24 @@ jobs:
         run: | # v2.14.2
           cargo install --git https://github.com/orhun/git-cliff.git --rev 5d996de8220d26c0cb8ff329d31791570cab262f git-cliff
 
-      - name: "Prepare temp dir"
-        id: "prepare-temp-dir"
+      - name: "Prepare files and dirs"
+        id: "prepare-files-and-dirs"
         shell: "bash"
         run: |
           DIR=$(mktemp -d)
-          echo "dir=$DIR" >> "$GITHUB_OUTPUT"
+          $FILE_NAME="RELEASE_NOTES.md"
+          echo "release_notes_path=$DIR/$FILE_NAME" >> "$GITHUB_OUTPUT"
+          echo "file_name=$FILE_NAME" >> "$GITHUB_OUTPUT"
       - name: "Generate release notes"
         shell: "bash"
         run: |
           DIR=$(mktemp -d)
-          git cliff --current --strip header --output "${{ steps.prepare-temp-dir.outputs.dir }}/$RELEASE_NOTES_FILE_NAME"
+          git cliff --current --strip header --output "${{ steps.generate-release-notes.prepare-files-and-dirs.release_notes_path }}"
       - name: "Upload workflow release notes"
         uses: "actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9" # v7.0.2
         with:
           name: "release_notes-${{ github.ref_name }}"
-          path: "${{ steps.prepare-temp-dir.outputs.dir }}/${{ env.RELEASE_NOTES_FILE_NAME}}"
+          path: "${{ steps.prepare-temp-dir.outputs.dir }}/${{ steps.generate-release-notes.prepare-files-and-dirs.release_notes_path }}"
           if-no-files-found: error
 
   publish-release:
@@ -207,7 +209,6 @@ jobs:
       GITHUB_REF_NAME: ${{ github.ref_name }}
       SOURCE_NAME: "${{ github.event.repository.name }}"
       CHECKSUMS_FILE_PATH: ${{ github.event.repository.name }}-${{ github.ref_name }}.sha256sum # use repo name as binary name
-      RELEASE_NOTES_FILE_NAME: "RELEASE_NOTES.md"
       DIST_DIR: ${{ github.workspace }}/dist
     steps:
       - name: Checkout
@@ -272,5 +273,5 @@ jobs:
           gh release create "$GITHUB_REF_NAME" $DIST_DIR/* \
             --repo "${GITHUB_REPOSITORY}" \
             --title "${GITHUB_REF_NAME}" \
-            --notes-file "${{ github.workspace }}/$RELEASE_NOTES_FILE_NAME \
+            --notes-file "${{ github.workspace }}/${{ steps.generate-release-notes.prepare-files-and-dirs.file_name }} \
             --verify-tag
