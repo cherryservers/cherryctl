@@ -124,6 +124,7 @@ jobs:
           -ldflags "$LDFLAGS_COMMON $LD_FLAGS_TARGET" \
           -o "$DIR/$BINARY_NAME" \
           $MAIN_PATH
+
     - name: Gompile third party licenses
       shell: "bash"
       run: |
