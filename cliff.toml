@@ -5,9 +5,12 @@ repo = "cherryctl"
 [changelog]
 body = """
 ## What's Changed
-
 {%- if version %} in {{ version | trim_start_matches(pat="v") }}{%- endif -%}
-{% for commit in commits %}
+
+{% for entry in commits | commit_groups(groups=commit_parsers_groups) %}
+
+### {{ entry.group | striptags | trim }}
+{% for commit in entry.commits %}
   {% if commit.remote.pr_title -%}
     {%- set commit_message = commit.remote.pr_title -%}
   {%- else -%}
@@ -18,7 +21,19 @@ body = """
     {% if commit.remote.pr_number %} in \
       [#{{ commit.remote.pr_number }}]({{ self::remote_url() }}/pull/{{ commit.remote.pr_number }}) \
     {%- endif %}
+{%- endfor %}
+{% endfor %}
+
+{%- if github -%}
+{% set contributors = github.contributors | unique(attribute="username") %}
+{% if contributors | length != 0 %}
+  {% raw %}\n{% endraw -%}
+  ### Contributors
+{% endif %}\
+{% for contributor in contributors %}
+  * [@{{ contributor.username }}](https://github.com/{{ contributor.username }})
 {%- endfor -%}
+{%- endif -%}
 
 {%- if github -%}
 {% if github.contributors | filter(attribute="is_first_time", value=true) | length != 0 %}
@@ -52,6 +67,19 @@ footer = ""
 conventional_commits = true
 filter_unconventional = false
 split_commits = false
+
+commit_parsers = [
+  { message = "^feat(?:\\(.+\\))?!?:", group = "Features" },
+  { message = "^fix(?:\\(.+\\))?!?:", group = "Bug Fixes" },
+  { message = "^perf(?:\\(.+\\))?!?:", group = "Performance" },
+  { message = "^refactor(?:\\(.+\\))?!?:", group = "Refactoring" },
+  { message = "^docs(?:\\(.+\\))?!?:", group = "Documentation" },
+  { message = "^test(?:\\(.+\\))?!?:", group = "Tests" },
+  { message = "^build(?:\\(.+\\))?!?:", group = "Build" },
+  { message = "^ci(?:\\(.+\\))?!?:", group = "CI" },
+  { message = "^chore(?:\\(.+\\))?!?:", group = "Chores" },
+  { message = ".*", group = "Other Changes" },
+]
 
 commit_preprocessors = [{ pattern = '\((\w+\s)?#([0-9]+)\)', replace = "" }]
 
