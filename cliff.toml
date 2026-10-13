@@ -20,7 +20,8 @@ body = """
     {% if commit.remote.username %} by @{{ commit.remote.username }}{%- endif -%}
     {% if commit.remote.pr_number %} in \
       [#{{ commit.remote.pr_number }}]({{ self::remote_url() }}/pull/{{ commit.remote.pr_number }}) \
-    {%- endif %}
+    {%- endif %}\
+    ([{{ commit.id | truncate(length=7, end="") }}]({{ self::remote_url() }}/commit/{{ commit.id }}))
 {%- endfor %}
 {% endfor %}
 
