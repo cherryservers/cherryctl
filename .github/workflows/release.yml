@@ -197,7 +197,7 @@ jobs:
     if: github.ref_type == 'tag'
     runs-on: "ubuntu-latest"
     name: "Create and publish release"
-    needs: "build-binaries"
+    needs: ["build-binaries", "generate-release-notes"]
     permissions:
       contents: write
       id-token: write
