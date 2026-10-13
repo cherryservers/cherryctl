@@ -71,11 +71,13 @@ split_commits = false
 
 commit_parsers = [
   { message = "^feat(?:\\(.+\\))?!?:", group = "Features" },
-  { message = "^fix(?:\\(.+\\))?!?:", group = "Bug Fixes" },
+  { message = "^fix(?:\\(.+\\))?!?:", group = "Fixes" },
   { message = "^perf(?:\\(.+\\))?!?:", group = "Performance" },
   { message = "^refactor(?:\\(.+\\))?!?:", group = "Refactoring" },
   { message = "^docs(?:\\(.+\\))?!?:", group = "Documentation" },
   { message = "^test(?:\\(.+\\))?!?:", group = "Tests" },
+  { message = "^(?:build|chore)\\(deps(?:-dev)?\\)!?:", group = "Dependencies" },
+  { message = "^Bump ", group = "Dependencies" },
   { message = "^build(?:\\(.+\\))?!?:", group = "Build" },
   { message = "^ci(?:\\(.+\\))?!?:", group = "CI" },
   { message = "^chore(?:\\(.+\\))?!?:", group = "Chores" },
