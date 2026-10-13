@@ -84,6 +84,7 @@ jobs:
       SOURCE_NAME: "${{ github.event.repository.name }}"
       DIST_DIR: ${{ github.workspace }}/dist
       ARCHIVE_DIR: ${{ github.workspace }}/dist/archives
+
     runs-on: ${{ matrix.runner }}
     steps:
     - name: Checkout
