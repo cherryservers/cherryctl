@@ -193,6 +193,7 @@ jobs:
 
     - name: "Archive assets"
       env:
+        GOOS: ${{ matrix.GOOS }}
         ARCHIVE_NAME: ${{ format('{0}-{1}-{2}', env.BINARY_NAME, github.ref_name, matrix.TARGET) }}
       shell: "bash"
       run: |
