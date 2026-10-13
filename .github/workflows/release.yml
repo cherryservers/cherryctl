@@ -12,13 +12,56 @@ jobs:
       fail-fast: true
       matrix:
         include:
-          - {GOOS: "linux",   GOARCH: "amd64", CGO_ENABLED: "0", MAIN_PATH: "./main_linux.go",   TARGET: "linux-amd64-static", runner: ubuntu-latest}
-          - {GOOS: "linux",   GOARCH: "arm64", CGO_ENABLED: "0", MAIN_PATH: "./main_linux.go",   TARGET: "linux-arm64-static", runner: ubuntu-latest}
-          - {GOOS: "windows", GOARCH: "amd64", CGO_ENABLED: "0", MAIN_PATH: "./main_windows.go", TARGET: "windows-amd64",      runner: ubuntu-latest}
-          - {GOOS: "windows", GOARCH: "arm64", CGO_ENABLED: "0", MAIN_PATH: "./main_windows.go", TARGET: "windows-arm64",      runner: ubuntu-latest}
-          - {GOOS: "darwin",  GOARCH: "amd64", CGO_ENABLED: "0", MAIN_PATH: "./main_darwin.go",  TARGET: "darwin-amd64",       runner: ubuntu-latest}
-          - {GOOS: "darwin",  GOARCH: "arm64", CGO_ENABLED: "0", MAIN_PATH: "./main_darwin.go",  TARGET: "darwin-arm64",       runner: ubuntu-latest}
+          - {
+              GOOS: "linux",
+              GOARCH: "amd64",
+              TARGET: "linux-amd64-static",
+              CGO_ENABLED: "0",
+              MAIN_PATH: "./main_linux.go",
+              runner: ubuntu-latest
+            }
+          - {
+              GOOS: "linux",
+              GOARCH: "arm64",
+              TARGET: "linux-arm64-static",
+              CGO_ENABLED: "0",
+              MAIN_PATH: "./main_linux.go",
+              runner: ubuntu-latest
+            }
+          - {
+              GOOS: "windows",
+              GOARCH: "amd64",
+              TARGET: "windows-amd64",
+              CGO_ENABLED: "0",
+              MAIN_PATH: "./main_windows.go",
+              runner: ubuntu-latest
+            }
+          - {
+              GOOS: "windows",
+              GOARCH: "arm64",
+              TARGET: "windows-arm64",
+              CGO_ENABLED: "0",
+              MAIN_PATH: "./main_windows.go",
+              runner: ubuntu-latest
+            }
+          - {
+              GOOS: "darwin",
+              GOARCH: "amd64",
+              TARGET: "darwin-amd64",
+              CGO_ENABLED: "0",
+              MAIN_PATH: "./main_darwin.go",
+              runner: ubuntu-latest
+            }
+          - {
+              GOOS: "darwin",
+              GOARCH: "arm64",
+              TARGET: "darwin-arm64",
+              CGO_ENABLED: "0",
+              MAIN_PATH: "./main_darwin.go",
+              runner: ubuntu-latest
+            }
     env:
+      LD_FLAGS_COMMON: "-X github.com/cherryservers/cherryctl/cmd.Version=${{ github.ref_name }}"
       BINARY_NAME: "cherryctl"
       SOURCE_NAME: "${{ github.event.repository.name }}"
       DIST_DIR: ${{ github.workspace }}/dist
