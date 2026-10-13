@@ -273,5 +273,5 @@ jobs:
           gh release create "$GITHUB_REF_NAME" $DIST_DIR/* \
             --repo "${GITHUB_REPOSITORY}" \
             --title "${GITHUB_REF_NAME}" \
-            --notes-file "${{ github.workspace }}/${{ steps.generate-release-notes.prepare-files-and-dirs.file_name }} \
+            --notes-file "${{ github.workspace }}/${{ steps.generate-release-notes.prepare-files-and-dirs.file_name }}" \
             --verify-tag
