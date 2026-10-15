@@ -1,14 +1,16 @@
 name: "Release: Compile Notes"
 on:
   workflow_call:
+    outputs:
+      release_notes_file_name:
+        description: "File name for release notes"
+        value: "${{ steps.compile-release-notes.release_notes_file_name }}"
 
 jobs:
   compile-release-notes:
     if: github.ref_type == 'tag'
     runs-on: "ubuntu-latest"
     name: "Compile release notes"
-    outputs:
-      release_notes_file_name: ${{ steps.prepare-files-and-dirs.outputs.file_name }}
     permissions:
         contents: "read"
     steps:
