@@ -6,7 +6,7 @@ jobs:
   compile-release-notes:
     if: github.ref_type == 'tag'
     runs-on: "ubuntu-latest"
-    name: "Generate release notes"
+    name: "Compile release notes"
     outputs:
       release_notes_file_name: ${{ steps.prepare-files-and-dirs.outputs.file_name }}
     permissions:
@@ -31,7 +31,7 @@ jobs:
           echo "release_notes_path=$DIR/$FILE_NAME" >> "$GITHUB_OUTPUT"
           echo "file_name=$FILE_NAME" >> "$GITHUB_OUTPUT"
 
-      - name: "Generate release notes"
+      - name: "Generate release notes with Cliff"
         shell: "bash"
         env:
           # Use the workflow token to authenticate to GitHub so that we are not ratelimited. git-cliff contacts GitHub to determine first time contributors and to associate commit hashes with GitHub URIs
