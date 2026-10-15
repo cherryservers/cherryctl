@@ -214,7 +214,7 @@ jobs:
         compression-level: 0
 
   compile-release-notes:
-    uses: ".github/workflows/compile-release-notes.yml"
+    uses: "./.github/workflows/compile-release-notes.yml"
 
   create-homebrew-formula:
     if: github.ref_type == 'tag'
