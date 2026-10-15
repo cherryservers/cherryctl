@@ -4,10 +4,10 @@ on:
     outputs:
       artifact_id_release_notes:
         description: "Artifact ID for Release Notes"
-        value: "${{ jobs.compile-release-notes.artifact_id_release_notes }}"
+        value: "${{ jobs.compile-release-notes.outputs.artifact_id_release_notes }}"
       filename_release_notes:
         description: "File name for the specific release notes file"
-        value: "${{ jobs.compile-release-notes.filename_release_notes }}"
+        value: "${{ jobs.compile-release-notes.outputs.filename_release_notes }}"
 
 jobs:
   compile-release-notes:
