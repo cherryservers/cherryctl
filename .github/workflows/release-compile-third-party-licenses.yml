@@ -1,0 +1,53 @@
+name: "Release: Compile third party licenses"
+on:
+  workflow_call:
+
+jobs:
+  compile-third-party-licenses:
+    if: github.ref_type == 'tag'
+    outputs:
+      third-party-licenses-file-name: ${{ steps.compile-third-party-licenses.outputs.file_name }}
+    runs-on: "ubuntu-latest"
+
+    name: "Compile third party licenses"
+    permissions:
+        contents: "read"
+    steps:
+    - name: Checkout
+      uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      with:
+        fetch-depth: 0
+
+    - name: Set up temp dir
+      id: set-up-temp-dir
+      shell: bash
+      run: |
+        DIR=$(mktemp -d)
+        FILE_NAME="THIRD_PARTY_LICENSES.txt"
+        echo "dir=$DIR" >> "$GITHUB_OUTPUT"
+        echo "file_name=$FILE_NAME" >> "$GITHUB_OUTPUT"
+
+    - name: Set up Go
+      uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+      with:
+        #go-version-file: '${{ github.workspace }}/go.mod'
+        go-version: "stable"
+
+    - name: Set up google/go-licenses # v2.0.1
+      shell: "bash"
+      run: |
+        go install github.com/google/go-licenses/v2@3e084b0caf710f7bfead967567539214f598c0a2
+
+    - name: Create third party licenses file
+      shell: "bash"
+      run: |
+        $(go env GOPATH)/bin/go-licenses report "${{ github.workspace }}/" \
+          --ignore="$(go list -m)" \
+          --template="${{ github.workspace }}/licenses.tpl" > "${{ steps.set-up-temp-dir.outputs.dir }}/${{ steps.set-up-temp-dir.outputs.file_name }}"
+
+    - name: "Upload workflow third party licenses file"
+      uses: "actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9" # v7.0.2
+      with:
+        name: "third_party_licenses-${{ github.ref_name }}"
+        path: "${{ steps.set-up-temp-dir.outputs.dir }}/${{ steps.set-up-temp-dir.outputs.file_name }}"
+        if-no-files-found: error
