@@ -112,7 +112,7 @@ jobs:
         CGO_CFLAGS: ${{ matrix.CGO_CFLAGS }}
         CGO_LDFLAGS: ${{ matrix.CGO_LDFLAGS }}
 
-        $DIR: "${{ steps.prepare.outputs.dir }}"
+        DIR: "${{ steps.prepare.outputs.dir }}"
       run: |
         go build \
           -trimpath \
