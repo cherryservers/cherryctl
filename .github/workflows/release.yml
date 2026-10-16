@@ -37,11 +37,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Set up anchore/syft # v1.54.1
-        shell: "bash"
-        run: |
-          go install github.com/anchore/syft/cmd/syft@b254e6d92f28c3868a755f62fb3ca8f26e9fee76
-
       - name: "Prepare"
         id: "prepare"
         shell: "bash"
@@ -65,8 +60,10 @@ jobs:
           path: ${{ github.workspace }}
           merge-multiple: true
 
-      - name: Set up sigstore/cosign-installer
-        uses: sigstore/cosign-installer@6f9f17788090df1f26f669e9d70d6ae9567deba6 # v4.1.2
+      - name: Set up anchore/syft # v1.54.1
+        shell: "bash"
+        run: |
+          go install github.com/anchore/syft/cmd/syft@b254e6d92f28c3868a755f62fb3ca8f26e9fee76
 
       - name: "Generate repository source SBOM"
         shell: "bash"
@@ -95,6 +92,9 @@ jobs:
         with:
           subject-path: "${{ steps.prepare.outputs.dist_dir }}"
           show-summary: true
+
+      # - name: Set up sigstore/cosign-installer
+      #   uses: sigstore/cosign-installer@6f9f17788090df1f26f669e9d70d6ae9567deba6 # v4.1.2
 
       # - name: "Sign checksums with sigstore"
       #   shell: "bash"
