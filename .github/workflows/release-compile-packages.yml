@@ -118,7 +118,7 @@ jobs:
           -trimpath \
           -ldflags "$LDFLAGS_COMMON $LD_FLAGS_TARGET" \
           -o "$DIR/$BINARY_NAME" \
-          $MAIN_PATH
+          "$MAIN_PATH"
 
     - name: "Copy cherryctl license into package dir"
       shell: "bash"
