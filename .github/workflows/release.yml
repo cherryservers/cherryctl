@@ -31,7 +31,6 @@ jobs:
       GITHUB_REF_NAME: ${{ github.ref_name }}
       SOURCE_NAME: "${{ github.event.repository.name }}"
       CHECKSUMS_FILE_PATH: ${{ github.event.repository.name }}-${{ github.ref_name }}.sha256sum # use repo name as binary name
-      DIST_DIR: ${{ github.workspace }}/dist
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -43,16 +42,19 @@ jobs:
         run: |
           go install github.com/anchore/syft/cmd/syft@b254e6d92f28c3868a755f62fb3ca8f26e9fee76
 
-      - name: "mkdir dist dir"
+      - name: "Prepare"
+        id: "prepare"
         shell: "bash"
         run: |
+          DIST_DIR="${{ github.workspace }}/dist"
           mkdir -p "$DIST_DIR"
+          echo "dist_dir=$DIST_DIR" >> "$GITHUB_OUTPUT"
 
       - name: "Fetch worklow package artifacts"
         uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
           pattern: "release-tarballs-${{ github.ref_name }}-*" # fetch all targets
-          path: ${{ env.DIST_DIR }}
+          path: ${{ steps.prepare.outputs.dist_dir }}
           merge-multiple: true
 
       - name: "Fetch release notes"
@@ -71,12 +73,19 @@ jobs:
         env:
           SOURCE_SBOM_NAME: "${{ env.SOURCE_NAME }}-${{ env.GITHUB_REF_NAME }}-source"
         run: |
-          $(go env GOPATH)/bin/syft dir:${{ github.workspace }} --source-name "$SOURCE_NAME" --source-version "$GITHUB_REF_NAME" -o spdx-json=$DIST_DIR/$SOURCE_SBOM_NAME.spdx.json
-          $(go env GOPATH)/bin/syft dir:${{ github.workspace }} --source-name "$SOURCE_NAME" --source-version "$GITHUB_REF_NAME" -o cyclonedx-json=$DIST_DIR/$SOURCE_SBOM_NAME.cdx.json
+          $(go env GOPATH)/bin/syft dir:${{ github.workspace }} \
+            --source-name "$SOURCE_NAME" \
+            --source-version "$GITHUB_REF_NAME \
+            -o spdx-json="${{ steps.prepare.outputs.dist_dir }}/$SOURCE_SBOM_NAME.spdx.json"
+
+          $(go env GOPATH)/bin/syft dir:${{ github.workspace }} \
+          --source-name "$SOURCE_NAME" \
+          --source-version "$GITHUB_REF_NAME" \
+          -o cyclonedx-json=${{ steps.prepare.outputs.dist_dir }}/$SOURCE_SBOM_NAME.cdx.json
 
       - name: "Generate checksums of the release"
         shell: "bash"
-        working-directory: "${{ env.DIST_DIR }}"
+        working-directory: "${{ steps.prepare.outputs.dist_dir }}"
         run: |
           sha256sum -- * > $CHECKSUMS_FILE_PATH
 
@@ -84,20 +93,20 @@ jobs:
         id: "attest"
         uses: actions/attest@59d89421af93a897026c735860bf21b6eb4f7b26 # v4.1.0
         with:
-          subject-path: "${{ env.DIST_DIR }}"
+          subject-path: "${{ steps.prepare.outputs.dist_dir }}"
           show-summary: true
 
       # - name: "Sign checksums with sigstore"
       #   shell: "bash"
       #   run: |
-      #     cosign sign-blob dist/$CHECKSUMS_FILE_PATH --bundle "$DIST_DIR/$CHECKSUMS_FILE_PATH.sigstore.json --yes
+      #     cosign sign-blob dist/$CHECKSUMS_FILE_PATH --bundle "${{ steps.prepare.outputs.dist_dir }}/$CHECKSUMS_FILE_PATH.sigstore.json --yes
 
       - name: "Create release"
         shell: "bash"
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh release create "$GITHUB_REF_NAME" $DIST_DIR/* \
+          gh release create "$GITHUB_REF_NAME" "${{ steps.prepare.outputs.dist_dir }}/*" \
             --repo "${GITHUB_REPOSITORY}" \
             --title "${GITHUB_REF_NAME}" \
             --notes-file "${{ github.workspace }}/${{ needs.compile-release-notes.outputs.filename_release_notes }}" \
