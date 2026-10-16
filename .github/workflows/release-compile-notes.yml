@@ -11,7 +11,7 @@ on:
 
 jobs:
   compile-release-notes:
-    if: github.ref_type == 'tag'
+    if: "github.ref_type == 'tag'"
     outputs:
       artifact_id_release_notes: "${{ steps.upload-release-notes.outputs.artifact-id }}"
       filename_release_notes: "${{ steps.prepare.outputs.filename_release_notes }}"
@@ -21,8 +21,8 @@ jobs:
     permissions:
         contents: "read"
     steps:
-      - name: Checkout
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: "Checkout"
+        uses: "actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1" # v7.0.1
         with:
           fetch-depth: 0
 

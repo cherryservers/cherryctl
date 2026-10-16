@@ -17,7 +17,7 @@ jobs:
     uses: "./.github/workflows/release-compile-packages.yml"
 
   publish-release:
-    if: github.ref_type == 'tag'
+    if: "github.ref_type == 'tag'"
     runs-on: "ubuntu-latest"
     name: "Create and publish release"
 
@@ -30,10 +30,10 @@ jobs:
     env:
       GITHUB_REF_NAME: ${{ github.ref_name }}
       SOURCE_NAME: "${{ github.event.repository.name }}"
-      CHECKSUMS_FILE_PATH: ${{ github.event.repository.name }}-${{ github.ref_name }}.sha256sum # use repo name as binary name
+      CHECKSUMS_FILE_PATH: "${{ github.event.repository.name }}-${{ github.ref_name }}.sha256sum" # use repo name as binary name
     steps:
-      - name: Checkout
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: "Checkout"
+        uses: "actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1" # v7.0.1
         with:
           fetch-depth: 0
 
@@ -60,7 +60,7 @@ jobs:
           path: ${{ github.workspace }}
           merge-multiple: true
 
-      - name: Set up anchore/syft # v1.54.1
+      - name: "Set up anchore/syft" # v1.54.1
         shell: "bash"
         run: |
           go install github.com/anchore/syft/cmd/syft@b254e6d92f28c3868a755f62fb3ca8f26e9fee76
@@ -107,7 +107,7 @@ jobs:
       - name: "Create release"
         shell: "bash"
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: "${{ github.token }}"
           DIST_DIR: "${{ steps.prepare.outputs.dist_dir }}"
         run: |
           gh release create "$GITHUB_REF_NAME" "$DIST_DIR/*" \
