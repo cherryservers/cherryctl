@@ -136,7 +136,7 @@ jobs:
 
     - name: "Generate checksums of package contents"
       shell: "bash"
-      working-directory: ${{ env.DIR }}
+      working-directory: "${{ steps.prepare.outputs.dir }}"
       run: |
         sha256sum -- * > SHA256SUMS
 
