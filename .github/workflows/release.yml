@@ -69,16 +69,17 @@ jobs:
         shell: "bash"
         env:
           SOURCE_SBOM_NAME: "${{ env.SOURCE_NAME }}-${{ env.GITHUB_REF_NAME }}-source"
+          DIST_DIR: "${{ steps.prepare.outputs.dist_dir }}"
         run: |
           $(go env GOPATH)/bin/syft dir:${{ github.workspace }} \
             --source-name "$SOURCE_NAME" \
             --source-version "$GITHUB_REF_NAME" \
-            -o spdx-json="${{ steps.prepare.outputs.dist_dir }}/$SOURCE_SBOM_NAME.spdx.json"
+            -o spdx-json="$DIST_DIR/$SOURCE_SBOM_NAME.spdx.json"
 
           $(go env GOPATH)/bin/syft dir:${{ github.workspace }} \
           --source-name "$SOURCE_NAME" \
           --source-version "$GITHUB_REF_NAME" \
-          -o cyclonedx-json=${{ steps.prepare.outputs.dist_dir }}/$SOURCE_SBOM_NAME.cdx.json
+          -o cyclonedx-json="$DIST_DIR/$SOURCE_SBOM_NAME.cdx.json"
 
       - name: "Generate checksums of the release"
         shell: "bash"
@@ -98,15 +99,18 @@ jobs:
 
       # - name: "Sign checksums with sigstore"
       #   shell: "bash"
+      #   env:
+      #     DIST_DIR: "${{ steps.prepare.outputs.dist_dir }}"
       #   run: |
-      #     cosign sign-blob dist/$CHECKSUMS_FILE_PATH --bundle "${{ steps.prepare.outputs.dist_dir }}/$CHECKSUMS_FILE_PATH.sigstore.json --yes
+      #     cosign sign-blob dist/$CHECKSUMS_FILE_PATH --bundle "$DIST_DIR/$CHECKSUMS_FILE_PATH.sigstore.json --yes
 
       - name: "Create release"
         shell: "bash"
         env:
           GH_TOKEN: ${{ github.token }}
+          DIST_DIR: "${{ steps.prepare.outputs.dist_dir }}"
         run: |
-          gh release create "$GITHUB_REF_NAME" "${{ steps.prepare.outputs.dist_dir }}/*" \
+          gh release create "$GITHUB_REF_NAME" "$DIST_DIR/*" \
             --repo "${GITHUB_REPOSITORY}" \
             --title "${GITHUB_REF_NAME}" \
             --notes-file "${{ github.workspace }}/${{ needs.compile-release-notes.outputs.filename_release_notes }}" \
