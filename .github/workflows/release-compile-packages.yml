@@ -159,7 +159,7 @@ jobs:
       with:
         name: "release-tarballs-${{ github.ref_name }}-${{ matrix.TARGET }}"
         path: |
-          "${{ steps.prepare.outputs.dist_dir }}/*.tar.gz"
-          "${{ steps.prepare.outputs.dist_dir }}/*.zip"
+          ${{ steps.prepare.outputs.dist_dir }}/*.tar.gz
+          ${{ steps.prepare.outputs.dist_dir }}/*.zip
         if-no-files-found: error
         compression-level: 0
