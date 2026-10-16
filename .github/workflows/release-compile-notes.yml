@@ -45,8 +45,9 @@ jobs:
         env:
           # Use the workflow token to authenticate to GitHub so that we are not ratelimited. git-cliff contacts GitHub to determine first time contributors and to associate commit hashes with GitHub URIs
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE_NOTES_PATH: "${{ steps.prepare.outputs.release_notes_path }}"
         run: |
-          git cliff --current --config "${{ github.workspace }}/cliff.toml" --output "${{ steps.prepare.outputs.release_notes_path }}"
+          git cliff --current --config "${{ github.workspace }}/cliff.toml" --output "$RELEASE_NOTES_PATH"
 
       - name: "Upload release notes"
         id: "upload-release-notes"
