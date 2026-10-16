@@ -72,7 +72,7 @@ jobs:
         run: |
           $(go env GOPATH)/bin/syft dir:${{ github.workspace }} \
             --source-name "$SOURCE_NAME" \
-            --source-version "$GITHUB_REF_NAME \
+            --source-version "$GITHUB_REF_NAME" \
             -o spdx-json="${{ steps.prepare.outputs.dist_dir }}/$SOURCE_SBOM_NAME.spdx.json"
 
           $(go env GOPATH)/bin/syft dir:${{ github.workspace }} \
