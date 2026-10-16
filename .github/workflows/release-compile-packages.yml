@@ -99,8 +99,8 @@ jobs:
       id: "prepare"
       shell: bash
       run: |
-        DIR=$(mktemp -d) && echo "dir=$DIR" >> "$GITHUB_ENV"
-        DIST_DIR=$(mktemp -d) && echo "dist_dir=$DIST_DIR" >> "$GITHUB_ENV"
+        DIR=$(mktemp -d) && echo "dir=$DIR" >> "$GITHUB_OUTPUT"
+        DIST_DIR=$(mktemp -d) && echo "dist_dir=$DIST_DIR" >> "$GITHUB_OUTPUT"
 
     - name: Build binary
       env:
