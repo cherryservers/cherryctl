@@ -66,6 +66,7 @@ func TestReinstall(t *testing.T) {
 				userdataPath,
 				"--os-partition-size",
 				"1",
+				"--persist-ipxe",
 			},
 			wantReqBody: &cherrygo.ReinstallServerFields{
 				Image:           "test-image",
@@ -75,6 +76,7 @@ func TestReinstall(t *testing.T) {
 				SSHKeys:         []string{"1", "2"},
 				UserData:        "dGVzdC11c2VyZGF0YQ==",
 				OSPartitionSize: 1,
+				PersistIPXE:     true,
 			},
 		},
 	}
@@ -197,6 +199,22 @@ func TestReinstallWithErrorsExpected(t *testing.T) {
 			},
 			reinstallFn:  reinstallOK,
 			wantMsg:      regexp.MustCompile(`^failed to read ipxe file: .+$`),
+			wantSvcCalls: 0,
+		},
+		{
+			title: "persist-ipxe with no ipxe-file",
+			args: []string{
+				"1",
+				"--hostname",
+				"test-hostname",
+				"--image",
+				"test-image",
+				"--password",
+				"test-password",
+				"--persist-ipxe",
+			},
+			reinstallFn:  reinstallOK,
+			wantMsg:      regexp.MustCompile("^\"persist-ipxe\" requires \"ipxe-file\"$"),
 			wantSvcCalls: 0,
 		},
 		{
