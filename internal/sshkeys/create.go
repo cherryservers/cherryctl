@@ -15,10 +15,11 @@ func (c *Command) Create() *cobra.Command {
 	)
 	sshKeyCreateCmd := &cobra.Command{
 		Use:   `create --key <public_key> --label <label>`,
+		Args:  cobra.NoArgs,
 		Short: "Adds an SSH key for the current user's account.",
 		Long:  "Adds an SSH key for the current user's account.",
-		Example: `  # Adds a key labled "example-key" to the current user account.
-  cherryctl ssh-key create --key ssh-rsa AAAAB3N...user@domain.com --label example-key`,
+		Example: `  # Adds a key labeled "example-key" to the current user account.
+  cherryctl ssh-key create --key 'ssh-rsa AAAAB3N...user@domain.com' --label example-key`,
 
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cmd.SilenceUsage = true
@@ -43,7 +44,7 @@ func (c *Command) Create() *cobra.Command {
 	}
 
 	sshKeyCreateCmd.Flags().StringVarP(&label, "label", "", "", "Label of the SSH key.")
-	sshKeyCreateCmd.Flags().StringVarP(&publicKey, "key", "", "", "Public SSH key string.")
+	sshKeyCreateCmd.Flags().StringVarP(&publicKey, "key", "", "", "Public SSH key.")
 
 	sshKeyCreateCmd.MarkFlagRequired("label")
 	sshKeyCreateCmd.MarkFlagRequired("key")
