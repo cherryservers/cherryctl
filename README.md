@@ -33,6 +33,7 @@ cherryctl
     - [Deploy a New Server](#deploy-a-new-server)
     - [List Your Servers](#list-your-servers)
     - [Get Information About Existing Server](#get-information-about-existing-server)
+ - [Development](#development)
 
 ## Introduction
 
@@ -214,3 +215,10 @@ if you want to change the output format.
 ```sh
 cherryctl server get -o json [server_ID]
 ```
+
+## Development
+### Secrets scanning and pre-commit hook
+
+We ask you not to commit secrets to this repository. We scan for secrets using [gitleaks](https://github.com/gitleaks/gitleaks). Run `scripts/setup-hooks.sh` to configure git to use this repository's pre-commit hook (`.githooks/pre-commit`).
+
+This will execute [gitleaks](https://github.com/gitleaks/gitleaks) on every commit if it can be found on your system.
