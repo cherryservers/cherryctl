@@ -55,7 +55,10 @@ func (c *Command) list() *cobra.Command {
 					}
 				}
 
-				for _, r := range p.AvailableRegions {
+				for i, r := range p.AvailableRegions {
+					if r.Region == nil {
+						return fmt.Errorf("invalid API response: plan %q has no region at available_regions[%d]", p.Slug, i)
+					}
 					if region == "" || region == r.Slug || region == strconv.Itoa(r.ID) {
 						data = append(data, []string{p.Slug, r.Slug, strconv.Itoa(r.StockQty), priceHour, strconv.Itoa(r.SpotQty), priceSpot})
 					}
