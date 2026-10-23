@@ -7,7 +7,7 @@ Reinstall a server.
 Reinstall the specified server.
 
 ```
-cherryctl server reinstall ID --hostname <hostname> --image <image_slug> --password <password> [--ssh-keys <ssh_key_ids>] [--os-partition-size <size>] [--userdata-file <filepath>] [--ipxe-file <filepath>] [--persist-ipxe] [flags]
+cherryctl server reinstall ID --hostname <hostname> {--image <image_slug> | --ipxe-file <filepath>} --password <password> [--ssh-keys <ssh_key_ids>] [--os-partition-size <size>] [--userdata-file <filepath>] [--persist-ipxe] [flags]
 ```
 
 ### Examples
@@ -23,7 +23,7 @@ cherryctl server reinstall ID --hostname <hostname> --image <image_slug> --passw
   -h, --help                    help for reinstall
       --hostname string         Hostname.
       --image string            Operating system slug for the server.
-      --ipxe-file string        Path to a file containing an iPXE template.
+      --ipxe-file string        Path to an iPXE template. Selects the iPXE installation image automatically; incompatible with OS images.
       --os-partition-size int   OS partition size in GB.
       --password string         Server password.
       --persist-ipxe            Enable persisting the universal iPXE image between server boots. See https://www.cherryservers.com/knowledge/docs/compute/configuration-management/ipxe#how-ipxe-works-with-cherry-servers.
