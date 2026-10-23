@@ -20,10 +20,9 @@ cherryctl ssh-key update ID [--label <text>] [--key <public_key>] [flags]
 ### Options
 
 ```
-  -h, --help             help for update
-      --key string       Public SSH key string.
-      --label string     Label of the SSH key.
-  -i, --ssh-key-id int   ID of the SSH key.
+  -h, --help           help for update
+      --key string     Public SSH key string.
+      --label string   Label of the SSH key.
 ```
 
 ### Options inherited from parent commands

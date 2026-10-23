@@ -1,6 +1,7 @@
 package sshkeys
 
 import (
+	"fmt"
 	"strconv"
 
 	"github.com/cherryservers/cherrygo/v4"
@@ -10,9 +11,9 @@ import (
 
 func (c *Client) Update() *cobra.Command {
 	var (
-		sshKeyID  int
 		label     string
 		publicKey string
+		id        int
 	)
 	sshKeyUpdateCmd := &cobra.Command{
 		Use:   `update ID [--label <text>] [--key <public_key>]`,
@@ -26,9 +27,11 @@ func (c *Client) Update() *cobra.Command {
 			cmd.SilenceUsage = true
 			ctx := cmd.Context()
 
-			if sshID, err := strconv.Atoi(args[0]); err == nil {
-				sshKeyID = sshID
+			id, err := strconv.Atoi(args[0])
+			if err != nil {
+				return fmt.Errorf("invalid id: %w", err)
 			}
+
 			request := &cherrygo.UpdateSSHKey{}
 
 			if label != "" {
@@ -39,7 +42,7 @@ func (c *Client) Update() *cobra.Command {
 				request.Key = &publicKey
 			}
 
-			o, _, err := c.Service.Update(ctx, sshKeyID, request)
+			o, _, err := c.Service.Update(ctx, id, request)
 			if err != nil {
 				return errors.Wrap(err, "Could not update SSH key")
 			}
@@ -52,11 +55,11 @@ func (c *Client) Update() *cobra.Command {
 		},
 	}
 
-	sshKeyUpdateCmd.Flags().IntVarP(&sshKeyID, "ssh-key-id", "i", 0, "ID of the SSH key.")
+	sshKeyUpdateCmd.Flags().IntVarP(&id, "ssh-key-id", "i", 0, "ID of the SSH key.")
 	sshKeyUpdateCmd.Flags().StringVarP(&label, "label", "", "", "Label of the SSH key.")
 	sshKeyUpdateCmd.Flags().StringVarP(&publicKey, "key", "", "", "Public SSH key string.")
 
-	sshKeyUpdateCmd.MarkFlagRequired("ssh-key-id")
+	sshKeyUpdateCmd.Flags().MarkDeprecated("ssh-key-id", "Pass the ID as an argument instead.")
 
 	return sshKeyUpdateCmd
 }
