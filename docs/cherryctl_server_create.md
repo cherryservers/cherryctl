@@ -7,7 +7,7 @@ Create a server.
 Create a server in specified project.
 
 ```
-cherryctl server create -p <project_id> --plan <plan_slug> --region <region_slug> [--hostname <hostname>] [--image <image_slug>] [--ssh-keys <ssh_key_ids>] [--ip-addresses <ip_addresses_ids>] [--os-partition-size <size>] [--userdata-file <filepath>] [--tags] [--spot-instance] [--storage-id <storage_id>] [--cycle <cycle-slug>] [--discount <discount_code>] [--ipxe-file <filepath>] [--enable-ipv6] [flags]
+cherryctl server create -p <project_id> --plan <plan_slug> --region <region_slug> [--hostname <hostname>] [--image <image_slug>] [--ssh-keys <ssh_key_ids>] [--ip-addresses <ip_addresses_ids>] [--os-partition-size <size>] [--userdata-file <filepath>] [--tags] [--spot-instance] [--storage-id <storage_id>] [--cycle <cycle-slug>] [--discount <discount_code>] [--ipxe-file <filepath>] [--persist-ipxe] [--enable-ipv6] [flags]
 ```
 
 ### Examples
@@ -29,6 +29,7 @@ cherryctl server create -p <project_id> --plan <plan_slug> --region <region_slug
       --ip-addresses strings    Comma separated list of IP addresses ID's to be embed in the Server.
       --ipxe-file string        Path to a file containing an iPXE template.
       --os-partition-size int   OS partition size in GB.
+      --persist-ipxe            Enable persisting the universal iPXE image between server boots. See https://www.cherryservers.com/knowledge/docs/compute/configuration-management/ipxe#how-ipxe-works-with-cherry-servers.
       --plan string             Slug of the plan.
   -p, --project-id int          The project's ID.
       --region string           Slug of the region where server will be provisioned.
