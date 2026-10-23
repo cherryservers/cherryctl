@@ -4,6 +4,8 @@ Copyright © 2022 Cherry Severs <support@cherryservers.com>
 package cmd
 
 import (
+	"os"
+
 	"github.com/cherryservers/cherryctl/internal/backups"
 	root "github.com/cherryservers/cherryctl/internal/cli"
 	"github.com/cherryservers/cherryctl/internal/docs"
@@ -20,6 +22,7 @@ import (
 	"github.com/cherryservers/cherryctl/internal/teams"
 	"github.com/cherryservers/cherryctl/internal/users"
 	"github.com/cherryservers/cherrygo/v4"
+	"github.com/manifoldco/promptui"
 	"github.com/spf13/cobra"
 )
 
@@ -61,6 +64,16 @@ func (d sharedDeps) GetOpts() *cherrygo.GetOptions {
 
 func (d sharedDeps) Outputer() outputs.Outputer {
 	return d.out
+}
+
+func (sharedDeps) PromptConfirmation(msg string) (bool, error) {
+	prompt := promptui.Prompt{Label: msg, IsConfirm: true}
+
+	_, err := prompt.Run()
+	if err == promptui.ErrAbort {
+		return false, nil
+	}
+	return err == nil, err
 }
 
 type planDeps struct {
@@ -116,4 +129,7 @@ func (cli *Cli) RegisterCommands(client *root.Client) {
 		images.NewClient(client, cli.Outputer).NewCommand(),
 		users.NewClient(client, cli.Outputer).NewCommand(),
 	)
+	// Command.Print helpers fallback to stderr if out is nil,
+	// so we need to set it to stdout.
+	cli.MainCmd.SetOut(os.Stdout)
 }
