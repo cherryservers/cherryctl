@@ -8,7 +8,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func (c *Client) Delete() *cobra.Command {
+func (c *Command) Delete() *cobra.Command {
 	var sshKeyID int
 	var force bool
 	deleteSSHkeyCmd := &cobra.Command{
@@ -38,7 +38,7 @@ func (c *Client) Delete() *cobra.Command {
 					return nil
 				}
 			}
-			_, err := c.Service.Delete(ctx, sshKeyID)
+			_, err := c.Client().Delete(ctx, sshKeyID)
 			if err != nil {
 				return errors.Wrap(err, "Could not delete SSH key")
 			}

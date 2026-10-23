@@ -7,7 +7,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func (c *Client) Get() *cobra.Command {
+func (c *Command) Get() *cobra.Command {
 	var sshKeyID int
 	sshGetCmd := &cobra.Command{
 		Use:   `get ID`,
@@ -23,9 +23,9 @@ func (c *Client) Get() *cobra.Command {
 			if sshID, err := strconv.Atoi(args[0]); err == nil {
 				sshKeyID = sshID
 			}
-			getOptions := c.Servicer.GetOptions()
+			getOptions := c.GetOpts()
 			getOptions.Fields = []string{"ssh_key", "email"}
-			o, _, err := c.Service.Get(ctx, sshKeyID, getOptions)
+			o, _, err := c.Client().Get(ctx, sshKeyID, getOptions)
 			if err != nil {
 				return errors.Wrap(err, "Could not get ssh-key")
 			}
@@ -34,7 +34,7 @@ func (c *Client) Get() *cobra.Command {
 			data := make([][]string, 1)
 			data[0] = []string{strconv.Itoa(o.ID), o.Label, o.User.Email, o.Fingerprint, o.Created}
 
-			return c.Out.Output(o, header, &data)
+			return c.Outputer().Output(o, header, &data)
 		},
 	}
 

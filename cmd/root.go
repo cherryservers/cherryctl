@@ -81,6 +81,18 @@ func (d *serverDeps) Client() cherrygo.ServersService {
 	return d.client.API(nil).Servers
 }
 
+type sshkeyDeps struct {
+	sharedDeps
+}
+
+func (d *sshkeyDeps) Client() cherrygo.SSHKeysService {
+	return d.client.API(nil).SSHKeys
+}
+
+func (d *sshkeyDeps) ProjectClient() cherrygo.ProjectsService {
+	return d.client.API(nil).Projects
+}
+
 func (cli *Cli) RegisterCommands(client *root.Client) {
 	shared := sharedDeps{
 		out:    cli.Outputer,
@@ -100,7 +112,7 @@ func (cli *Cli) RegisterCommands(client *root.Client) {
 		plans.NewCommand(&planDeps{sharedDeps: shared}).CobraCommand(),
 		projects.NewClient(client, cli.Outputer).NewCommand(),
 		teams.NewClient(client, cli.Outputer).NewCommand(),
-		sshkeys.NewClient(client, cli.Outputer).NewCommand(),
+		sshkeys.NewCommand(&sshkeyDeps{sharedDeps: shared}).CobraCommand(),
 		images.NewClient(client, cli.Outputer).NewCommand(),
 		users.NewClient(client, cli.Outputer).NewCommand(),
 	)
