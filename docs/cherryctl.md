@@ -30,7 +30,7 @@ cherryctl is a command line interface (CLI) for Cherry Servers API
 * [cherryctl project](cherryctl_project.md)	 - Project operations.
 * [cherryctl region](cherryctl_region.md)	 - Region operations. For more information on Networking, check the Product Docs: https://docs.cherryservers.com/knowledge/product-docs#network
 * [cherryctl server](cherryctl_server.md)	 - Server operations. For more information on server types, check the Product Docs: https://docs.cherryservers.com/knowledge/product-docs#compute
-* [cherryctl ssh-key](cherryctl_ssh-key.md)	 - Ssh-key operations.
+* [cherryctl ssh-key](cherryctl_ssh-key.md)	 - SSH key operations.
 * [cherryctl storage](cherryctl_storage.md)	 - Storage operations. For more information on Elastic Block Storage, check the Product Docs: https://docs.cherryservers.com/knowledge/elastic-block-storage/
 * [cherryctl team](cherryctl_team.md)	 - Team operations. For more information on Teams, check the Product Docs: https://docs.cherryservers.com/knowledge/product-docs#teams
 * [cherryctl user](cherryctl_user.md)	 - User operations.

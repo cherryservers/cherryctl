@@ -1,10 +1,10 @@
 ## cherryctl ssh-key
 
-Ssh-key operations.
+SSH key operations.
 
 ### Synopsis
 
-Ssh-key operations: get, list, update, delete.
+SSH key operations: get, list, create, update, delete.
 
 ### Options
 

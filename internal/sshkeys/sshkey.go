@@ -14,8 +14,8 @@ func (c *Command) CobraCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     `ssh-key`,
 		Aliases: []string{"sshkey", "sshkeys", "ssh-keys"},
-		Short:   "Ssh-key operations.",
-		Long:    "Ssh-key operations: get, list, update, delete.",
+		Short:   "SSH key operations.",
+		Long:    "SSH key operations: get, list, create, update, delete.",
 	}
 
 	cmd.AddCommand(
