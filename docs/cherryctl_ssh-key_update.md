@@ -13,7 +13,7 @@ cherryctl ssh-key update ID [--label <text>] [--key <public_key>] [flags]
 ### Examples
 
 ```
-  # Update team to change currency to EUR:
+  # Update SSH key:
   cherryctl ssh-key update 12345 --key AAAAB3N...user@domain.com
 ```
 
