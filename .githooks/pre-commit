@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if command -v gitleaks >/dev/null 2>&1; then
+  gitleaks git --staged --redact --verbose
+fi
